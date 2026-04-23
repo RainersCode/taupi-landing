@@ -1,0 +1,43 @@
+---
+import Base from "~/layouts/Base.astro";
+import Nav from "~/components/Nav.astro";
+import Hero from "~/components/Hero";
+import LifestylePanel from "~/components/LifestylePanel";
+import ProductReveal from "~/components/ProductReveal";
+import FeatureGrid from "~/components/FeatureGrid";
+import TrustPanel from "~/components/TrustPanel.astro";
+import DownloadCTA from "~/components/DownloadCTA.astro";
+import Footer from "~/components/Footer.astro";
+
+const locale = "lv" as const;
+---
+<Base title="Taupi — zini, kur aiziet tava nauda." locale={locale}>
+  <Nav locale={locale} />
+
+  <main>
+    <!--
+      Sticky-stacking intro: Hero and LifestylePanel share the same takeover
+      pattern as the reveal sections. Parent is 200vh; each child is
+      `sticky top-0 h-screen` with ascending z-index, so LifestylePanel
+      rises from below and covers Hero as you scroll past the first viewport.
+    -->
+    <div class="relative" style="height: 200vh;">
+      <div class="sticky top-0 h-screen w-full overflow-hidden" style="z-index: 10;">
+        <Hero locale={locale} client:load />
+      </div>
+      <div class="sticky top-0 h-screen w-full overflow-hidden" style="z-index: 20;">
+        <LifestylePanel locale={locale} client:visible />
+      </div>
+    </div>
+
+    <ProductReveal locale={locale} client:visible />
+
+    <FeatureGrid locale={locale} client:visible />
+
+    <TrustPanel locale={locale} />
+
+    <DownloadCTA locale={locale} />
+  </main>
+
+  <Footer locale={locale} />
+</Base>

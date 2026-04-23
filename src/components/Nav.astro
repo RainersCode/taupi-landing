@@ -1,0 +1,50 @@
+---
+import type { Locale } from "~/i18n/strings";
+import { getDict } from "~/i18n/strings";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getDict(locale);
+const altHref = locale === "lv" ? "/en/" : "/";
+const altLabel = locale === "lv" ? "EN" : "LV";
+---
+<!-- `backdrop-blur` removed — backdrop-filter triggers a full composite
+     repaint every scroll frame, which the pinned reveal section amplified
+     into visible lag. Plain semi-transparent bg gives a similar visual with
+     zero per-frame cost. -->
+<header class="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-5" style="background: rgba(13, 17, 40, 0.72);">
+  <div class="mx-auto max-w-content flex items-center justify-between">
+    <!-- Wordmark -->
+    <a href={locale === "lv" ? "/" : "/en/"} class="group">
+      <span class="font-display font-extrabold text-2xl text-ink" style="letter-spacing: -0.04em;">
+        taupi<span class="text-accent">.</span>
+      </span>
+    </a>
+
+    <!-- Right cluster -->
+    <nav class="flex items-center gap-6 md:gap-10">
+      <a href="#features" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+        {t["nav.features"]}
+      </a>
+      <a href="#privacy" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+        {t["nav.privacy"]}
+      </a>
+      <a
+        href={altHref}
+        class="eyebrow text-ink/60 hover:text-accent transition-colors"
+        aria-label={`Switch to ${altLabel}`}
+      >
+        {altLabel}
+      </a>
+      <a
+        href="#download"
+        class="inline-flex items-center rounded-full bg-ink text-bg px-5 py-2.5 text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
+      >
+        {t["nav.download"]}
+      </a>
+    </nav>
+  </div>
+</header>

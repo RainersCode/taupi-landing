@@ -1,0 +1,49 @@
+---
+import "~/styles/global.css";
+import SmoothScroll from "~/components/SmoothScroll";
+import type { Locale } from "~/i18n/strings";
+
+interface Props {
+  title: string;
+  description?: string;
+  locale: Locale;
+}
+
+const { title, description = "Taupi — zini, kur aiziet tava nauda.", locale } = Astro.props;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://taupi.eu" />
+    <meta name="theme-color" content="#0D1128" />
+
+    <title>{title}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Matches the RN app's type stack (src/theme.ts):
+      - Sora (400/600/700/800) — display, headings, all numbers
+      - DM Sans (400/500/700) — body, eyebrows
+      - JetBrains Mono (400/500) — only used for data/meta labels on the landing
+        (the app uses uppercase letter-spaced DM Sans for the same purpose; on
+        web we allow a mono signature detail without breaking brand).
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <SmoothScroll client:load />
+    <slot />
+  </body>
+</html>

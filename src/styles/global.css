@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ────────────────────────────────────────────────────────────────
+   Taupi landing — design tokens
+   Mirror src/theme.ts from the mobile app for brand cohesion.
+   ──────────────────────────────────────────────────────────────── */
+:root {
+  --bg: #0d1128;
+  --surface: #161b36;
+  --surface-e: #1f2445;
+  --ink: #f5f5f7;
+  --dim: #a8a8b3;
+  --muted: #64646f;
+  --brand: #5a6bff;
+  --brand-light: #8093ff;
+  --brand-deep: #3a4ae0;
+  --accent: #4fd1ff;
+  --success: #2dd4a7;
+  --danger: #ff3b87;
+  --warning: #ffb547;
+
+  /* Mirror src/theme.ts from the RN app. */
+  --font-display: "Sora", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  /* Lenis smooth-scroll takes over — disable native */
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background:
+    radial-gradient(60% 40% at 10% 5%, rgba(128, 147, 255, 0.12), transparent 60%),
+    radial-gradient(40% 30% at 95% 10%, rgba(79, 209, 255, 0.07), transparent 65%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+/* Subtle film-grain overlay — fixed full-viewport, pointer-transparent.
+   mix-blend-mode: overlay on a fixed fullscreen element was forcing the
+   compositor to re-blend the whole viewport every scroll frame (measurable
+   scroll jank during the pinned reveal section). Switched to a plain low-
+   opacity overlay with no blend mode — loses ~5% of grain character but
+   reclaims a lot of frames. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+}
+
+/* Selection — on-brand */
+::selection {
+  background: rgba(90, 107, 255, 0.4);
+  color: var(--ink);
+}
+
+/* Mono labels, uppercase, wide-tracked — used for eyebrows / metadata */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* Fluid display headings — Sora 800 at landing-page scale.
+   The editorial feel comes from size + negative tracking + generous leading,
+   not from font choice. */
+.display-xxl {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(48px, 9vw, 140px);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+/* Sora has no italic — accent treatment is a lighter weight + colored glyph
+   instead. Gives the same "visual pause" on the key word without breaking the
+   sans-serif system. */
+.display-accent {
+  font-weight: 400;
+  color: var(--accent);
+}

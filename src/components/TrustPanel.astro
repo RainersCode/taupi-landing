@@ -1,0 +1,111 @@
+---
+import type { Locale } from "~/i18n/strings";
+import { getDict } from "~/i18n/strings";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = getDict(locale);
+
+/**
+ * Trust / privacy section — refined minimalism.
+ *
+ * Design direction: "spec-sheet elegance". The app is made by one person;
+ * the section reads like a well-typeset document — pure typography,
+ * hairline rules, one accent colour used sparingly. No icons, no gradients,
+ * no decorative backgrounds. Every element here carries weight because
+ * there are so few of them.
+ */
+const principles = [
+  { title: t["trust.p1.title"], detail: t["trust.p1.detail"] },
+  { title: t["trust.p2.title"], detail: t["trust.p2.detail"] },
+  { title: t["trust.p3.title"], detail: t["trust.p3.detail"] },
+  { title: t["trust.p4.title"], detail: t["trust.p4.detail"] },
+];
+---
+<section
+  id="privacy"
+  class="relative py-32 md:py-52 px-6 md:px-10 border-t border-white/5"
+>
+  <div class="mx-auto max-w-content">
+    <!-- ─── Eyebrow band ─────────────────────────────── -->
+    <div class="flex items-baseline gap-6 mb-20 md:mb-28">
+      <span class="eyebrow">{t["trust.eyebrow"]}</span>
+      <span class="h-px flex-1 bg-white/10"></span>
+    </div>
+
+    <!-- ─── Headline — two lines, forced via explicit line strings ── -->
+    <h2
+      class="font-display font-extrabold text-ink"
+      style="
+        font-size: clamp(44px, 7vw, 120px);
+        letter-spacing: -0.045em;
+        line-height: 0.94;
+      "
+    >
+      <span class="block">{t["trust.title.l1"]}</span>
+      <span class="block">{t["trust.title.l2"]}</span>
+    </h2>
+
+    <!-- ─── Body — deliberately short, sits one column beneath headline ── -->
+    <p
+      class="mt-10 md:mt-12 max-w-[48ch] text-dim"
+      style="font-size: clamp(16px, 1.25vw, 19px); line-height: 1.55;"
+    >
+      {t["trust.body"]}
+    </p>
+
+    <!-- ─── Principles — spec-sheet rows ────────────────── -->
+    <ul
+      class="mt-24 md:mt-32 list-none"
+      style="border-top: 1px solid rgba(255, 255, 255, 0.09);"
+    >
+      {principles.map((p, i) => (
+        <li
+          class="flex items-baseline gap-5 md:gap-8 py-6 md:py-7"
+          style="border-bottom: 1px solid rgba(255, 255, 255, 0.07);"
+        >
+          <!-- Row number — mono, dim, tabular -->
+          <span
+            class="shrink-0 eyebrow text-muted w-8"
+            style="font-variant-numeric: tabular-nums;"
+          >
+            {String(i + 1).padStart(2, "0")}
+          </span>
+
+          <!-- Principle — title in body font, medium weight -->
+          <span
+            class="flex-1 text-ink"
+            style="
+              font-family: 'DM Sans', system-ui, sans-serif;
+              font-weight: 500;
+              font-size: clamp(15px, 1.4vw, 20px);
+              letter-spacing: -0.01em;
+              line-height: 1.35;
+            "
+          >
+            {p.title}
+          </span>
+
+          <!-- Technical detail — mono, accent cyan, right-aligned -->
+          <span
+            class="shrink-0 text-right"
+            style="
+              font-family: 'JetBrains Mono', ui-monospace, monospace;
+              font-size: 11px;
+              letter-spacing: 0.12em;
+              color: rgba(79, 209, 255, 0.72);
+              white-space: nowrap;
+            "
+          >
+            {p.detail}
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <!-- ─── Signature — personal, quiet ─────────────── -->
+    <p class="mt-16 md:mt-20 eyebrow text-muted">
+      {t["trust.signature"]}
+    </p>
+  </div>
+</section>

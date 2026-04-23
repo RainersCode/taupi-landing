@@ -1,0 +1,221 @@
+---
+import "~/styles/global.css";
+import Nav from "~/components/Nav.astro";
+import Footer from "~/components/Footer.astro";
+
+/**
+ * Layout for legal/legal-adjacent pages — Privacy, Terms, etc.
+ *
+ * Narrow reading column, high-contrast typography, mono metadata at the top.
+ * Matches the main site's dark navy theme so users don't feel like they
+ * landed on a different brand when they click "Privacy Policy".
+ */
+interface Props {
+  frontmatter: {
+    title: string;
+    updated?: string;
+    version?: string;
+    locale?: "lv" | "en";
+  };
+}
+
+const { frontmatter } = Astro.props;
+const locale = frontmatter.locale ?? "lv";
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={`${frontmatter.title} — Taupi`} />
+    <meta name="theme-color" content="#0D1128" />
+    <title>{frontmatter.title} — Taupi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <Nav locale={locale} />
+
+    <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
+      <!-- Title + metadata header -->
+      <header class="mb-16 border-b border-white/10 pb-10">
+        <p class="eyebrow mb-6">
+          <a href={locale === "lv" ? "/" : "/en/"} class="hover:text-ink transition-colors">
+            ← {locale === "lv" ? "Sākums" : "Home"}
+          </a>
+        </p>
+        <h1
+          class="font-display font-extrabold text-ink"
+          style="font-size: clamp(36px, 5vw, 72px); letter-spacing: -0.035em; line-height: 1.02;"
+        >
+          {frontmatter.title}
+        </h1>
+        {(frontmatter.updated || frontmatter.version) && (
+          <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+            {frontmatter.updated && (
+              <span class="eyebrow text-muted">
+                {locale === "lv" ? "Atjaunināts" : "Updated"} · {frontmatter.updated}
+              </span>
+            )}
+            {frontmatter.version && (
+              <span class="eyebrow text-muted">
+                v{frontmatter.version}
+              </span>
+            )}
+          </div>
+        )}
+      </header>
+
+      <!-- Markdown body — styled via `prose` utility below -->
+      <article class="legal-prose">
+        <slot />
+      </article>
+    </main>
+
+    <Footer locale={locale} />
+
+    <style is:global>
+      /* ────────────────────────────────────────────────────
+         Legal / long-form typography
+         Narrow reading column, generous line-height, careful
+         hierarchy. Dark theme with cyan accents on links.
+         ──────────────────────────────────────────────────── */
+      .legal-prose {
+        font-family: "DM Sans", system-ui, sans-serif;
+        color: var(--dim);
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .legal-prose > * + * {
+        margin-top: 1.2em;
+      }
+
+      .legal-prose h2 {
+        font-family: "Sora", system-ui, sans-serif;
+        color: var(--ink);
+        font-weight: 700;
+        font-size: clamp(22px, 2vw, 30px);
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        margin-top: 3em;
+        margin-bottom: 0.6em;
+      }
+
+      .legal-prose h3 {
+        font-family: "Sora", system-ui, sans-serif;
+        color: var(--ink);
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: -0.01em;
+        margin-top: 2em;
+        margin-bottom: 0.4em;
+      }
+
+      .legal-prose p {
+        margin: 0;
+      }
+
+      .legal-prose strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .legal-prose a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: rgba(79, 209, 255, 0.35);
+        transition: text-decoration-color 150ms;
+      }
+      .legal-prose a:hover {
+        text-decoration-color: var(--accent);
+      }
+
+      .legal-prose ul,
+      .legal-prose ol {
+        margin-left: 1.2em;
+        padding: 0;
+      }
+      .legal-prose li {
+        margin-top: 0.4em;
+        padding-left: 0.2em;
+      }
+      .legal-prose ul > li {
+        list-style: disc;
+      }
+      .legal-prose ul > li::marker {
+        color: rgba(79, 209, 255, 0.55);
+      }
+
+      .legal-prose blockquote {
+        margin: 2em 0;
+        padding: 1em 1.25em;
+        background: rgba(255, 181, 71, 0.06);
+        border-left: 2px solid rgba(255, 181, 71, 0.6);
+        border-radius: 0 8px 8px 0;
+        color: var(--ink);
+        font-size: 14px;
+      }
+      .legal-prose blockquote p {
+        margin: 0;
+      }
+
+      .legal-prose hr {
+        margin: 3em 0;
+        border: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .legal-prose code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.85em;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0.15em 0.4em;
+        border-radius: 4px;
+        color: var(--ink);
+      }
+
+      /* Tables — compact, monospaced where appropriate, with thin rules */
+      .legal-prose table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5em 0;
+        font-size: 14px;
+      }
+      .legal-prose thead th {
+        text-align: left;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+        padding: 0.6em 0.8em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .legal-prose tbody td {
+        padding: 0.7em 0.8em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        vertical-align: top;
+      }
+      .legal-prose tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      /* First paragraph after header gets larger body-lead type */
+      .legal-prose > p:first-child {
+        font-size: 18px;
+        color: var(--ink);
+        line-height: 1.6;
+      }
+    </style>
+  </body>
+</html>
