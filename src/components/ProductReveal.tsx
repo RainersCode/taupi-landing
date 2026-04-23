@@ -318,9 +318,13 @@ function SectionLayer({
             </div>
           </div>
 
-          {/* Main stage: text + phone, centered in remaining space */}
-          <div className="flex-1 flex items-center min-h-0 overflow-hidden">
-            <div className="mx-auto max-w-content w-full px-4 md:px-10 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-16 items-center py-6 md:py-0">
+          {/* Main stage: text + phone. `items-start` on mobile so content
+              pins to the top of the flex-1 container (clipping only at the
+              bottom) — with items-center the tall content was bleeding
+              upward and the big "Sākums" label overlapped the eyebrow
+              band's sectionTitle above it. Desktop centers as before. */}
+          <div className="flex-1 flex items-start md:items-center min-h-0 overflow-hidden">
+            <div className="mx-auto max-w-content w-full px-4 md:px-10 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-16 items-center pt-6 md:pt-0 pb-6 md:pb-0">
             {/* Text */}
             <motion.div
               key={`text-${section.key}`}

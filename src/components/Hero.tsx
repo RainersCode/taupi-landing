@@ -177,12 +177,16 @@ export default function Hero({ locale }: { locale: Locale }) {
           </motion.div>
         </div>
 
-        {/* ─── Right: phone ─── */}
+        {/* ─── Right: phone (DESKTOP ONLY)
+             Hidden on mobile so the Hero is text-only there — gives the
+             headline + CTAs more room and removes the cramped phone mockup
+             that was barely visible at small viewports. Phone still appears
+             in every ProductReveal section below. */}
         <motion.div
           initial={{ opacity: 0, y: 60, rotate: -3 }}
           animate={{ opacity: 1, y: 0, rotate: -3 }}
           transition={{ duration: 1.1, delay: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
-          className="md:col-span-5 relative flex justify-center md:justify-end"
+          className="hidden md:flex md:col-span-5 relative justify-center md:justify-end"
         >
           <div className="relative scale-90 md:scale-100 origin-top">
             {/* Two-layer halo — pre-blurred, no CSS filter. Outer indigo lift,
