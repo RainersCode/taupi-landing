@@ -11,21 +11,20 @@ const t = getDict(locale);
 const altHref = locale === "lv" ? "/en/" : "/";
 const altLabel = locale === "lv" ? "EN" : "LV";
 ---
-<!-- `backdrop-blur` removed — backdrop-filter triggers a full composite
-     repaint every scroll frame, which the pinned reveal section amplified
-     into visible lag. Plain semi-transparent bg gives a similar visual with
-     zero per-frame cost. -->
-<header class="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-5" style="background: rgba(13, 17, 40, 0.72);">
+<!-- Mobile: tight (px-4, py-3, hide Download button — CTA is below the fold).
+     Desktop: unchanged (px-10, py-5). Removed backdrop-blur to avoid scroll
+     compositor jank during the pinned reveal section. -->
+<header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-10 py-3 md:py-5" style="background: rgba(13, 17, 40, 0.72);">
   <div class="mx-auto max-w-content flex items-center justify-between">
     <!-- Wordmark -->
     <a href={locale === "lv" ? "/" : "/en/"} class="group">
-      <span class="font-display font-extrabold text-2xl text-ink" style="letter-spacing: -0.04em;">
+      <span class="font-display font-extrabold text-xl md:text-2xl text-ink" style="letter-spacing: -0.04em;">
         taupi<span class="text-accent">.</span>
       </span>
     </a>
 
     <!-- Right cluster -->
-    <nav class="flex items-center gap-6 md:gap-10">
+    <nav class="flex items-center gap-4 md:gap-10">
       <a href="#features" class="hidden md:inline eyebrow hover:text-ink transition-colors">
         {t["nav.features"]}
       </a>
@@ -41,7 +40,7 @@ const altLabel = locale === "lv" ? "EN" : "LV";
       </a>
       <a
         href="#download"
-        class="inline-flex items-center rounded-full bg-ink text-bg px-5 py-2.5 text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
+        class="hidden md:inline-flex items-center rounded-full bg-ink text-bg px-5 py-2.5 text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
       >
         {t["nav.download"]}
       </a>

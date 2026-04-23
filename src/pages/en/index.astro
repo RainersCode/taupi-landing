@@ -15,12 +15,12 @@ const locale = "en" as const;
   <Nav locale={locale} />
 
   <main>
-    <!-- Sticky-stacking intro — see LV index.astro for details -->
-    <div class="relative" style="height: 200vh;">
-      <div class="sticky top-0 h-screen w-full overflow-hidden" style="z-index: 10;">
+    <!-- Sticky-stacking intro on all viewports. -->
+    <div class="relative h-[200vh]">
+      <div class="w-full sticky top-0 h-screen overflow-hidden" style="z-index: 10;">
         <Hero locale={locale} client:load />
       </div>
-      <div class="sticky top-0 h-screen w-full overflow-hidden" style="z-index: 20;">
+      <div class="w-full sticky top-0 h-screen overflow-hidden" style="z-index: 20;">
         <LifestylePanel locale={locale} client:visible />
       </div>
     </div>

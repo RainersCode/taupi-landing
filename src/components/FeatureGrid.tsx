@@ -38,7 +38,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <section id="features" className="relative py-32 px-6 md:px-10 border-t border-white/5">
+    <section id="features" className="relative py-20 md:py-32 px-4 md:px-10 border-t border-white/5">
       <div className="mx-auto max-w-content">
         {/* Section heading */}
         <div className="flex items-baseline gap-6 mb-16">

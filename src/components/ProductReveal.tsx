@@ -153,8 +153,7 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
   return (
     <section
       id="reveal"
-      className="relative"
-      style={{ height: `${sections.length * 100}vh` }}
+      className="relative h-[400vh]"
     >
       {sections.map((s, i) => (
         <SectionLayer
@@ -233,7 +232,7 @@ function SectionLayer({
 
   return (
     <div
-      className="sticky top-0 h-screen w-full overflow-hidden border-t border-white/5"
+      className="relative w-full h-screen sticky top-0 overflow-hidden border-t border-white/5"
       style={{
         zIndex: 10 + index,
         background: section.bg,
@@ -249,11 +248,28 @@ function SectionLayer({
         }}
       />
 
-      {/* Massive decorative wordmark — same language as the Hero's "t.",
-          one per section with its own anchor + accent-tinted period. */}
+      {/* Mobile decorative wordmark — centered subtle watermark that fits
+          the viewport instead of bleeding off-screen. Slightly higher
+          opacity because the smaller size needs it to read. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute whitespace-nowrap font-display font-black select-none"
+        className="md:hidden pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-display font-black select-none"
+        style={{
+          fontSize: "clamp(60px, 19vw, 120px)",
+          lineHeight: 0.82,
+          letterSpacing: "-0.05em",
+          color: "rgba(255, 255, 255, 0.05)",
+          zIndex: 0,
+        }}
+      >
+        {section.displayWord}
+        <span style={{ color: section.displayDot }}>.</span>
+      </div>
+
+      {/* Desktop decorative wordmark — dramatic bleed-off from the anchor */}
+      <div
+        aria-hidden
+        className="hidden md:block pointer-events-none absolute whitespace-nowrap font-display font-black select-none"
         style={{
           ...section.displayAnchor,
           fontSize: "clamp(220px, 32vw, 480px)",
@@ -268,39 +284,43 @@ function SectionLayer({
       </div>
 
       <div className="relative h-full w-full" style={{ zIndex: 1 }}>
-        {/* Top eyebrow band */}
-        <div className="absolute top-0 left-0 right-0 px-6 md:px-10 pt-24 md:pt-28">
-          <div className="mx-auto max-w-content">
-            <div className="flex items-baseline gap-6">
-              <span className="eyebrow">{eyebrow}</span>
-              <span className="h-px flex-1 bg-white/10" />
-              <span className="eyebrow text-muted" style={{ fontVariantNumeric: "tabular-nums" }}>
-                {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-              </span>
+        {/* Flex-column layout so the top eyebrow band and the main stage
+            never overlap — eyebrow takes its natural height, main stage
+            fills remaining space with flex-1 and centers its content. */}
+        <div className="h-full flex flex-col">
+          {/* Top eyebrow band */}
+          <div className="shrink-0 px-4 md:px-10 pt-20 md:pt-28">
+            <div className="mx-auto max-w-content">
+              <div className="flex items-baseline gap-4 md:gap-6">
+                <span className="eyebrow">{eyebrow}</span>
+                <span className="h-px flex-1 bg-white/10" />
+                <span className="eyebrow text-muted" style={{ fontVariantNumeric: "tabular-nums" }}>
+                  {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+                </span>
+              </div>
+              {isFirst && (
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+                  className="mt-4 md:mt-8 font-display font-extrabold text-ink"
+                  style={{
+                    fontSize: "clamp(22px, 4.2vw, 56px)",
+                    letterSpacing: "-0.03em",
+                    lineHeight: 1.05,
+                    maxWidth: "18ch",
+                  }}
+                >
+                  {sectionTitle}
+                </motion.h2>
+              )}
             </div>
-            {isFirst && (
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
-                className="mt-8 font-display font-extrabold text-ink"
-                style={{
-                  fontSize: "clamp(28px, 4.2vw, 56px)",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1.05,
-                  maxWidth: "18ch",
-                }}
-              >
-                {sectionTitle}
-              </motion.h2>
-            )}
           </div>
-        </div>
 
-        {/* Main stage: text left, phone right */}
-        <div className="h-full flex items-center">
-          <div className="mx-auto max-w-content w-full px-6 md:px-10 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center pt-28 md:pt-40 pb-16">
+          {/* Main stage: text + phone, centered in remaining space */}
+          <div className="flex-1 flex items-center min-h-0 overflow-hidden">
+            <div className="mx-auto max-w-content w-full px-4 md:px-10 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-16 items-center py-6 md:py-0">
             {/* Text */}
             <motion.div
               key={`text-${section.key}`}
@@ -319,7 +339,7 @@ function SectionLayer({
               <h3
                 className="font-display font-extrabold text-ink"
                 style={{
-                  fontSize: "clamp(44px, 7vw, 110px)",
+                  fontSize: "clamp(52px, 9vw, 110px)",
                   letterSpacing: "-0.045em",
                   lineHeight: 0.96,
                 }}
@@ -327,8 +347,8 @@ function SectionLayer({
                 {section.label}
               </h3>
               <p
-                className="mt-8 text-dim max-w-[42ch]"
-                style={{ fontSize: "clamp(16px, 1.4vw, 20px)", lineHeight: 1.5 }}
+                className="mt-5 md:mt-8 text-dim max-w-[42ch]"
+                style={{ fontSize: "clamp(15px, 1.4vw, 20px)", lineHeight: 1.5 }}
               >
                 {section.desc}
               </p>
@@ -343,7 +363,7 @@ function SectionLayer({
               transition={{ duration: 1, delay: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
               className="md:col-span-6 flex justify-center md:justify-end relative"
             >
-              <div className="relative">
+              <div className="relative scale-90 md:scale-100 origin-top">
                 <div
                   aria-hidden
                   className="absolute -inset-8 -z-10 opacity-70 pointer-events-none"
@@ -365,6 +385,7 @@ function SectionLayer({
               </div>
             </motion.div>
           </div>
+        </div>
         </div>
 
         {/* Bottom scroll hint — first section only */}

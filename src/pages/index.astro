@@ -15,17 +15,13 @@ const locale = "lv" as const;
   <Nav locale={locale} />
 
   <main>
-    <!--
-      Sticky-stacking intro: Hero and LifestylePanel share the same takeover
-      pattern as the reveal sections. Parent is 200vh; each child is
-      `sticky top-0 h-screen` with ascending z-index, so LifestylePanel
-      rises from below and covers Hero as you scroll past the first viewport.
-    -->
-    <div class="relative" style="height: 200vh;">
-      <div class="sticky top-0 h-screen w-full overflow-hidden" style="z-index: 10;">
+    <!-- Sticky-stacking intro on all viewports. Mobile uses smaller
+         PhoneFrame instances to fit 100vh; see Hero.tsx + ProductReveal.tsx. -->
+    <div class="relative h-[200vh]">
+      <div class="w-full sticky top-0 h-screen overflow-hidden" style="z-index: 10;">
         <Hero locale={locale} client:load />
       </div>
-      <div class="sticky top-0 h-screen w-full overflow-hidden" style="z-index: 20;">
+      <div class="w-full sticky top-0 h-screen overflow-hidden" style="z-index: 20;">
         <LifestylePanel locale={locale} client:visible />
       </div>
     </div>

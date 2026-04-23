@@ -22,10 +22,10 @@ export default function Hero({ locale }: { locale: Locale }) {
   };
 
   return (
-    // `h-full w-full` + bg so the section fills the 100vh sticky wrapper and
-    // the backdrop image covers the whole viewport.
+    // On desktop `md:h-full` fills the 100vh sticky wrapper; on mobile the
+    // height is content-driven so the phone + badges aren't clipped.
     <section
-      className="relative pt-32 md:pt-40 pb-16 px-6 md:px-10 overflow-hidden w-full h-full"
+      className="relative pt-24 md:pt-40 pb-12 md:pb-16 px-4 md:px-10 overflow-hidden w-full md:h-full"
       style={{ background: "#0D1128" }}
     >
       {/* ── Photographic backdrop ─────────────────────────────────
@@ -95,12 +95,14 @@ export default function Hero({ locale }: { locale: Locale }) {
         }}
       />
 
-      {/* Massive decorative wordmark bleeding off-screen — signature scale trick */}
+      {/* Massive decorative wordmark — smaller scale on mobile so it doesn't
+          dominate the already-tight viewport, still large enough to bleed
+          off-screen on desktop for the signature scale trick. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-10 right-[-8%] md:right-[-4%] font-display font-black select-none"
+        className="pointer-events-none absolute -top-6 md:-top-10 right-[-8%] md:right-[-4%] font-display font-black select-none"
         style={{
-          fontSize: "clamp(300px, 40vw, 620px)",
+          fontSize: "clamp(180px, 40vw, 620px)",
           lineHeight: 0.8,
           color: "rgba(255,255,255,0.025)",
           letterSpacing: "-0.06em",
@@ -182,7 +184,7 @@ export default function Hero({ locale }: { locale: Locale }) {
           transition={{ duration: 1.1, delay: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
           className="md:col-span-5 relative flex justify-center md:justify-end"
         >
-          <div className="relative">
+          <div className="relative scale-90 md:scale-100 origin-top">
             {/* Two-layer halo — pre-blurred, no CSS filter. Outer indigo lift,
                 inner cyan highlight where the phone's screen catches light. */}
             <div

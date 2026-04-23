@@ -24,7 +24,7 @@ const principles = [
 ---
 <section
   id="privacy"
-  class="relative py-32 md:py-52 px-6 md:px-10 border-t border-white/5"
+  class="relative py-20 md:py-52 px-4 md:px-10 border-t border-white/5 overflow-hidden"
 >
   <div class="mx-auto max-w-content">
     <!-- ─── Eyebrow band ─────────────────────────────── -->
@@ -61,12 +61,12 @@ const principles = [
     >
       {principles.map((p, i) => (
         <li
-          class="flex items-baseline gap-5 md:gap-8 py-6 md:py-7"
+          class="grid grid-cols-[2rem_1fr] md:grid-cols-[auto_1fr_auto] gap-x-4 md:gap-x-8 gap-y-1 md:gap-y-0 items-baseline py-5 md:py-7"
           style="border-bottom: 1px solid rgba(255, 255, 255, 0.07);"
         >
           <!-- Row number — mono, dim, tabular -->
           <span
-            class="shrink-0 eyebrow text-muted w-8"
+            class="eyebrow text-muted"
             style="font-variant-numeric: tabular-nums;"
           >
             {String(i + 1).padStart(2, "0")}
@@ -74,7 +74,7 @@ const principles = [
 
           <!-- Principle — title in body font, medium weight -->
           <span
-            class="flex-1 text-ink"
+            class="text-ink"
             style="
               font-family: 'DM Sans', system-ui, sans-serif;
               font-weight: 500;
@@ -86,9 +86,10 @@ const principles = [
             {p.title}
           </span>
 
-          <!-- Technical detail — mono, accent cyan, right-aligned -->
+          <!-- Technical detail — mobile: wraps below title on its own row
+               starting at col 2. Desktop: right-aligned in col 3. -->
           <span
-            class="shrink-0 text-right"
+            class="col-start-2 md:col-auto md:text-right"
             style="
               font-family: 'JetBrains Mono', ui-monospace, monospace;
               font-size: 11px;

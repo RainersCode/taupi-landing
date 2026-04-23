@@ -22,11 +22,11 @@ export default function LifestylePanel({ locale }: { locale: Locale }) {
   const yDrift = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
 
   return (
-    // Transparent background on request — the area beneath the 70vh image
-    // lets the pinned Hero below (z-10) show through during the sticky-stack.
+    // Fills the 100vh sticky wrapper on all viewports so the image + quote
+    // take the full screen on mobile too.
     <section
       ref={ref}
-      className="relative overflow-hidden border-t border-white/5 h-full w-full"
+      className="relative overflow-hidden border-t border-white/5 w-full h-full"
     >
       {/* Image + overlay — fills the entire 100vh section */}
       <div className="relative w-full h-full overflow-hidden">
