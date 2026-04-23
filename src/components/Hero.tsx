@@ -22,10 +22,12 @@ export default function Hero({ locale }: { locale: Locale }) {
   };
 
   return (
-    // On desktop `md:h-full` fills the 100vh sticky wrapper; on mobile the
-    // height is content-driven so the phone + badges aren't clipped.
+    // Always fills the 100vh sticky wrapper. `flex items-center` so the
+    // text content is vertically centered — on mobile the phone is hidden
+    // and the text-only Hero needs proper vertical balance; on desktop the
+    // grid gets centered inside the section normally.
     <section
-      className="relative pt-24 md:pt-40 pb-12 md:pb-16 px-4 md:px-10 overflow-hidden w-full md:h-full"
+      className="relative pt-24 md:pt-40 pb-12 md:pb-16 px-4 md:px-10 overflow-hidden w-full h-full flex items-center"
       style={{ background: "#0D1128" }}
     >
       {/* ── Photographic backdrop ─────────────────────────────────

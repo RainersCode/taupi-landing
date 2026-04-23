@@ -63,12 +63,26 @@ export default function LifestylePanel({ locale }: { locale: Locale }) {
                 className="font-display font-bold text-ink"
                 style={{
                   fontSize: "clamp(22px, 2.8vw, 44px)",
-                  lineHeight: 1.18,
+                  lineHeight: 1.35,
                   letterSpacing: "-0.02em",
                 }}
               >
                 <span className="text-accent">&ldquo;</span>
-                {t["lifestyle.quote"]}
+                {/* Highlighter effect in the site's page background color
+                    (#0D1128) — text reads on a dark navy "sticker" over the
+                    photo, matching the rest of the site. box-decoration-break
+                    clones per line for a marker-like pass. */}
+                <span
+                  style={{
+                    background: "rgba(13, 17, 40, 0.78)",
+                    boxDecorationBreak: "clone",
+                    WebkitBoxDecorationBreak: "clone",
+                    padding: "0.04em 0.22em",
+                    borderRadius: "3px",
+                  }}
+                >
+                  {t["lifestyle.quote"]}
+                </span>
                 <span className="text-accent">&rdquo;</span>
               </blockquote>
               <p className="mt-6 eyebrow text-dim">{t["lifestyle.attribution"]}</p>

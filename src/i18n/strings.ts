@@ -18,7 +18,7 @@ export const strings: Record<Locale, Dict> = {
     "hero.title": "Zini, kur",
     "hero.title.italic": "aiziet",
     "hero.title.rest": "tava nauda.",
-    "hero.sub": "Taupi ir dizainēta kā klusa, ikdienas pavadone. Bez uzpūstiem grafikiem un tukšiem ieskatiem — tikai nauda un prāta miers.",
+    "hero.sub": "Taupi ir dizainēts kā kluss, ikdienas pavadonis. Bez uzpūstiem grafikiem un tukšiem ieskatiem — tikai nauda un prāta miers.",
     "hero.cta.primary": "Lejupielādēt Taupi",
     "hero.cta.secondary": "Kā tas strādā",
 
