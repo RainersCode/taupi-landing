@@ -1,160 +1,150 @@
 ---
 layout: "~/layouts/Legal.astro"
-title: "Privacy Policy"
-updated: "2026-04-21"
-version: "2.0"
+title: "Privātuma politika"
+updated: "2026-05-08"
+version: "2.1"
 locale: "lv"
 ---
 
-> This document is a working template. Before you submit to the App Store / Google Play, have a lawyer review it — especially the sections on data controller identity, retention, and international transfers.
+## 1. Kas mēs esam
 
-## 1. Who we are
+Taupi ("mēs", "mūs", "lietotne") ir personīgo budžetu un izdevumu sekošanas lietotne, kuru pārvalda taupi.eu.
 
-Taupi ("we", "us", "the app") is a personal budgeting and expense-tracking app operated by:
+- **Kontakts:** info@taupi.eu
 
-- **Name:** Rainers Lovkins
-- **Legal form:** Individual developer (natural person)
-- **Address:** "Ausmas", Jērcēnu pagasts, Valmieras novads, Latvija
-- **Contact:** rainerslovkins@gmail.com
+Mēs esam **datu pārzinis** attiecībā uz personas datiem, ko apstrādājam par tevi. Ja vēlies izmantot kādu no zemāk aprakstītajām tiesībām vai tev ir jautājumi par šo politiku, raksti uz iepriekš norādīto e-pastu.
 
-We are the **data controller** for the personal data we process about you. If you want to exercise any of the rights described below, or you have questions about this policy, email the address above.
+## 2. Kādus datus mēs vācam
 
-## 2. What data we collect
+Mēs apzināti turam datu vākšanu minimālu.
 
-We keep the collection deliberately small.
+### Dati, ko sniedz, izveidojot kontu
+- **E-pasta adrese** — pierakstam un paroles atjaunošanai.
+- **Parole** — glabājas tikai kā sālīts hash mūsu autentifikācijas pakalpojumā (Supabase Auth). Mēs nekad neredzam tavu paroli atvērtā formā.
+- **OAuth identifikators** (pēc izvēles) — ja pierakstīsies ar Google, Apple vai Facebook, no šī pakalpojuma saņemam stabilu lietotāja ID un tavu e-pastu. Mēs **nepieprasām** piekļuvi taviem kontaktiem, kalendāram, ierakstiem vai citiem datiem no šiem pakalpojumiem.
 
-### Data you provide when you create an account
-- **Email address** — used for sign-in and password reset.
-- **Password** — stored only as a salted hash by our authentication provider (Supabase Auth). We never see your plaintext password.
-- **OAuth identifier** (optional) — if you sign in with Google, Apple, or Facebook, we receive a stable user ID and your email from that provider. We do **not** request access to your contacts, calendar, posts, or any other data from those providers.
+### Dati, ko ievadi, lietojot lietotni
+- Mēneša ienākumi, fiksētās izmaksas, izdevumi, ieguldījumi, ilgtermiņa mērķi un piezīmes, ko pievieno ierakstiem.
+- Profila signāli AI ieskatu pielāgošanai: vecuma diapazons, mājsaimniecības lielums, pilsēta un tavs galvenais finanšu mērķis. Šie ir neobligāti.
 
-### Data you enter while using the app
-- Monthly income, fixed costs, expenses, investments, long-term goals, and notes you attach to entries.
-- Profile signals used to tailor AI insights: age range, household size, city, and your primary financial goal. These are optional.
+### Dati no čeku skenēšanas (tikai ja izmanto)
+- **Čeku attēli**, ko nofotografē vai augšupielādē OCR atpazīšanai.
+- **Atpazītās preces, summas un veikala nosaukums**, kas izvilkti no šiem čekiem.
+- Attēli tiek pārsūtīti uz mūsu čeku apstrādes pakalpojumu un Anthropic Claude API teksta atpazīšanai; **mēs nesaglabājam attēlu pēc apstrādes pabeigšanas**.
 
-### Data from receipt scanning (only if you use it)
-- **Receipt images** you photograph or upload for OCR.
-- **Extracted line items, totals, and store name** parsed from those receipts.
-- Images are transmitted to our receipt-parsing service and to Anthropic's Claude API for text extraction; **we do not retain the image after parsing is complete**.
+### Tehniskie dati
+- **Ierīces / platformas identifikatori**, ko sniedz operētājsistēma (iOS / Android versija, ierīces modelis) — tikai avāriju izmeklēšanai un push paziņojumu maršrutēšanai, nekad reklāmai.
+- **IP adrese** — mūsu API aizmugures sistēmā ļaunprātīgas izmantošanas novēršanai un pieprasījumu ierobežošanai; saglabājas žurnālos līdz 14 dienām.
+- **Push paziņojumu žetons** (ja iespējosi paziņojumus) — maršrutēts caur Expo push pakalpojumu.
 
-### Technical data
-- **Device/platform identifiers** supplied by the OS (iOS / Android version, device model) — used only for crash triage and push-notification routing, never for advertising.
-- **IP address** — used by our API backend for abuse prevention and rate limiting; retained in logs for up to 14 days.
-- **Push notification token** (if you enable notifications) — routed through Expo's push service.
+### Anonīmi kopienas cenu dati (tikai ja piekrīti)
+Ja iestatījumos iespējosi "Dalīties ar cenām anonīmi", skenēto čeku preces — **veikals, preces nosaukums, cena, datums** — tiek pievienotas koplietotam katalogam, lai citi lietotāji varētu redzēt cenas dažādos veikalos. **Netiek pievienots lietotāja ID, e-pasts, ierīces ID vai atrašanās vieta.** Tu jebkurā brīdī vari šo izslēgt; jau ieguldītās rindas paliek katalogā, jo vairs nav piesaistāmas tev.
 
-### Anonymous community price data (only if you opt in)
-If you enable "Share prices anonymously" in Settings, scanned receipt line items — **store, item name, price, date** — are added to a shared catalogue so other users can see prices at different stores. **No user ID, email, device ID, or location is attached.** You can turn this off at any time; already-contributed rows stay in the catalogue because they are no longer linkable to you.
+### Ko mēs NEvācam
+- Bankas konta datus vai darījumus. Mēs nekad nepieslēdzamies tavai bankai.
+- Atrašanās vietas (GPS) datus.
+- Kontaktus, kalendāru, SMS vai foto bibliotēku ārpus konkrētajiem attēliem, ko nodod čeku skenerim.
+- Reklāmu identifikatorus (IDFA / GAID).
+- Analītiku par to, kā lieto atsevišķus ekrānus.
 
-### What we do NOT collect
-- Bank account credentials or transactions. We never connect to your bank.
-- Location (GPS) data.
-- Contacts, calendar, SMS, or photo library beyond the specific images you hand to the receipt scanner.
-- Advertising IDs (IDFA / GAID).
-- Analytics about how you use individual screens.
+## 3. Kāpēc apstrādājam tavus datus (mērķi un juridiskais pamats)
 
-## 3. Why we process your data (purposes and legal basis)
-
-| Purpose | Data used | Legal basis (GDPR Art. 6) |
+| Mērķis | Izmantotie dati | Juridiskais pamats (VDAR 6. pants) |
 |---|---|---|
-| Create and secure your account | email, password hash, OAuth ID | Contract (Art. 6(1)(b)) |
-| Show you your own financial entries | entries you created | Contract (Art. 6(1)(b)) |
-| Generate AI insights and summaries | entries + profile signals | Legitimate interest (Art. 6(1)(f)) — providing the core product you signed up for |
-| Parse receipt images | image sent to AI provider | Contract (Art. 6(1)(b)) — you initiated the scan |
-| Send you push notifications (daily reminder, weekly summary) | push token + entry data | Consent (Art. 6(1)(a)) — you enable this in Settings |
-| Contribute to the anonymous price catalogue | item / store / price (no user ID) | Consent (Art. 6(1)(a)) |
-| Abuse prevention and security | IP + request metadata | Legitimate interest (Art. 6(1)(f)) |
-| Respond to legal requests | whatever is necessary | Legal obligation (Art. 6(1)(c)) |
+| Konta izveide un aizsardzība | e-pasts, paroles hash, OAuth ID | Līgums (6.(1)(b)) |
+| Tavu finanšu ierakstu rādīšana | tavi ieraksti | Līgums (6.(1)(b)) |
+| AI ieskatu un kopsavilkumu ģenerēšana | ieraksti + profila signāli | Leģitīmas intereses (6.(1)(f)) — pamatpakalpojuma sniegšana |
+| Čeku attēlu apstrāde | attēls, kas nosūtīts AI pakalpojumam | Līgums (6.(1)(b)) — tu uzsāki skenēšanu |
+| Push paziņojumu sūtīšana (dienas atgādinājums, nedēļas kopsavilkums) | push žetons + ierakstu dati | Piekrišana (6.(1)(a)) — iespējo iestatījumos |
+| Iemaksa anonīmajā cenu katalogā | prece / veikals / cena (bez lietotāja ID) | Piekrišana (6.(1)(a)) |
+| Ļaunprātīgas izmantošanas novēršana un drošība | IP + pieprasījuma metadati | Leģitīmas intereses (6.(1)(f)) |
+| Atbildēšana uz juridiskiem pieprasījumiem | kas vajadzīgs | Juridisks pienākums (6.(1)(c)) |
 
-You can withdraw consent at any time (for push / price-sharing) in Settings. Withdrawal does not affect processing that already happened.
+Tu vari atsaukt piekrišanu jebkurā brīdī (push / cenu dalīšanai) iestatījumos. Atsaukšana neietekmē apstrādi, kas jau notikusi.
 
-## 4. Who processes your data on our behalf (subprocessors)
+## 4. Kas apstrādā tavus datus mūsu vārdā (apakšapstrādātāji)
 
-We use the following service providers ("processors"). They process data only on our instructions.
+Mēs izmantojam šādus pakalpojumu sniedzējus ("apstrādātājus"). Viņi apstrādā datus tikai pēc mūsu norādījumiem.
 
-| Provider | What they do | Location | Safeguard |
+| Pakalpojuma sniedzējs | Ko dara | Atrašanās vieta | Aizsardzība |
 |---|---|---|---|
-| **Supabase** (Supabase, Inc.) | Database + authentication | EU (Frankfurt) | Data Processing Agreement; EU-hosted |
-| **Anthropic** (Anthropic PBC) | Claude LLM for receipt OCR and insights | United States | Standard Contractual Clauses; API data not used to train models per Anthropic's commercial policy |
-| **Vercel** (Vercel Inc.) | Hosts our API endpoints (receipt OCR proxy, insights proxy) | United States / EU | Standard Contractual Clauses |
-| **Apple Inc.** | "Sign in with Apple" identity service | Ireland / United States | Apple's own controller/processor terms |
-| **Google LLC** | "Sign in with Google" identity service | Ireland / United States | Google's own controller/processor terms |
-| **Meta Platforms Ireland Ltd.** | "Sign in with Facebook" identity service | Ireland / United States | Meta's own terms |
-| **Expo, Inc.** | Push notification token routing (to APNs / FCM) | United States | Standard Contractual Clauses |
+| **Supabase** (Supabase, Inc.) | Datubāze + autentifikācija | ES (Frankfurte) | Datu apstrādes līgums; izvietots ES |
+| **Anthropic** (Anthropic PBC) | Claude LLM čeku OCR un ieskatiem | ASV | Standarta līguma noteikumi; API dati netiek izmantoti modeļu apmācībai saskaņā ar Anthropic komerciālo politiku |
+| **Vercel** (Vercel Inc.) | Mitina mūsu API galapunktus (čeku OCR proxy, ieskatu proxy) | ASV / ES | Standarta līguma noteikumi |
+| **Apple Inc.** | "Sign in with Apple" identitātes pakalpojums | Īrija / ASV | Apple paša pārziņa/apstrādātāja noteikumi |
+| **Google LLC** | "Sign in with Google" identitātes pakalpojums | Īrija / ASV | Google paša pārziņa/apstrādātāja noteikumi |
+| **Meta Platforms Ireland Ltd.** | "Sign in with Facebook" identitātes pakalpojums | Īrija / ASV | Meta noteikumi |
+| **Expo, Inc.** | Push paziņojumu žetonu maršrutēšana (uz APNs / FCM) | ASV | Standarta līguma noteikumi |
 
-If we add or change a subprocessor that meaningfully affects your data, we will update this page and bump the version number at the top.
+Ja pievienosim vai mainīsim apakšapstrādātāju, kas būtiski ietekmē tavus datus, atjaunināsim šo lapu un mainīsim versijas numuru augšā.
 
-## 5. International transfers
+## 5. Starptautiskie datu pārsūtījumi
 
-Your primary data (account, entries, receipts-in-flight) is stored in the **European Union** (Supabase Frankfurt). When we send data outside the EU — for example, a receipt image to Anthropic for OCR, or a push token through Expo — we rely on the **EU Standard Contractual Clauses** approved by the European Commission to protect your data.
+Tavi galvenie dati (konts, ieraksti, čeki apstrādes laikā) glabājas **Eiropas Savienībā** (Supabase Frankfurtē). Kad sūtām datus ārpus ES — piemēram, čeka attēlu uz Anthropic OCR vai push žetonu caur Expo — paļaujamies uz **ES Standarta līguma noteikumiem**, ko apstiprinājusi Eiropas Komisija, lai aizsargātu tavus datus.
 
-## 6. How long we keep your data
+## 6. Cik ilgi glabājam tavus datus
 
-| Data | Retention |
+| Dati | Glabāšanas termiņš |
 |---|---|
-| Account + financial entries | Kept while your account exists. Deleted within **30 days** of account deletion. |
-| Supabase database backups | Rotated out within **90 days** of deletion. |
-| Receipt images sent to AI | **Not retained** — discarded immediately after parsing. |
-| API / abuse-prevention logs | **14 days** rolling. |
-| Anonymous price-catalogue rows | Retained indefinitely in de-identified form (not linkable to you). |
-| Customer-support emails | **24 months** from last correspondence. |
+| Konts + finanšu ieraksti | Glabājas, kamēr tavs konts pastāv. Dzēsti **30 dienu** laikā pēc konta dzēšanas. |
+| Supabase datubāzes dublējumkopijas | Rotētas ārā **90 dienu** laikā pēc dzēšanas. |
+| Čeku attēli, kas nosūtīti AI | **Netiek saglabāti** — atmesti uzreiz pēc apstrādes. |
+| API / ļaunprātīgas izmantošanas žurnāli | **14 dienas** rotējoši. |
+| Anonīmā cenu kataloga rindas | Glabājas neierobežoti depersonalizētā formā (nav piesaistāmas tev). |
+| Klientu atbalsta e-pasti | **24 mēneši** no pēdējās sarakstes. |
 
-## 7. How we protect your data
+## 7. Kā aizsargājam tavus datus
 
-- Traffic is encrypted in transit (HTTPS / TLS 1.2+).
-- Data at rest is encrypted by Supabase.
-- Row-Level Security (RLS) in the database means only your authenticated account can read or write your rows, enforced at the query layer.
-- Our API endpoints are rate-limited and require an app secret; they cannot be called anonymously from a browser.
+- Datu plūsma šifrēta pārsūtē (HTTPS / TLS 1.2+).
+- Dati miera stāvoklī šifrēti ar Supabase.
+- Rindu līmeņa drošība (RLS) datubāzē nozīmē, ka tikai tavs autentificētais konts var lasīt vai rakstīt tavās rindās — to nodrošina vaicājuma slānis.
+- Mūsu API galapunkti ir ar pieprasījumu ierobežojumiem un prasa lietotnes noslēpumu; tos nevar izsaukt anonīmi no pārlūka.
 
-No system is 100 % secure. If we ever experience a data breach affecting your personal data, we will notify you and the supervisory authority within 72 hours as required by GDPR Art. 33–34.
+Neviena sistēma nav 100 % droša. Ja kādreiz piedzīvosim datu noplūdi, kas skar tavus personas datus, paziņosim tev un uzraudzības iestādei 72 stundu laikā, kā prasa VDAR 33.–34. pants.
 
-## 8. Your rights
+## 8. Tavas tiesības
 
-Under the GDPR you have the right to:
+Saskaņā ar VDAR tev ir tiesības:
 
-- **Access** — get a copy of the data we hold about you (Art. 15).
-- **Rectification** — correct inaccurate data (Art. 16).
-- **Erasure** — delete your account and all associated data (Art. 17). Tap Settings → Delete Account, or email us.
-- **Restriction** — ask us to pause processing (Art. 18).
-- **Portability** — get your data in a machine-readable format (Art. 20). Tap Settings → Export CSV, or email us for a JSON export.
-- **Object** — to processing based on legitimate interest (Art. 21).
-- **Withdraw consent** — for push notifications or price sharing, in Settings.
-- **Not be subject to a decision based solely on automated processing** (Art. 22). Our AI features are informational; they never deny you a financial product or service.
+- **Piekļūt** — saņemt kopiju datiem, ko par tevi glabājam (15. pants).
+- **Labot** — labot neprecīzus datus (16. pants).
+- **Dzēst** — dzēst kontu un visus saistītos datus (17. pants). Pieskaries Iestatījumi → Dzēst kontu vai raksti mums.
+- **Ierobežot** — lūgt mums apturēt apstrādi (18. pants).
+- **Pārnest** — saņemt savus datus mašīnlasāmā formātā (20. pants). Pieskaries Iestatījumi → Eksportēt CSV vai raksti mums JSON eksportam.
+- **Iebilst** — pret apstrādi, kas balstīta uz leģitīmām interesēm (21. pants).
+- **Atsaukt piekrišanu** — push paziņojumiem vai cenu dalīšanai iestatījumos.
+- **Netikt pakļautam lēmumam, kas balstīts vienīgi uz automatizētu apstrādi** (22. pants). Mūsu AI funkcijas ir informatīvas; tās nekad neatņem tev finanšu produktu vai pakalpojumu.
 
-To exercise any right, email **rainerslovkins@gmail.com**. We respond within 30 days.
+Lai izmantotu kādu tiesību, raksti uz **info@taupi.eu**. Atbildam 30 dienu laikā.
 
-If you think we are mishandling your data, you can lodge a complaint with the **Latvian Data State Inspectorate** (*Datu valsts inspekcija*) — Elijas iela 17, Rīga, LV-1050, [dvi.gov.lv](https://www.dvi.gov.lv) — or with your local EU data protection authority.
+Ja uzskati, ka mēs nepareizi rīkojamies ar taviem datiem, vari iesniegt sūdzību **Datu valsts inspekcijai** — Elijas iela 17, Rīga, LV-1050, [dvi.gov.lv](https://www.dvi.gov.lv) — vai vietējā ES datu aizsardzības iestādē.
 
-## 9. AI features — what leaves your device
+## 9. AI funkcijas — kas atstāj tavu ierīci
 
-When you use **AI insights** or **receipt scanning**:
+Kad lieto **AI ieskatus** vai **čeku skenēšanu**:
 
-- The relevant data (your entries summary, or the receipt image) is sent from your device to our API backend (hosted on Vercel), which forwards it to **Anthropic's Claude API** over TLS.
-- Anthropic processes the request and returns a result. Under Anthropic's commercial API terms, **your data is not used to train their models** and is retained by them only for a short window for operational and abuse-prevention purposes (see Anthropic's own policy at [anthropic.com/privacy](https://www.anthropic.com/privacy)).
-- The AI output is informational only — it is **not financial, tax, investment, or legal advice**. See the Terms of Service for more.
-- We recommend you do not put anything you would not want a third-party service to see (e.g. ID numbers, medical info) into free-text fields in the app.
+- Attiecīgie dati (tavu ierakstu kopsavilkums vai čeka attēls) tiek nosūtīti no tavas ierīces uz mūsu API aizmugures sistēmu (mitināta Vercel), kas tos pārsūta uz **Anthropic Claude API** caur TLS.
+- Anthropic apstrādā pieprasījumu un atgriež rezultātu. Saskaņā ar Anthropic komerciālajiem API noteikumiem **tavi dati netiek izmantoti modeļu apmācībai** un tos saglabā tikai īsu laiku darbības un ļaunprātīgas izmantošanas novēršanas vajadzībām (skat. Anthropic politiku [anthropic.com/privacy](https://www.anthropic.com/privacy)).
+- AI rezultāts ir tikai informatīvs — tā **nav finanšu, nodokļu, ieguldījumu vai juridiska konsultācija**. Skat. Lietošanas noteikumus.
+- Iesakām nelikt brīvā teksta laukos to, ko nevēlies, lai redzētu trešās puses pakalpojums (piem., personas kodus, medicīnisku informāciju).
 
-## 10. Children
+## 10. Bērni
 
-Taupi is not directed at children under 16 (EU) or 13 (United States). We do not knowingly collect data from children. If you believe a child has created an account, email us and we will delete it.
+Taupi nav paredzēta bērniem, kas jaunāki par 16 gadiem (ES) vai 13 gadiem (ASV). Mēs apzināti nevācam datus no bērniem. Ja domā, ka bērns ir izveidojis kontu, raksti mums, un mēs to dzēsīsim.
 
-## 11. Cookies, tracking, analytics
+## 11. Sīkdatnes, izsekošana, analītika
 
-We do **not** run any analytics, ad network, tracking pixel, or cross-app identifier. The app does not use cookies. iOS App Tracking Transparency is not applicable because we do not track you across other companies' apps or sites.
+Mēs **nelietojam** nekādu analītiku, reklāmas tīklus, izsekošanas pikseļus vai starpaplikāciju identifikatorus. Lietotne neizmanto sīkdatnes. iOS App Tracking Transparency neattiecas, jo mēs neizsekojam tevi citu uzņēmumu lietotnēs vai vietnēs.
 
-## 12. Changes to this policy
+## 12. Šīs politikas izmaiņas
 
-When we change this policy we will:
+Kad mainīsim politiku, mēs:
 
-1. Bump the version and "Last updated" date at the top.
-2. Show an in-app notice the next time you open the app if the change is material.
+1. Mainīsim versiju un "Atjaunināts" datumu augšā.
+2. Parādīsim paziņojumu lietotnē nākamajā atvēršanas reizē, ja izmaiņas ir būtiskas.
 
-Superseded versions are kept in Git history in our public repository for transparency.
+Aizstātās versijas glabājas Git vēsturē mūsu publiskajā repozitorijā caurspīdīguma labad.
 
-## 13. Contact
+## 13. Kontakti
 
-- Email: **rainerslovkins@gmail.com**
-- Postal: "Ausmas", Jērcēnu pagasts, Valmieras novads, Latvija
-
----
-
-*This policy is written in plain English. In case of conflict with any translated version, the English text prevails.*
+- E-pasts: **info@taupi.eu**

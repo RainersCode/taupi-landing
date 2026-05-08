@@ -5,6 +5,8 @@ import { getDict } from "~/i18n/strings";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = getDict(locale);
+const privacyHref = locale === "en" ? "/en/privacy-policy/" : "/privacy-policy/";
+const termsHref = locale === "en" ? "/en/terms-of-service/" : "/terms-of-service/";
 ---
 <footer class="relative py-14 md:py-20 px-4 md:px-10 border-t border-white/5">
   <div class="mx-auto max-w-content flex flex-col md:flex-row md:items-end md:justify-between gap-10">
@@ -17,17 +19,17 @@ const t = getDict(locale);
 
     <ul class="flex flex-wrap gap-x-8 gap-y-3">
       <li>
-        <a href="/privacy-policy/" class="eyebrow hover:text-ink transition-colors">
+        <a href={privacyHref} class="eyebrow hover:text-ink transition-colors">
           {t["footer.legal.privacy"]}
         </a>
       </li>
       <li>
-        <a href="/terms-of-service/" class="eyebrow hover:text-ink transition-colors">
+        <a href={termsHref} class="eyebrow hover:text-ink transition-colors">
           {t["footer.legal.terms"]}
         </a>
       </li>
       <li>
-        <a href="mailto:rainerslovkins@gmail.com" class="eyebrow hover:text-ink transition-colors">
+        <a href="mailto:info@taupi.eu" class="eyebrow hover:text-ink transition-colors">
           {t["footer.legal.support"]}
         </a>
       </li>
