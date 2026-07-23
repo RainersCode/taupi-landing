@@ -35,7 +35,7 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
         {
           position: "left-middle",
           rotation: 3,
-          eyebrow: locale === "lv" ? "Maxima · 21 preces" : "Maxima · 21 items",
+          eyebrow: locale === "lv" ? "Maxima · 21 prece" : "Maxima · 21 items",
           title: "−€25.02",
         },
       ],
