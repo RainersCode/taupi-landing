@@ -11,7 +11,7 @@ mkdirSync(OUT, { recursive: true });
 // headroom = 620px) with sharp's Lanczos. Serving the raw 1206px file makes
 // Chrome downscale 4× on a composited GPU layer with a cheap filter —
 // that's what made the phone look blurry.
-const HERO_SRC = "public/images/screens2/WhatsApp Image 2026-07-23 at 16.07.01.jpeg";
+const HERO_SRC = "assets-src/sakums-2026-07-23.jpeg";
 const screens = [
   [HERO_SRC, "sakums"],
   [`${SRC}/IMG_0630.PNG`, "darijumi"],
