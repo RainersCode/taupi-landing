@@ -26,19 +26,15 @@ for (const [file, name] of screens) {
     .toFile(`${OUT}/${name}.webp`);
 }
 
-// Feature crops (regions in original 1206×2622 coordinates)
-const crops = [
-  // Financial-health ring card from IMG_0632
-  ["IMG_0632.PNG", "crop-veseliba", { left: 60, top: 700, width: 1086, height: 1150 }],
-  // Receipt rows (Maxima 21 items…) from IMG_0630
-  ["IMG_0630.PNG", "crop-ceks", { left: 0, top: 880, width: 1206, height: 800 }],
-  // Month total + category bar + search + first rows from IMG_0630 — square-ish
-  ["IMG_0630.PNG", "crop-kategorijas", { left: 0, top: 250, width: 1206, height: 1100 }],
-];
-for (const [file, name, region] of crops) {
-  await sharp(`${SRC}/${file}`)
-    .extract(region)
-    .webp({ quality: 90 })
-    .toFile(`${OUT}/${name}.webp`);
+// Feature-tile backgrounds (nano-banana generated, 1024² PNG → webp)
+const TILES_SRC = "assets-src/tiles";
+const TILES_OUT = "public/images/tiles";
+mkdirSync(TILES_OUT, { recursive: true });
+const tiles = ["budzets", "skenesana", "ieskati", "merki", "invest", "izaicinajumi"];
+for (const name of tiles) {
+  await sharp(`${TILES_SRC}/tile-${name}.png`)
+    .resize({ width: 800 })
+    .webp({ quality: 85 })
+    .toFile(`${TILES_OUT}/${name}.webp`);
 }
 console.log("done");
