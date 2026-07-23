@@ -26,14 +26,15 @@ for (const [file, name] of screens) {
     .toFile(`${OUT}/${name}.webp`);
 }
 
-// Feature-tile backgrounds (nano-banana generated, 1024² PNG → webp)
+// Feature-curtain lifestyle photos (nano-banana pro, 1536×2752 PNG → webp).
+// Expanded panel shows ~900 CSS px wide — 1200px webp keeps it crisp on 1.5x.
 const TILES_SRC = "assets-src/tiles";
 const TILES_OUT = "public/images/tiles";
 mkdirSync(TILES_OUT, { recursive: true });
 const tiles = ["budzets", "skenesana", "ieskati", "merki", "invest", "izaicinajumi"];
 for (const name of tiles) {
-  await sharp(`${TILES_SRC}/tile-${name}.png`)
-    .resize({ width: 800 })
+  await sharp(`${TILES_SRC}/life-${name}.png`)
+    .resize({ width: 1200 })
     .webp({ quality: 85 })
     .toFile(`${TILES_OUT}/${name}.webp`);
 }
