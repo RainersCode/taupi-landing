@@ -84,8 +84,9 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
               style={{
                 writingMode: "vertical-rl",
                 transform: "rotate(180deg) translateX(50%)",
-                fontSize: 17,
-                letterSpacing: "-0.01em",
+                fontSize: "clamp(20px, 1.8vw, 26px)",
+                letterSpacing: "0.01em",
+                textShadow: "0 2px 16px rgba(0,0,0,0.55)",
               }}
             >
               {item.title}
