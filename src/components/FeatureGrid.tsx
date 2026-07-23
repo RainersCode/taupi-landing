@@ -100,7 +100,9 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
 
             {/* Expanded content — fixed width so text doesn't reflow while
                 the panel is animating open */}
-            <div className="absolute bottom-0 left-0 p-8 w-[480px] max-w-full opacity-0 translate-y-3 transition-all duration-500 delay-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none">
+            {/* Quick fade-out (no delay) when leaving; delayed fade-in on hover
+                so the text arrives after the panel has opened */}
+            <div className="absolute bottom-0 left-0 p-8 w-[480px] max-w-full opacity-0 translate-y-3 transition-all duration-200 delay-0 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:duration-500 group-hover:delay-200 pointer-events-none">
               <h3
                 className="font-display font-bold text-ink"
                 style={{ fontSize: "clamp(26px, 2.2vw, 34px)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
