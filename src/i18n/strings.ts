@@ -14,13 +14,20 @@ export const strings: Record<Locale, Dict> = {
     "nav.privacy": "Privātums",
     "nav.download": "Lejupielādēt",
 
-    "hero.eyebrow": "Personīgo izdevumu sekošana",
+    "hero.eyebrow": "Drīzumā App Store un Google Play",
     "hero.title": "Seko savām",
     "hero.title.italic": "finansēm",
     "hero.title.rest": "ikdienā.",
     "hero.sub": "Taupi ir dizainēts kā kluss, ikdienas pavadonis. Bez uzpūstiem grafikiem un tukšiem ieskatiem — tikai nauda un prāta miers.",
     "hero.cta.primary": "Lejupielādēt Taupi",
     "hero.cta.secondary": "Kā tas strādā",
+
+    "waitlist.placeholder": "Tavs e-pasts",
+    "waitlist.cta": "Pieteikties",
+    "waitlist.done": "Esi sarakstā! Dosim ziņu, tiklīdz Taupi būs pieejams.",
+    "waitlist.error": "Neizdevās pieteikties. Pamēģini vēlreiz pēc brīža.",
+    "waitlist.note": "Bez surogātpasta — tikai viens e-pasts, kad lietotne būs klajā.",
+    "nav.join": "Pieteikties",
 
     "reveal.eyebrow": "Lietotne",
     "reveal.title": "Mazāk domāšanas, vairāk kontroles.",
@@ -75,13 +82,20 @@ export const strings: Record<Locale, Dict> = {
     "nav.privacy": "Privacy",
     "nav.download": "Download",
 
-    "hero.eyebrow": "Personal expense tracking",
+    "hero.eyebrow": "Coming soon to the App Store and Google Play",
     "hero.title": "Track your",
     "hero.title.italic": "finances",
     "hero.title.rest": "every day.",
     "hero.sub": "Taupi is designed to be a quiet, everyday companion. No bloated charts, no empty insights — just your money, and some peace of mind.",
     "hero.cta.primary": "Download Taupi",
     "hero.cta.secondary": "How it works",
+
+    "waitlist.placeholder": "Your email",
+    "waitlist.cta": "Join waitlist",
+    "waitlist.done": "You're on the list! We'll email you the moment Taupi launches.",
+    "waitlist.error": "Couldn't sign you up. Please try again in a moment.",
+    "waitlist.note": "No spam — a single email when the app goes live.",
+    "nav.join": "Join waitlist",
 
     "reveal.eyebrow": "The app",
     "reveal.title": "Less thinking, more control.",

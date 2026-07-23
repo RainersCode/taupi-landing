@@ -123,10 +123,10 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       label: t["reveal.screens.goals.label"],
       desc: t["reveal.screens.goals.desc"],
       Mock: GoalsMock,
-      tint: "rgba(79, 209, 255, 0.18)",
+      tint: "rgba(56, 189, 248, 0.18)",
       bg: "#0D1530",
       displayWord: t["reveal.screens.goals.label"],
-      displayDot: "rgba(79, 209, 255, 0.12)",
+      displayDot: "rgba(56, 189, 248, 0.12)",
       displayAnchor: { bottom: "-12%", right: "-3%" },
       // 2 badges — placed opposite to Dashboard to break the pattern
       badges: [

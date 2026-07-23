@@ -15,7 +15,7 @@ export default {
         brand: "#5A6BFF",
         "brand-light": "#8093FF",
         "brand-deep": "#3A4AE0",
-        accent: "#4FD1FF",
+        accent: "#38BDF8",
         success: "#2DD4A7",
         danger: "#FF3B87",
         warning: "#FFB547",

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
   /** visual size — height in CSS px, width derived 9:19.5 */
   h?: number;
   className?: string;
@@ -9,6 +9,9 @@ interface Props {
   clockTint?: string;
   /** localized clock label (default 9:41 — Apple's keynote time) */
   clock?: string;
+  /** real app screenshot (status bar pre-cropped) — replaces children */
+  screenshot?: string;
+  alt?: string;
 }
 
 /**
@@ -23,6 +26,8 @@ export default function PhoneFrame({
   className = "",
   clockTint = "#F5F5F7",
   clock = "9:41",
+  screenshot,
+  alt,
 }: Props) {
   const w = Math.round((h * 9) / 19.5);
 
@@ -82,6 +87,10 @@ export default function PhoneFrame({
           style={{ background: "#000", padding: 1 }}
         >
           <div className="relative w-full h-full rounded-[47px] overflow-hidden" style={{ background: "#0D1128" }}>
+            {/* ── Fake chrome (island + status bar) — only for coded content.
+                 Real screenshots bring their own status bar and island. ── */}
+            {!screenshot && (
+            <>
             {/* ── Dynamic Island ── */}
             <div
               className="absolute top-2 left-1/2 -translate-x-1/2 rounded-full z-20 flex items-center justify-center"
@@ -104,7 +113,7 @@ export default function PhoneFrame({
                     width: 10,
                     height: 10,
                     background: "radial-gradient(circle at 30% 30%, #2a2f55, #050711 70%)",
-                    boxShadow: "inset 0 0 0 1px rgba(79,209,255,0.05)",
+                    boxShadow: "inset 0 0 0 1px rgba(56,189,248,0.05)",
                   }}
                 />
               </div>
@@ -151,9 +160,21 @@ export default function PhoneFrame({
                 </div>
               </div>
             </div>
+            </>
+            )}
 
             {/* ── Screen content ── */}
-            {children}
+            {screenshot ? (
+              <img
+                src={screenshot}
+                alt={alt ?? ""}
+                className="absolute inset-0 w-full h-full object-cover object-top"
+                draggable={false}
+                loading="lazy"
+              />
+            ) : (
+              children
+            )}
 
             {/* ── Home indicator at the bottom ── */}
             <div

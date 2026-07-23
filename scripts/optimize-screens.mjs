@@ -5,20 +5,24 @@ const SRC = "C:/Users/raine/OneDrive/Dators/expenses/assets/store/ekranuznemumi"
 const OUT = "public/images/screens";
 mkdirSync(OUT, { recursive: true });
 
-// Full-screen shots: crop the native status bar (top ~130px of 1206×2622)
-// so PhoneFrame's own chrome (9:41 clock + island) is the only status bar.
+// Full-screen shots: native status bar + island stay real — PhoneFrame hides
+// its fake chrome when a screenshot is supplied.
+// CRITICAL: pre-resize close to the rendered size (~283 CSS px wide → 2x
+// headroom = 620px) with sharp's Lanczos. Serving the raw 1206px file makes
+// Chrome downscale 4× on a composited GPU layer with a cheap filter —
+// that's what made the phone look blurry.
+const HERO_SRC = "public/images/screens2/WhatsApp Image 2026-07-23 at 16.07.01.jpeg";
 const screens = [
-  ["IMG_0629.PNG", "sakums"],
-  ["IMG_0630.PNG", "darijumi"],
-  ["IMG_0631.PNG", "budzets"],
-  ["IMG_0632.PNG", "ieskati"],
-  ["IMG_0633.PNG", "kopskats"],
+  [HERO_SRC, "sakums"],
+  [`${SRC}/IMG_0630.PNG`, "darijumi"],
+  [`${SRC}/IMG_0631.PNG`, "budzets"],
+  [`${SRC}/IMG_0632.PNG`, "ieskati"],
+  [`${SRC}/IMG_0633.PNG`, "kopskats"],
 ];
 for (const [file, name] of screens) {
-  await sharp(`${SRC}/${file}`)
-    .extract({ left: 0, top: 130, width: 1206, height: 2622 - 130 })
-    .resize({ width: 800 })
-    .webp({ quality: 82 })
+  await sharp(file)
+    .resize({ width: 620, kernel: "lanczos3" })
+    .webp({ quality: 92 })
     .toFile(`${OUT}/${name}.webp`);
 }
 
@@ -34,8 +38,7 @@ const crops = [
 for (const [file, name, region] of crops) {
   await sharp(`${SRC}/${file}`)
     .extract(region)
-    .resize({ width: 900 })
-    .webp({ quality: 82 })
+    .webp({ quality: 90 })
     .toFile(`${OUT}/${name}.webp`);
 }
 console.log("done");

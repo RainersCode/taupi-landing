@@ -16,7 +16,7 @@
   --brand: #5a6bff;
   --brand-light: #8093ff;
   --brand-deep: #3a4ae0;
-  --accent: #4fd1ff;
+  --accent: #38bdf8;
   --success: #2dd4a7;
   --danger: #ff3b87;
   --warning: #ffb547;
@@ -67,7 +67,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background:
     radial-gradient(60% 40% at 10% 5%, rgba(128, 147, 255, 0.12), transparent 60%),
-    radial-gradient(40% 30% at 95% 10%, rgba(79, 209, 255, 0.07), transparent 65%),
+    radial-gradient(40% 30% at 95% 10%, rgba(56, 189, 248, 0.07), transparent 65%),
     var(--bg);
   min-height: 100vh;
 }
