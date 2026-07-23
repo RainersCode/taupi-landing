@@ -109,7 +109,7 @@ export default function Hero({ locale }: { locale: Locale }) {
             <PhoneFrame
               h={640}
               screenshot="/images/screens/sakums.webp"
-              alt={t["reveal.screens.dashboard.desc"]}
+              alt={locale === "lv" ? "Taupi sākuma ekrāns — dienas budžets" : "Taupi home screen — daily budget"}
             />
 
             {/* Ground-plane reflection pool — soft ellipse the phone sits on */}

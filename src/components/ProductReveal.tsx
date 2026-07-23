@@ -1,9 +1,5 @@
 import { motion } from "motion/react";
 import PhoneFrame from "./PhoneFrame";
-import DashboardMock from "./mocks/DashboardMock";
-import BudgetMock from "./mocks/BudgetMock";
-import InsightsMock from "./mocks/InsightsMock";
-import GoalsMock from "./mocks/GoalsMock";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 
@@ -28,28 +24,19 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       key: "dashboard",
       label: t["reveal.screens.dashboard.label"],
       desc: t["reveal.screens.dashboard.desc"],
-      Mock: DashboardMock,
+      screenshot: "/images/screens/darijumi.webp",
       tint: "rgba(90, 107, 255, 0.18)",
       bg: "#0D1128",
       // Background wordmark — echoes Hero's "t." treatment
       displayWord: t["reveal.screens.dashboard.label"],
       displayDot: "rgba(90, 107, 255, 0.09)",
       displayAnchor: { top: "52%", right: "-4%" },
-      // 2 badges — live transaction + monthly savings
       badges: [
         {
-          position: "top-left",
+          position: "left-middle",
           rotation: 3,
-          eyebrow: locale === "lv" ? "Tikko" : "Just now",
-          title: "−€24.18",
-          icon: "🛒",
-        },
-        {
-          position: "bottom-right",
-          rotation: -4,
-          eyebrow: locale === "lv" ? "Šomēnes" : "This month",
-          title: "+€214",
-          accent: "success",
+          eyebrow: locale === "lv" ? "Maxima · 21 preces" : "Maxima · 21 items",
+          title: "−€25.02",
         },
       ],
     },
@@ -57,7 +44,7 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       key: "budget",
       label: t["reveal.screens.budget.label"],
       desc: t["reveal.screens.budget.desc"],
-      Mock: BudgetMock,
+      screenshot: "/images/screens/budzets.webp",
       tint: "rgba(45, 212, 167, 0.16)",
       bg: "#0B1428",
       displayWord: t["reveal.screens.budget.label"],
@@ -65,14 +52,12 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       // Mirror to the bottom-left on the 2nd section so the decorative word
       // rhythm alternates — breaks the four-sections-same-layout monotony.
       displayAnchor: { bottom: "-8%", left: "-6%" },
-      // 1 badge — single clean "salary in" notification, no counterpart
       badges: [
         {
           position: "right-middle",
           rotation: 4,
-          eyebrow: locale === "lv" ? "Ienāk" : "Incoming",
-          title: "+€1 800",
-          icon: "💼",
+          eyebrow: locale === "lv" ? "Ienākumi" : "Income",
+          title: "+€2 373",
           accent: "success",
         },
       ],
@@ -81,7 +66,7 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       key: "insights",
       label: t["reveal.screens.insights.label"],
       desc: t["reveal.screens.insights.desc"],
-      Mock: InsightsMock,
+      screenshot: "/images/screens/ieskati.webp",
       tint: "rgba(117, 128, 224, 0.18)",
       bg: "#10132A",
       // Shorter word for section 3 so the decorative treatment reads
@@ -89,32 +74,13 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       displayWord: "Ieskati",
       displayDot: "rgba(117, 128, 224, 0.11)",
       displayAnchor: { top: "-10%", right: "-5%" },
-      // 3 badges — matches the "many insights at once" feel
       badges: [
         {
-          position: "top-right",
-          rotation: -3,
-          eyebrow: locale === "lv" ? "Jauns ieskats" : "New insight",
-          title: locale === "lv" ? "Kafijas paradums" : "Coffee pattern",
-          icon: "✦",
-          accent: "brand",
-        },
-        {
           position: "left-middle",
-          rotation: 5,
-          eyebrow: locale === "lv" ? "Pret pag. ned." : "Vs last wk",
-          title: "+12%",
-          icon: "↑",
-          accent: "warning",
-          size: "compact",
-        },
-        {
-          position: "bottom-right",
-          rotation: -5,
-          eyebrow: locale === "lv" ? "Ietaupīts" : "Saved",
-          title: "€42",
-          accent: "success",
-          size: "compact",
+          rotation: -4,
+          eyebrow: locale === "lv" ? "Veselības skors" : "Health score",
+          title: "70 / 100",
+          accent: "brand",
         },
       ],
     },
@@ -122,29 +88,19 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       key: "goals",
       label: t["reveal.screens.goals.label"],
       desc: t["reveal.screens.goals.desc"],
-      Mock: GoalsMock,
+      screenshot: "/images/screens/kopskats.webp",
       tint: "rgba(56, 189, 248, 0.18)",
       bg: "#0D1530",
       displayWord: t["reveal.screens.goals.label"],
       displayDot: "rgba(56, 189, 248, 0.12)",
       displayAnchor: { bottom: "-12%", right: "-3%" },
-      // 2 badges — placed opposite to Dashboard to break the pattern
       badges: [
-        {
-          position: "top-right",
-          rotation: 5,
-          eyebrow: locale === "lv" ? "Progress" : "Progress",
-          title: "43%",
-          icon: "🎯",
-          accent: "longterm",
-        },
         {
           position: "bottom-left",
           rotation: -3,
-          eyebrow: locale === "lv" ? "Priekšā grafikam" : "Ahead of plan",
-          title: "+€120",
-          icon: "↑",
-          accent: "success",
+          eyebrow: locale === "lv" ? "Neto vērtība" : "Net worth",
+          title: "€4 824",
+          accent: "longterm",
         },
       ],
     },
@@ -200,7 +156,7 @@ type SectionData = {
   key: string;
   label: string;
   desc: string;
-  Mock: React.ComponentType<{ locale: Locale }>;
+  screenshot: string;
   tint: string;
   bg: string;
   badges: PlacedBadge[];
@@ -375,9 +331,7 @@ function SectionLayer({
                     background: `radial-gradient(55% 45% at 50% 50%, ${section.tint}, transparent 65%)`,
                   }}
                 />
-                <PhoneFrame h={600}>
-                  <section.Mock locale={locale} />
-                </PhoneFrame>
+                <PhoneFrame h={600} screenshot={section.screenshot} alt={section.desc} />
 
                 {section.badges.map((badge, bi) => (
                   <FloatingBadge
