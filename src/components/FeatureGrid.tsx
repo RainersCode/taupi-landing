@@ -14,7 +14,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
     {
       key: "ai",
       idx: "01",
-      img: "/images/feature-insights.png",
+      img: "/images/screens/crop-veseliba.webp",
       alt: "",
       title: t["features.ai.title"],
       body: t["features.ai.body"],
@@ -22,7 +22,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
     {
       key: "scan",
       idx: "02",
-      img: "/images/feature-scan.png",
+      img: "/images/screens/crop-ceks.webp",
       alt: "",
       title: t["features.scan.title"],
       body: t["features.scan.body"],
@@ -30,7 +30,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
     {
       key: "trend",
       idx: "03",
-      img: "/images/feature-trend.png",
+      img: "/images/screens/crop-kategorijas.webp",
       alt: "",
       title: t["features.trend.title"],
       body: t["features.trend.body"],

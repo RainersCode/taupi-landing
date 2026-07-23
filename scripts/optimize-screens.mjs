@@ -32,8 +32,8 @@ const crops = [
   ["IMG_0632.PNG", "crop-veseliba", { left: 60, top: 700, width: 1086, height: 1150 }],
   // Receipt rows (Maxima 21 items…) from IMG_0630
   ["IMG_0630.PNG", "crop-ceks", { left: 0, top: 880, width: 1206, height: 800 }],
-  // Category bar + month total from IMG_0630
-  ["IMG_0630.PNG", "crop-kategorijas", { left: 0, top: 360, width: 1206, height: 300 }],
+  // Month total + category bar + search + first rows from IMG_0630 — square-ish
+  ["IMG_0630.PNG", "crop-kategorijas", { left: 0, top: 250, width: 1206, height: 1100 }],
 ];
 for (const [file, name, region] of crops) {
   await sharp(`${SRC}/${file}`)

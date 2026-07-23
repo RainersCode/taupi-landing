@@ -42,11 +42,11 @@ export const strings: Record<Locale, Dict> = {
 
     "features.eyebrow": "Iespējas",
     "features.ai.title": "AI ieskati",
-    "features.ai.body": "Katru nedēļu Taupi paskatās uz taviem paradumiem un pastāsta, kas mainās.",
+    "features.ai.body": "Taupi seko taviem paradumiem un rāda finansiālās veselības skoru — ar prognozi, cik gadā uzkrāsi.",
     "features.scan.title": "Čeku skenēšana",
-    "features.scan.body": "Nofotografē čeku. Taupi izlasa preces, cenas un kategorijas.",
+    "features.scan.body": "Nofotografē čeku — AI izlasa preces un saliek tās pa 23 kategorijām.",
     "features.trend.title": "Tēriņu analīze",
-    "features.trend.body": "Redzi ikdienas, nedēļas un mēneša ritmu ar vienu pieskārienu.",
+    "features.trend.body": "Dienas, nedēļas un mēneša ritms, lielākie tēriņi un tendences — vienā pieskārienā.",
 
     "lifestyle.eyebrow": "Ikdienā",
     "lifestyle.quote": "Pievienoju īri, rēķinus, abonementus — un redzu savu dienas budžetu. Vienkārši.",
@@ -110,11 +110,11 @@ export const strings: Record<Locale, Dict> = {
 
     "features.eyebrow": "Features",
     "features.ai.title": "AI insights",
-    "features.ai.body": "Every week Taupi looks at your habits and tells you what's changing.",
+    "features.ai.body": "Taupi follows your habits and shows a financial health score — with a projection of what you'll save in a year.",
     "features.scan.title": "Receipt scan",
-    "features.scan.body": "Photograph a receipt. Taupi reads the items, prices, and categories.",
+    "features.scan.body": "Photograph a receipt — AI reads the items and sorts them into 23 categories.",
     "features.trend.title": "Spending analysis",
-    "features.trend.body": "See your daily, weekly and monthly rhythm in one tap.",
+    "features.trend.body": "Daily, weekly and monthly rhythm, biggest expenses and trends — in one tap.",
 
     "lifestyle.eyebrow": "Every day",
     "lifestyle.quote": "I added rent, bills, subscriptions — and I see my daily budget. Simple.",
