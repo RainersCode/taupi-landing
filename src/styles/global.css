@@ -88,6 +88,21 @@ body::before {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
 }
 
+/* Chrome/WebKit autofill paints a white (or pale blue) background over
+   inputs. Our inputs sit on translucent dark pills — keep the fill
+   transparent and the text ink-colored. background-clip: text is the only
+   reliable way to kill the autofill backdrop on a transparent input. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-background-clip: text;
+  background-clip: text;
+  caret-color: var(--ink);
+  transition: background-color 9999s ease-out 0s;
+}
+
 /* Selection — on-brand */
 ::selection {
   background: rgba(90, 107, 255, 0.4);
