@@ -12,7 +12,6 @@ export const strings: Record<Locale, Dict> = {
   lv: {
     "nav.features": "Iespējas",
     "nav.privacy": "Privātums",
-    "nav.download": "Lejupielādēt",
 
     "hero.eyebrow": "Drīzumā App Store un Google Play",
     "hero.title": "Seko savām",
@@ -66,10 +65,8 @@ export const strings: Record<Locale, Dict> = {
     "trust.p4.detail": "GDPR Art. 17 · 20",
     "trust.signature": "Darināts Latvijā. Atbildam uz katru e-pastu.",
 
-    "cta.title": "Sāc šodien.",
-    "cta.sub": "Bezmaksas lejupielāde. Strādā arī bez konta.",
-    "cta.ios": "Lejupielādēt App Store",
-    "cta.android": "Lejupielādēt Google Play",
+    "cta.title": "Esi pirmais.",
+    "cta.sub": "Taupi drīzumā nonāks veikalos. Pieteikšanās aizņem piecas sekundes — dosim ziņu, tiklīdz varēsi lejupielādēt.",
 
     "footer.made": "Darināts Latvijā.",
     "footer.legal.privacy": "Privātuma politika",
@@ -80,7 +77,6 @@ export const strings: Record<Locale, Dict> = {
   en: {
     "nav.features": "Features",
     "nav.privacy": "Privacy",
-    "nav.download": "Download",
 
     "hero.eyebrow": "Coming soon to the App Store and Google Play",
     "hero.title": "Track your",
@@ -134,10 +130,8 @@ export const strings: Record<Locale, Dict> = {
     "trust.p4.detail": "GDPR Art. 17 · 20",
     "trust.signature": "Built in Latvia. We reply to every email.",
 
-    "cta.title": "Start today.",
-    "cta.sub": "Free to download. Works without an account.",
-    "cta.ios": "Download on the App Store",
-    "cta.android": "Get it on Google Play",
+    "cta.title": "Be first.",
+    "cta.sub": "Taupi is coming to the stores soon. Signing up takes five seconds — we'll email you the moment you can download.",
 
     "footer.made": "Made in Latvia.",
     "footer.legal.privacy": "Privacy Policy",
