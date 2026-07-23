@@ -99,11 +99,11 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
             <span
               className="absolute bottom-6 left-1/2 -translate-x-1/2 font-display font-bold text-ink whitespace-nowrap transition-opacity duration-300 group-hover:opacity-0"
               style={{
-                ...sticker,
                 writingMode: "vertical-rl",
                 transform: "rotate(180deg) translateX(50%)",
                 fontSize: "clamp(26px, 2.4vw, 34px)",
                 letterSpacing: "0.01em",
+                textShadow: "0 2px 16px rgba(0,0,0,0.55)",
               }}
             >
               {item.title}
