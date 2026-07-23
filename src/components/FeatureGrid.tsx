@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
@@ -11,6 +12,8 @@ import { getDict } from "~/i18n/strings";
  */
 export default function FeatureGrid({ locale }: { locale: Locale }) {
   const t = getDict(locale);
+  // Mobile accordion — index of the open panel, or null when all collapsed
+  const [open, setOpen] = useState<number | null>(null);
 
   const items = [
     { key: "budget", img: "budzets" },
@@ -138,47 +141,121 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
         ))}
       </motion.div>
 
-      {/* ── Mobile stack — text always visible ── */}
-      <div className="md:hidden flex flex-col gap-2 px-4">
-        {items.map((item, i) => (
-          <motion.article
-            key={item.key}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, delay: i * 0.05, ease: [0.2, 0.8, 0.2, 1] }}
-            className="relative overflow-hidden h-56"
-          >
-            <img
-              src={`/images/tiles/${item.img}.webp`}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: "50% 30%" }}
-              loading="lazy"
-              draggable={false}
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(13,17,40,0.30) 0%, rgba(13,17,40,0.10) 40%, rgba(13,17,40,0.92) 100%)",
-              }}
-            />
-            <span className="absolute top-4 left-4 eyebrow text-white/70">/ {item.idx}</span>
-            <div className="absolute inset-x-0 bottom-0 p-5">
-              <h3
-                className="font-display font-bold text-ink"
-                style={{ fontSize: 20, letterSpacing: "-0.02em" }}
-              >
-                {item.title}
-              </h3>
-              <p className="mt-1.5 text-ink/80 leading-relaxed" style={{ fontSize: 13.5 }}>
-                {item.body}
-              </p>
-            </div>
-          </motion.article>
-        ))}
+      {/* ── Mobile accordion — collapsed strips open vertically on tap ── */}
+      <div className="md:hidden flex flex-col gap-1.5">
+        {items.map((item, i) => {
+          const isOpen = open === i;
+          return (
+            <motion.article
+              key={item.key}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8, delay: i * 0.05, ease: [0.2, 0.8, 0.2, 1] }}
+              className="relative overflow-hidden cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+              style={{ height: isOpen ? 460 : 92 }}
+              onClick={() => setOpen(isOpen ? null : i)}
+              role="button"
+              aria-expanded={isOpen}
+            >
+              <img
+                src={`/images/tiles/${item.img}.webp`}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: "50% 25%" }}
+                loading="lazy"
+                draggable={false}
+              />
+              {/* Navy tint — lifts when open, like the desktop hover */}
+              <div
+                aria-hidden
+                className="absolute inset-0 transition-opacity duration-700"
+                style={{ background: "rgba(13,17,40,0.55)", opacity: isOpen ? 0 : 0.7 }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(13,17,40,0.30) 0%, rgba(13,17,40,0.05) 40%, rgba(13,17,40,0.55) 68%, rgba(13,17,40,0.92) 100%)",
+                }}
+              />
+              <span className="absolute top-4 right-4 eyebrow text-white/70">/ {item.idx}</span>
+
+              {/* Title — pinned to the strip's bottom-left in both states */}
+              <div className="absolute inset-x-0 bottom-0 p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <h3
+                    className="font-display font-bold text-ink"
+                    style={{ fontSize: 20, letterSpacing: "-0.02em" }}
+                  >
+                    {item.title}
+                  </h3>
+                  {/* Chevron — flips when open */}
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                    className="shrink-0 transition-transform duration-500"
+                    style={{ transform: isOpen ? "rotate(180deg)" : "none" }}
+                  >
+                    <path
+                      d="M4 7l5 5 5-5"
+                      stroke="#F5F5F7"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      opacity="0.8"
+                    />
+                  </svg>
+                </div>
+
+                {/* Expanded content — fades in below the title */}
+                <div
+                  className="transition-all duration-500 overflow-hidden"
+                  style={{
+                    opacity: isOpen ? 1 : 0,
+                    maxHeight: isOpen ? 360 : 0,
+                    transform: isOpen ? "none" : "translateY(8px)",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <p className="mt-2 text-ink/85 leading-relaxed" style={{ fontSize: 14 }}>
+                    {item.body}
+                  </p>
+                  <ul className="mt-4 space-y-2">
+                    {item.points.map((p) => (
+                      <li key={p} className="flex items-start gap-2.5">
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          aria-hidden="true"
+                          className="mt-0.5 shrink-0"
+                        >
+                          <circle cx="8" cy="8" r="7.25" stroke="#38BDF8" strokeWidth="1.2" opacity="0.6" />
+                          <path
+                            d="M5 8.2l2 2L11 6.4"
+                            stroke="#38BDF8"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <span className="text-ink/80" style={{ fontSize: 13.5, lineHeight: 1.45 }}>
+                          {p}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.article>
+          );
+        })}
       </div>
     </section>
   );
