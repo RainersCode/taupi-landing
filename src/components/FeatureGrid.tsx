@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
@@ -10,6 +11,16 @@ import { getDict } from "~/i18n/strings";
  * scrim. Collapsed panels show only a vertical label. Mobile gets a
  * vertical stack with text always visible — no hover required.
  */
+// Navy "highlighter" sticker behind text — same treatment as the
+// LifestylePanel pull-quote, cloned per line for a marker-like pass.
+const sticker: CSSProperties = {
+  background: "rgba(13, 17, 40, 0.78)",
+  boxDecorationBreak: "clone",
+  WebkitBoxDecorationBreak: "clone",
+  padding: "0.08em 0.28em",
+  borderRadius: 3,
+};
+
 export default function FeatureGrid({ locale }: { locale: Locale }) {
   const t = getDict(locale);
   // Mobile accordion — index of the open panel, or null when all collapsed
@@ -77,7 +88,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(13,17,40,0.35) 0%, rgba(13,17,40,0) 30%, rgba(13,17,40,0) 45%, rgba(13,17,40,0.55) 68%, rgba(13,17,40,0.92) 100%)",
+                  "linear-gradient(180deg, rgba(13,17,40,0.35) 0%, rgba(13,17,40,0) 30%, rgba(13,17,40,0) 55%, rgba(13,17,40,0.30) 75%, rgba(13,17,40,0.60) 100%)",
               }}
             />
 
@@ -88,11 +99,11 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
             <span
               className="absolute bottom-6 left-1/2 -translate-x-1/2 font-display font-bold text-ink whitespace-nowrap transition-opacity duration-300 group-hover:opacity-0"
               style={{
+                ...sticker,
                 writingMode: "vertical-rl",
                 transform: "rotate(180deg) translateX(50%)",
                 fontSize: "clamp(26px, 2.4vw, 34px)",
                 letterSpacing: "0.01em",
-                textShadow: "0 2px 16px rgba(0,0,0,0.55)",
               }}
             >
               {item.title}
@@ -105,12 +116,12 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
             <div className="absolute bottom-0 left-0 p-8 w-[480px] max-w-full opacity-0 translate-y-3 transition-all duration-200 delay-0 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:duration-500 group-hover:delay-200 pointer-events-none">
               <h3
                 className="font-display font-bold text-ink"
-                style={{ fontSize: "clamp(26px, 2.2vw, 34px)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                style={{ fontSize: "clamp(26px, 2.2vw, 34px)", letterSpacing: "-0.02em", lineHeight: 1.25 }}
               >
-                {item.title}
+                <span style={sticker}>{item.title}</span>
               </h3>
-              <p className="mt-3 text-ink/85 leading-relaxed" style={{ fontSize: 15, maxWidth: "44ch" }}>
-                {item.body}
+              <p className="mt-3 text-ink/90" style={{ fontSize: 15, maxWidth: "44ch", lineHeight: 1.6 }}>
+                <span style={sticker}>{item.body}</span>
               </p>
               <ul className="mt-5 space-y-2.5">
                 {item.points.map((p) => (
@@ -132,7 +143,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span className="text-ink/75" style={{ fontSize: 14, lineHeight: 1.45 }}>
+                    <span className="text-ink/90" style={{ ...sticker, fontSize: 14, lineHeight: 1.45 }}>
                       {p}
                     </span>
                   </li>
@@ -179,7 +190,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(13,17,40,0.30) 0%, rgba(13,17,40,0.05) 40%, rgba(13,17,40,0.55) 68%, rgba(13,17,40,0.92) 100%)",
+                    "linear-gradient(180deg, rgba(13,17,40,0.30) 0%, rgba(13,17,40,0.05) 40%, rgba(13,17,40,0.30) 70%, rgba(13,17,40,0.60) 100%)",
                 }}
               />
               <span className="absolute top-4 right-4 eyebrow text-white/70">/ {item.idx}</span>
@@ -189,9 +200,9 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
                 <div className="flex items-center justify-between gap-3">
                   <h3
                     className="font-display font-bold text-ink"
-                    style={{ fontSize: 20, letterSpacing: "-0.02em" }}
+                    style={{ fontSize: 20, letterSpacing: "-0.02em", lineHeight: 1.3 }}
                   >
-                    {item.title}
+                    <span style={sticker}>{item.title}</span>
                   </h3>
                   {/* Chevron — flips when open */}
                   <svg
@@ -224,8 +235,8 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
                     pointerEvents: "none",
                   }}
                 >
-                  <p className="mt-2 text-ink/85 leading-relaxed" style={{ fontSize: 14 }}>
-                    {item.body}
+                  <p className="mt-2 text-ink/90" style={{ fontSize: 14, lineHeight: 1.6 }}>
+                    <span style={sticker}>{item.body}</span>
                   </p>
                   <ul className="mt-4 space-y-2">
                     {item.points.map((p) => (
@@ -247,7 +258,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
                             strokeLinejoin="round"
                           />
                         </svg>
-                        <span className="text-ink/80" style={{ fontSize: 13.5, lineHeight: 1.45 }}>
+                        <span className="text-ink/90" style={{ ...sticker, fontSize: 13.5, lineHeight: 1.45 }}>
                           {p}
                         </span>
                       </li>
