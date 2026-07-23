@@ -24,6 +24,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
     idx: String(i + 1).padStart(2, "0"),
     title: t[`features.${it.key}.title`],
     body: t[`features.${it.key}.body`],
+    points: [1, 2, 3].map((n) => t[`features.${it.key}.p${n}`]),
   }));
 
   return (
@@ -73,7 +74,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(13,17,40,0.35) 0%, rgba(13,17,40,0) 30%, rgba(13,17,40,0) 55%, rgba(13,17,40,0.88) 100%)",
+                  "linear-gradient(180deg, rgba(13,17,40,0.35) 0%, rgba(13,17,40,0) 30%, rgba(13,17,40,0) 45%, rgba(13,17,40,0.55) 68%, rgba(13,17,40,0.92) 100%)",
               }}
             />
 
@@ -96,16 +97,42 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
 
             {/* Expanded content — fixed width so text doesn't reflow while
                 the panel is animating open */}
-            <div className="absolute bottom-0 left-0 p-8 w-[420px] max-w-full opacity-0 translate-y-3 transition-all duration-500 delay-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none">
+            <div className="absolute bottom-0 left-0 p-8 w-[480px] max-w-full opacity-0 translate-y-3 transition-all duration-500 delay-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none">
               <h3
                 className="font-display font-bold text-ink"
-                style={{ fontSize: "clamp(24px, 2vw, 30px)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                style={{ fontSize: "clamp(26px, 2.2vw, 34px)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
               >
                 {item.title}
               </h3>
-              <p className="mt-3 text-ink/80 leading-relaxed" style={{ fontSize: 15, maxWidth: "38ch" }}>
+              <p className="mt-3 text-ink/85 leading-relaxed" style={{ fontSize: 15, maxWidth: "44ch" }}>
                 {item.body}
               </p>
+              <ul className="mt-5 space-y-2.5">
+                {item.points.map((p) => (
+                  <li key={p} className="flex items-start gap-2.5">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      aria-hidden="true"
+                      className="mt-0.5 shrink-0"
+                    >
+                      <circle cx="8" cy="8" r="7.25" stroke="#38BDF8" strokeWidth="1.2" opacity="0.6" />
+                      <path
+                        d="M5 8.2l2 2L11 6.4"
+                        stroke="#38BDF8"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <span className="text-ink/75" style={{ fontSize: 14, lineHeight: 1.45 }}>
+                      {p}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </article>
         ))}
