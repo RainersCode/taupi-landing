@@ -42,13 +42,13 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-10%" }}
         transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
-        className="hidden md:flex w-full gap-1.5 px-1.5"
+        className="hidden md:flex w-full gap-1.5"
         style={{ height: "72vh", minHeight: 520, maxHeight: 820 }}
       >
         {items.map((item) => (
           <article
             key={item.key}
-            className="group relative overflow-hidden flex-1 hover:flex-[3.2] transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] rounded-2xl cursor-pointer"
+            className="group relative overflow-hidden flex-1 hover:flex-[3.2] transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] cursor-pointer"
           >
             <img
               src={`/images/tiles/${item.img}.webp`}
@@ -84,7 +84,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
               style={{
                 writingMode: "vertical-rl",
                 transform: "rotate(180deg) translateX(50%)",
-                fontSize: "clamp(20px, 1.8vw, 26px)",
+                fontSize: "clamp(26px, 2.4vw, 34px)",
                 letterSpacing: "0.01em",
                 textShadow: "0 2px 16px rgba(0,0,0,0.55)",
               }}
@@ -118,7 +118,7 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.8, delay: i * 0.05, ease: [0.2, 0.8, 0.2, 1] }}
-            className="relative overflow-hidden rounded-2xl h-56"
+            className="relative overflow-hidden h-56"
           >
             <img
               src={`/images/tiles/${item.img}.webp`}
