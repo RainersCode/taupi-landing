@@ -2,6 +2,10 @@ export const config = { runtime: "edge" };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+// The Supabase project URL is public (every app client ships it) — only the
+// service key is a secret and must come from the environment.
+const SUPABASE_URL = process.env.SUPABASE_URL ?? "https://gfgpsuwqtplvbxtxhdsw.supabase.co";
+
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
 
@@ -19,7 +23,7 @@ export default async function handler(req: Request): Promise<Response> {
   if (!EMAIL_RE.test(email) || email.length > 254) return json({ ok: false }, 400);
   const locale = body.locale === "en" ? "en" : "lv";
 
-  const res = await fetch(`${process.env.SUPABASE_URL}/rest/v1/waitlist`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
     method: "POST",
     headers: {
       apikey: process.env.SUPABASE_SERVICE_KEY!,
