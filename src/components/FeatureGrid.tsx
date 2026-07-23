@@ -29,23 +29,23 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
   return (
     <section
       id="features"
-      className="relative py-20 md:py-0 border-t border-white/5 md:h-screen md:flex md:flex-col"
+      className="relative py-20 md:py-0 border-t border-white/5 md:h-screen"
     >
-      {/* Section heading — stays on the content grid; clears the fixed nav */}
-      <div className="mx-auto max-w-content w-full px-4 md:px-10 md:pt-28 md:shrink-0">
-        <div className="flex items-baseline gap-6 mb-12 md:mb-10">
+      {/* Section heading — overlaid on the curtain, clears the fixed nav */}
+      <div className="mx-auto max-w-content w-full px-4 md:px-10 md:absolute md:inset-x-0 md:top-24 md:z-10 md:pointer-events-none">
+        <div className="flex items-baseline gap-6 mb-12 md:mb-0">
           <span className="eyebrow">{t["features.eyebrow"]}</span>
           <span className="h-px flex-1 bg-white/10" />
         </div>
       </div>
 
-      {/* ── Desktop curtain — fills the rest of the viewport ── */}
+      {/* ── Desktop curtain — the panels ARE the viewport ── */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-10%" }}
         transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
-        className="hidden md:flex w-full gap-1.5 md:flex-1 md:min-h-0"
+        className="hidden md:flex w-full gap-1.5 md:h-full"
       >
         {items.map((item) => (
           <article
@@ -77,8 +77,8 @@ export default function FeatureGrid({ locale }: { locale: Locale }) {
               }}
             />
 
-            {/* Index — top-left, always visible */}
-            <span className="absolute top-5 left-5 eyebrow text-white/70">/ {item.idx}</span>
+            {/* Index — below the overlaid heading band */}
+            <span className="absolute top-36 left-5 eyebrow text-white/70">/ {item.idx}</span>
 
             {/* Collapsed label — vertical, fades away on hover */}
             <span
