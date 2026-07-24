@@ -18,6 +18,7 @@ export default function WaitlistForm({
   const t = getDict(locale);
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
   const [email, setEmail] = useState("");
+  const [tester, setTester] = useState(false);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -27,7 +28,7 @@ export default function WaitlistForm({
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, locale, website: "" }),
+        body: JSON.stringify({ email, locale, tester, website: "" }),
       });
       setState(res.ok ? "done" : "error");
     } catch {
@@ -92,6 +93,43 @@ export default function WaitlistForm({
           {state === "busy" ? "…" : t["waitlist.cta"]}
         </button>
       </div>
+      {/* Tester opt-in — the pre-launch perk: 6 months free for testers */}
+      <label className="mt-3.5 flex items-center gap-2.5 cursor-pointer select-none w-fit">
+        <input
+          type="checkbox"
+          checked={tester}
+          onChange={(e) => setTester(e.target.checked)}
+          className="sr-only"
+        />
+        <span
+          aria-hidden
+          className="w-[18px] h-[18px] rounded-[5px] flex items-center justify-center shrink-0 transition-colors"
+          style={{
+            border: `1px solid ${tester ? "#5A6BFF" : "rgba(255,255,255,0.25)"}`,
+            background: tester ? "#5A6BFF" : "rgba(255,255,255,0.04)",
+          }}
+        >
+          {tester && (
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+              <path
+                d="M2.2 5.8l2.2 2.2 4.4-4.9"
+                stroke="#fff"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </span>
+        <span className="text-[13px] text-dim">
+          {t["waitlist.tester"]}
+          <span aria-hidden className="mx-1.5" style={{ color: "rgba(255,255,255,0.18)" }}>
+            —
+          </span>
+          <span style={{ color: "#38BDF8" }}>{t["waitlist.tester.perk"]}</span>
+        </span>
+      </label>
+
       <p className="mt-3 text-[12.5px]" style={{ color: state === "error" ? "#FF3B87" : "#64646F" }}>
         {state === "error" ? t["waitlist.error"] : t["waitlist.note"]}
       </p>

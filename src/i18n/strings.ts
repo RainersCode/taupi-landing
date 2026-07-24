@@ -26,7 +26,14 @@ export const strings: Record<Locale, Dict> = {
     "waitlist.done": "Tu esi sarakstā! Dosim ziņu, tiklīdz Taupi būs pieejams.",
     "waitlist.error": "Neizdevās pieteikties. Pamēģini vēlreiz pēc brīža.",
     "waitlist.note": "Bez surogātpasta — tikai viens e-pasts, kad lietotne iznāks.",
+    "waitlist.tester": "Vēlos būt testētājs",
+    "waitlist.tester.perk": "6 mēneši bez maksas",
+    "hero.eyebrow.tester": "Testētājiem 6 mēneši bez maksas",
+    "hero.eyebrow.live": "Pieejams App Store un Google Play",
     "nav.join": "Pieteikties",
+
+    "store.on.apple": "Lejupielādē no",
+    "store.on.play": "Iegūsti no",
 
     "reveal.eyebrow": "Lietotne",
     "reveal.title": "Mazāk domāšanas, vairāk kontroles.",
@@ -91,6 +98,20 @@ export const strings: Record<Locale, Dict> = {
 
     "cta.title": "Esi starp pirmajiem.",
     "cta.sub": "Taupi drīzumā būs App Store un Google Play. Pieteikšanās aizņem piecas sekundes — dosim ziņu, tiklīdz varēsi lejupielādēt.",
+    "cta.sub.live": "Taupi ir pieejams App Store un Google Play. Lejupielādē un sāc jau šodien.",
+
+    "faq.eyebrow": "Jautājumi",
+    "faq.title": "Biežāk uzdotie jautājumi.",
+    "faq.q1": "Kad Taupi būs pieejams?",
+    "faq.a1": "Pavisam drīz — lietotne šobrīd iziet pēdējās pārbaudes pirms publicēšanas App Store un Google Play. Piesakies gaidīšanas sarakstā, un mēs atsūtīsim vienu e-pastu, tiklīdz to varēsi lejupielādēt.",
+    "faq.q2": "Cik maksās Taupi?",
+    "faq.a2": "Lietotni varēs lejupielādēt bez maksas. Agrīnie testētāji saņem pilnu piekļuvi 6 mēnešus bez maksas — piesakoties atzīmē, ka vēlies būt testētājs.",
+    "faq.q3": "Kā kļūt par testētāju?",
+    "faq.a3": "Piesakies gaidīšanas sarakstā un atzīmē izvēles rūtiņu “Vēlos būt testētājs”. Ar pirmajiem testētājiem sazināsimies personīgi — un tavs pirmais pusgads būs bez maksas.",
+    "faq.q4": "Vai čeku skenēšana strādā ar Latvijas veikaliem?",
+    "faq.a4": "Jā — Taupi ir veidots tieši Latvijas čekiem. AI izlasa katru preci, cenu un veikalu un automātiski sakārto pirkumus 23 kategorijās.",
+    "faq.q5": "Kur glabājas mani dati?",
+    "faq.a5": "Eiropas Savienībā (eu-central-1), šifrēti gan pārsūtot, gan glabājot. Bez reklāmām un sekotājiem — datus vari eksportēt vai dzēst jebkurā brīdī.",
 
     "footer.made": "Darināts Latvijā.",
     "footer.legal.privacy": "Privātuma politika",
@@ -115,7 +136,14 @@ export const strings: Record<Locale, Dict> = {
     "waitlist.done": "You're on the list! We'll email you the moment Taupi launches.",
     "waitlist.error": "Couldn't sign you up. Please try again in a moment.",
     "waitlist.note": "No spam — a single email when the app goes live.",
+    "waitlist.tester": "I want to be a tester",
+    "waitlist.tester.perk": "6 months free",
+    "hero.eyebrow.tester": "Testers get 6 months free",
+    "hero.eyebrow.live": "Now on the App Store and Google Play",
     "nav.join": "Join waitlist",
+
+    "store.on.apple": "Download on the",
+    "store.on.play": "Get it on",
 
     "reveal.eyebrow": "The app",
     "reveal.title": "Less thinking, more control.",
@@ -180,6 +208,20 @@ export const strings: Record<Locale, Dict> = {
 
     "cta.title": "Be among the first.",
     "cta.sub": "Taupi is coming to the App Store and Google Play. Signing up takes five seconds — we'll email you the moment you can download.",
+    "cta.sub.live": "Taupi is out now on the App Store and Google Play. Download it and start today.",
+
+    "faq.eyebrow": "Questions",
+    "faq.title": "Frequently asked questions.",
+    "faq.q1": "When will Taupi be available?",
+    "faq.a1": "Very soon — the app is going through final checks before its App Store and Google Play release. Join the waitlist and we'll send a single email the moment you can download it.",
+    "faq.q2": "How much will Taupi cost?",
+    "faq.a2": "The app will be free to download. Early testers get full access free for 6 months — just tick the tester box when joining the waitlist.",
+    "faq.q3": "How do I become a tester?",
+    "faq.a3": "Join the waitlist and tick “I want to be a tester”. We'll reach out to the first testers personally — and your first six months are free.",
+    "faq.q4": "Does receipt scanning work with Latvian stores?",
+    "faq.a4": "Yes — Taupi is built specifically for Latvian receipts. The AI reads every item, price and store, and sorts purchases into 23 categories automatically.",
+    "faq.q5": "Where is my data stored?",
+    "faq.a5": "In the European Union (eu-central-1), encrypted in transit and at rest. No ads, no trackers — export or delete your data anytime.",
 
     "footer.made": "Made in Latvia.",
     "footer.legal.privacy": "Privacy Policy",

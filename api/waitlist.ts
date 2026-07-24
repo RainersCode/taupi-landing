@@ -9,7 +9,7 @@ const SUPABASE_URL = process.env.SUPABASE_URL ?? "https://gfgpsuwqtplvbxtxhdsw.s
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
 
-  let body: { email?: string; locale?: string; website?: string };
+  let body: { email?: string; locale?: string; website?: string; tester?: boolean };
   try {
     body = await req.json();
   } catch {
@@ -32,7 +32,7 @@ export default async function handler(req: Request): Promise<Response> {
       // Duplicate email → no error, signup stays idempotent.
       Prefer: "resolution=ignore-duplicates",
     },
-    body: JSON.stringify({ email, locale, source: "landing" }),
+    body: JSON.stringify({ email, locale, source: "landing", tester: body.tester === true }),
   });
 
   if (!res.ok && res.status !== 409) return json({ ok: false }, 502);

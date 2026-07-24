@@ -1,8 +1,10 @@
 import { motion, useReducedMotion } from "motion/react";
 import PhoneFrame from "./PhoneFrame";
 import WaitlistForm from "./WaitlistForm";
+import StoreBadges from "./StoreBadges";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
+import { launch } from "~/config";
 
 export default function Hero({ locale }: { locale: Locale }) {
   const t = getDict(locale);
@@ -33,7 +35,7 @@ export default function Hero({ locale }: { locale: Locale }) {
     // text content is vertically centered — on mobile the phone is hidden
     // and the text-only Hero needs proper vertical balance.
     <section
-      className="relative pt-24 md:pt-40 pb-12 md:pb-16 px-4 md:px-10 overflow-hidden w-full h-full flex items-center"
+      className="relative pt-24 md:pt-40 hero-short-pt pb-12 md:pb-16 px-4 md:px-10 overflow-hidden w-full h-full flex items-center"
       style={{ background: "#0D1128" }}
     >
       {/* One soft brand glow behind the phone column — the only decoration. */}
@@ -55,7 +57,21 @@ export default function Hero({ locale }: { locale: Locale }) {
             transition={{ duration: 0.6, delay: 0.05 }}
             className="eyebrow mb-8"
           >
-            {t["hero.eyebrow"]}
+            {launch.live ? (
+              t["hero.eyebrow.live"]
+            ) : (
+              <>
+                {t["hero.eyebrow"]}
+                {/* Tester offer lives inside the eyebrow band — the site's
+                    existing metadata line — instead of a separate pill:
+                    zero vertical cost, and cyan is the house accent for
+                    "the words that matter". */}
+                <span aria-hidden className="mx-2.5" style={{ color: "rgba(255,255,255,0.18)" }}>
+                  ·
+                </span>
+                <span style={{ color: "#38BDF8" }}>{t["hero.eyebrow.tester"]}</span>
+              </>
+            )}
           </motion.p>
 
           <motion.h1
@@ -83,7 +99,7 @@ export default function Hero({ locale }: { locale: Locale }) {
             initial={{ opacity: 0, y: reduce ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.9 }}
-            className="mt-10 max-w-[46ch] text-lg text-dim leading-relaxed"
+            className="mt-10 hero-short-gap max-w-[46ch] text-lg text-dim leading-relaxed"
           >
             {t["hero.sub"]}
           </motion.p>
@@ -92,9 +108,9 @@ export default function Hero({ locale }: { locale: Locale }) {
             initial={{ opacity: 0, y: reduce ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 1.1 }}
-            className="mt-10"
+            className="mt-10 hero-short-gap"
           >
-            <WaitlistForm locale={locale} size="lg" />
+            {launch.live ? <StoreBadges locale={locale} /> : <WaitlistForm locale={locale} size="lg" />}
           </motion.div>
         </div>
 

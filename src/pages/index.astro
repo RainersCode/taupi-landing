@@ -6,12 +6,27 @@ import LifestylePanel from "~/components/LifestylePanel";
 import ProductReveal from "~/components/ProductReveal";
 import FeatureGrid from "~/components/FeatureGrid";
 import TrustPanel from "~/components/TrustPanel.astro";
+import Faq from "~/components/Faq.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
 import Footer from "~/components/Footer.astro";
 
 const locale = "lv" as const;
 ---
-<Base title="Taupi — zini, kur aiziet tava nauda." locale={locale}>
+<Base
+  title="Taupi — zini, kur aiziet tava nauda."
+  description="Taupi ir personīgo finanšu lietotne: budžets, čeku skenēšana, ieskati un mērķi vienuviet. Pievienojies gaidīšanas sarakstam."
+  locale={locale}
+>
+  <!-- Hero phone screenshot = desktop LCP. Preload it early on desktop;
+       on mobile the phone is display:none and never gets fetched. -->
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/screens/sakums.webp"
+    media="(min-width: 768px)"
+    fetchpriority="high"
+  />
   <Nav locale={locale} />
 
   <main>
@@ -31,6 +46,8 @@ const locale = "lv" as const;
     <FeatureGrid locale={locale} client:visible />
 
     <TrustPanel locale={locale} />
+
+    <Faq locale={locale} />
 
     <DownloadCTA locale={locale} />
   </main>

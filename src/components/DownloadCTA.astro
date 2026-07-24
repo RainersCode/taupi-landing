@@ -2,6 +2,8 @@
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import WaitlistForm from "./WaitlistForm";
+import StoreBadges from "./StoreBadges";
+import { launch } from "~/config";
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -46,12 +48,14 @@ const t = getDict(locale);
       class="mt-8 text-dim mx-auto"
       style="font-size: clamp(16px, 1.4vw, 20px); line-height: 1.5; max-width: 48ch;"
     >
-      {t["cta.sub"]}
+      {launch.live ? t["cta.sub.live"] : t["cta.sub"]}
     </p>
 
-    <!-- Waitlist form — the single CTA. -->
+    <!-- Pre-launch: waitlist form. Post-launch (src/config.ts): store badges. -->
     <div class="mt-12 flex justify-center">
-      <WaitlistForm client:visible locale={locale} size="lg" />
+      {launch.live
+        ? <StoreBadges locale={locale} />
+        : <WaitlistForm client:visible locale={locale} size="lg" />}
     </div>
 
     <p class="mt-16 eyebrow text-muted">
