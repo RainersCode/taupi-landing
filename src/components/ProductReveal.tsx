@@ -323,7 +323,7 @@ function SectionLayer({
               transition={{ duration: 1, delay: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
               className="md:col-span-6 flex justify-center md:justify-end relative"
             >
-              <div className="relative scale-90 md:scale-100 origin-top">
+              <div className="relative reveal-phone">
                 <div
                   aria-hidden
                   className="absolute -inset-8 -z-10 opacity-70 pointer-events-none"
