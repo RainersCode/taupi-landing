@@ -1,3 +1,16 @@
+/* Self-hosted fonts (latin + latin-ext for Latvian diacritics) — served
+   hashed from /_astro/ with immutable caching instead of render-blocking
+   Google Fonts CSS. font-display: swap is fontsource's default. */
+@import "@fontsource/sora/400.css";
+@import "@fontsource/sora/600.css";
+@import "@fontsource/sora/700.css";
+@import "@fontsource/sora/800.css";
+@import "@fontsource/dm-sans/400.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -125,7 +138,10 @@ input:-webkit-autofill:active {
 .display-xxl {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(48px, 9vw, 140px);
+  /* Height-aware cap: laptops are wide but short, so a pure-vw size left
+     no room below the hero headline. 14vh only bites on squat viewports —
+     1080p+ still resolves to the 140px max, mobile to the 48px min. */
+  font-size: clamp(48px, min(9vw, 14vh), 140px);
   line-height: 0.92;
   letter-spacing: -0.045em;
 }
@@ -144,4 +160,53 @@ input:-webkit-autofill:active {
 .display-accent {
   font-weight: 400;
   color: var(--accent);
+}
+
+/* Hero — short desktop viewports. Fixed paddings/gaps tuned for tall
+   monitors (160px top pad, 40px gaps) pushed the waitlist form to the very
+   bottom edge on ~700px-tall laptop screens. These classes sit after the
+   Tailwind utilities layer, so they win over the pt/mt utilities at equal
+   specificity. Taller screens and mobile are untouched. */
+@media (min-width: 768px) and (max-height: 800px) {
+  .hero-short-pt {
+    padding-top: 100px;
+  }
+  .hero-short-gap {
+    margin-top: 24px;
+  }
+}
+
+/* Reveal-section phone stage. The phone is a fixed 600px; the section is
+   h-screen with the stage centered (md:items-center) behind overflow-hidden,
+   so on short desktop viewports (laptops) a full-size phone clips equally
+   top and bottom. Shrink it in steps as viewport height drops — desktop
+   only; mobile pins to the top (items-start) and never clips the top. */
+.reveal-phone {
+  transform: scale(0.9);
+  transform-origin: top;
+}
+
+@media (min-width: 768px) {
+  .reveal-phone {
+    transform: none;
+    transform-origin: center;
+  }
+}
+
+@media (min-width: 768px) and (max-height: 860px) {
+  .reveal-phone {
+    transform: scale(0.85);
+  }
+}
+
+@media (min-width: 768px) and (max-height: 740px) {
+  .reveal-phone {
+    transform: scale(0.72);
+  }
+}
+
+@media (min-width: 768px) and (max-height: 640px) {
+  .reveal-phone {
+    transform: scale(0.6);
+  }
 }

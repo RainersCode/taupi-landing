@@ -1,0 +1,90 @@
+---
+/**
+ * Shared SEO head block — canonical, lv↔en hreflang pair, Open Graph /
+ * Twitter cards, and JSON-LD. Used by Base.astro and Legal.astro so every
+ * page gets identical, correct head plumbing.
+ *
+ * URL scheme: lv is the unprefixed default locale, en lives under /en.
+ */
+interface Props {
+  title: string;
+  description: string;
+  locale: "lv" | "en";
+}
+
+const { title, description, locale } = Astro.props;
+
+import { launch } from "~/config";
+
+const site = Astro.site ?? new URL("https://taupi.eu");
+const path = Astro.url.pathname;
+
+const isEn = path === "/en" || path === "/en/" || path.startsWith("/en/");
+const lvPath = isEn ? path.replace(/^\/en\/?/, "/") : path;
+const enPath = isEn ? path : path === "/" ? "/en/" : `/en${path}`;
+
+const canonical = new URL(path, site).href;
+const lvUrl = new URL(lvPath, site).href;
+const enUrl = new URL(enPath, site).href;
+const ogImage = new URL("/og.jpg", site).href;
+
+const graph: Record<string, unknown>[] = [
+  {
+    "@type": "Organization",
+    "@id": `${site.href}#org`,
+    name: "Taupi",
+    url: site.href,
+    logo: new URL("/taupi-mark.png", site).href,
+  },
+  {
+    "@type": "WebSite",
+    "@id": `${site.href}#website`,
+    name: "Taupi",
+    url: site.href,
+    inLanguage: ["lv", "en"],
+    publisher: { "@id": `${site.href}#org` },
+  },
+];
+
+// Once the app is live (src/config.ts), tell Google it's a downloadable
+// finance app with real store listings.
+if (launch.live) {
+  graph.push({
+    "@type": "SoftwareApplication",
+    "@id": `${site.href}#app`,
+    name: "Taupi",
+    operatingSystem: "iOS, Android",
+    applicationCategory: "FinanceApplication",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+    downloadUrl: [launch.appStoreUrl, launch.playStoreUrl].filter(Boolean),
+    publisher: { "@id": `${site.href}#org` },
+  });
+}
+
+const jsonLd = { "@context": "https://schema.org", "@graph": graph };
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="lv" href={lvUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="x-default" href={lvUrl} />
+
+<meta property="og:site_name" content="Taupi" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={locale === "lv" ? "lv_LV" : "en_US"} />
+<meta property="og:locale:alternate" content={locale === "lv" ? "en_US" : "lv_LV"} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

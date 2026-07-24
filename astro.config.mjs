@@ -9,7 +9,14 @@ export default defineConfig({
   integrations: [
     react(),
     tailwind({ applyBaseStyles: false }),
-    sitemap(),
+    sitemap({
+      // Emit xhtml:link hreflang alternates in the sitemap — mirrors the
+      // <link rel="alternate"> pairs in Seo.astro.
+      i18n: {
+        defaultLocale: "lv",
+        locales: { lv: "lv", en: "en" },
+      },
+    }),
   ],
   i18n: {
     defaultLocale: "lv",

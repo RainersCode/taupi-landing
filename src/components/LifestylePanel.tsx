@@ -31,11 +31,15 @@ export default function LifestylePanel({ locale }: { locale: Locale }) {
       {/* Image + overlay — fills the entire 100vh section */}
       <div className="relative w-full h-full overflow-hidden">
         <motion.img
-          src="/images/hero-lifestyle.png"
+          src="/images/hero-lifestyle-1920.webp"
+          srcSet="/images/hero-lifestyle-960.webp 960w, /images/hero-lifestyle-1920.webp 1920w"
+          sizes="100vw"
           alt=""
           aria-hidden="true"
           style={{ scale, y: yDrift }}
           className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
           draggable={false}
         />
 
