@@ -52,6 +52,70 @@ const home = locale === "lv" ? "/" : "/en/";
       >
         {t["nav.join"]}
       </a>
+
+      <!-- Mobile menu — native <details> dropdown (no JS island, matching
+           the FAQ's approach); an inline one-liner closes it after a tap. -->
+      <details id="mobile-nav" class="md:hidden relative">
+        <summary
+          class="list-none cursor-pointer flex items-center justify-center w-10 h-10 -mr-1.5 text-ink"
+          aria-label={locale === "lv" ? "Izvēlne" : "Menu"}
+        >
+          <svg class="nav-burger" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <svg class="nav-close" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </summary>
+
+        <div
+          class="absolute right-0 mt-3 w-60 rounded-2xl border border-white/10 py-2 divide-y divide-white/5"
+          style="background: rgba(13, 17, 40, 0.97); box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6);"
+        >
+          <a href={`${home}#features`} class="block px-5 py-3.5 eyebrow hover:text-ink transition-colors">
+            {t["nav.features"]}
+          </a>
+          <a href={`${home}#privacy`} class="block px-5 py-3.5 eyebrow hover:text-ink transition-colors">
+            {t["nav.privacy"]}
+          </a>
+          {locale === "lv" && (
+            <a href="/padomi/" class="block px-5 py-3.5 eyebrow hover:text-ink transition-colors">
+              {t["nav.blog"]}
+            </a>
+          )}
+          <a
+            href={`${home}#waitlist`}
+            class="block px-5 py-3.5 eyebrow transition-colors"
+            style="color: #38BDF8;"
+          >
+            {t["nav.join"]}
+          </a>
+        </div>
+      </details>
     </nav>
   </div>
 </header>
+
+<style>
+  /* Hide the default disclosure triangle across browsers */
+  #mobile-nav summary::-webkit-details-marker {
+    display: none;
+  }
+  #mobile-nav .nav-close {
+    display: none;
+  }
+  #mobile-nav[open] .nav-burger {
+    display: none;
+  }
+  #mobile-nav[open] .nav-close {
+    display: block;
+  }
+</style>
+
+<script is:inline>
+  // Close the mobile menu after tapping a link — same-page anchor taps
+  // don't reload the page, so the panel would otherwise stay open.
+  document.querySelectorAll("#mobile-nav a").forEach((a) => {
+    a.addEventListener("click", () => document.getElementById("mobile-nav").removeAttribute("open"));
+  });
+</script>
