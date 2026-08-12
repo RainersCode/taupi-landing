@@ -40,6 +40,12 @@ const graph: Record<string, unknown>[] = [
     url: site.href,
     logo: new URL("/taupi-mark.png", site).href,
     email: "info@taupi.eu",
+    telephone: "+371 28333522",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Valmiera",
+      addressCountry: "LV",
+    },
     ...(socials.length ? { sameAs: socials.map((s) => s.href) } : {}),
   },
   {

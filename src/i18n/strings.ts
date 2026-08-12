@@ -119,6 +119,11 @@ export const strings: Record<Locale, Dict> = {
     "footer.legal.privacy": "Privātuma politika",
     "footer.legal.terms": "Lietošanas noteikumi",
     "footer.legal.support": "Atbalsts",
+    "footer.pages": "Lapas",
+    "footer.contact": "Kontakti",
+    "footer.location": "Valmiera, Latvija",
+    "footer.news": "Jaunumi",
+    "footer.news.title": "Uzzini pirmais, kad Taupi iznāks.",
 
     "blog.eyebrow": "Padomi",
     "blog.title": "Padomi par naudu, budžetu un taupīšanu.",
@@ -242,6 +247,11 @@ export const strings: Record<Locale, Dict> = {
     "footer.legal.privacy": "Privacy Policy",
     "footer.legal.terms": "Terms of Service",
     "footer.legal.support": "Support",
+    "footer.pages": "Pages",
+    "footer.contact": "Contact",
+    "footer.location": "Valmiera, Latvia",
+    "footer.news": "Updates",
+    "footer.news.title": "Be the first to know when Taupi launches.",
 
     "blog.eyebrow": "Tips",
     "blog.title": "Tips on money, budgeting and saving.",

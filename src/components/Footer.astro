@@ -2,13 +2,26 @@
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { socials } from "~/config";
+import WaitlistForm from "~/components/WaitlistForm";
 
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+interface Props {
+  locale: Locale;
+  /** Hide the newsletter band on pages that already end in the big
+      #waitlist section (the home pages) — two adjacent forms look broken. */
+  newsletter?: boolean;
+}
+const { locale, newsletter = true } = Astro.props;
 const t = getDict(locale);
 const privacyHref = locale === "en" ? "/en/privacy-policy/" : "/privacy-policy/";
 const termsHref = locale === "en" ? "/en/terms-of-service/" : "/terms-of-service/";
 const aboutHref = locale === "en" ? "/en/par-taupi/" : "/par-taupi/";
+
+const pages = [
+  { href: aboutHref, label: t["footer.legal.about"] },
+  ...(locale === "lv" ? [{ href: "/padomi/", label: t["blog.eyebrow"] }] : []),
+  { href: privacyHref, label: t["footer.legal.privacy"] },
+  { href: termsHref, label: t["footer.legal.terms"] },
+];
 
 // Brand icons (24×24, fill=currentColor) keyed by the `label` in config.ts.
 const iconPaths: Record<string, string> = {
@@ -24,8 +37,28 @@ const iconPaths: Record<string, string> = {
 };
 ---
 <footer class="relative py-14 md:py-20 px-4 md:px-10 border-t border-white/5">
-  <div class="mx-auto max-w-content flex flex-col md:flex-row md:items-end md:justify-between gap-10">
-    <div>
+  {newsletter && (
+    <div
+      class="mx-auto max-w-content mb-14 md:mb-16 pb-12 md:pb-16 border-b border-white/5 grid grid-cols-1 md:grid-cols-12 gap-8 md:items-center"
+    >
+      <div class="md:col-span-6">
+        <p class="eyebrow mb-5">{t["footer.news"]}</p>
+        <p
+          class="font-display font-bold text-ink"
+          style="font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -0.025em; line-height: 1.15; max-width: 18ch;"
+        >
+          {t["footer.news.title"]}
+        </p>
+      </div>
+      <div class="md:col-span-6 w-full md:max-w-[440px] md:justify-self-end">
+        <WaitlistForm client:visible locale={locale} />
+      </div>
+    </div>
+  )}
+
+  <div class="mx-auto max-w-content grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+    <!-- Brand + socials -->
+    <div class="md:col-span-6">
       <span class="flex items-center gap-3">
         <img src="/gredzens.svg" alt="" width="40" height="40" />
         <span class="font-display font-extrabold text-5xl text-ink" style="letter-spacing: -0.04em;">
@@ -53,35 +86,37 @@ const iconPaths: Record<string, string> = {
       </div>
     </div>
 
-    <ul class="flex flex-wrap gap-x-8 gap-y-3">
-      <li>
-        <a href={aboutHref} class="eyebrow hover:text-ink transition-colors">
-          {t["footer.legal.about"]}
-        </a>
-      </li>
-      {locale === "lv" && (
+    <!-- Pages -->
+    <nav class="md:col-span-3" aria-label={t["footer.pages"]}>
+      <p class="eyebrow text-muted mb-6">{t["footer.pages"]}</p>
+      <ul class="space-y-4">
+        {pages.map((p) => (
+          <li>
+            <a href={p.href} class="eyebrow hover:text-ink transition-colors">
+              {p.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Contact -->
+    <div class="md:col-span-3">
+      <p class="eyebrow text-muted mb-6">{t["footer.contact"]}</p>
+      <ul class="space-y-4 font-mono text-[13px]" style="letter-spacing: 0.04em;">
         <li>
-          <a href="/padomi/" class="eyebrow hover:text-ink transition-colors">
-            {t["blog.eyebrow"]}
+          <a href="mailto:info@taupi.eu" class="text-dim hover:text-ink transition-colors">
+            info@taupi.eu
           </a>
         </li>
-      )}
-      <li>
-        <a href={privacyHref} class="eyebrow hover:text-ink transition-colors">
-          {t["footer.legal.privacy"]}
-        </a>
-      </li>
-      <li>
-        <a href={termsHref} class="eyebrow hover:text-ink transition-colors">
-          {t["footer.legal.terms"]}
-        </a>
-      </li>
-      <li>
-        <a href="mailto:info@taupi.eu" class="eyebrow hover:text-ink transition-colors">
-          {t["footer.legal.support"]}
-        </a>
-      </li>
-    </ul>
+        <li>
+          <a href="tel:+37128333522" class="text-dim hover:text-ink transition-colors">
+            +371 28 333 522
+          </a>
+        </li>
+        <li class="text-muted">{t["footer.location"]}</li>
+      </ul>
+    </div>
   </div>
 
   <div class="mx-auto max-w-content mt-16 pt-6 border-t border-white/5 flex items-center justify-between text-xs">

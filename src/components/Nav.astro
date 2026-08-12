@@ -83,6 +83,10 @@ const home = locale === "lv" ? "/" : "/en/";
 
             <div class="panel-bottom">
               <a href={`${home}#waitlist`} class="panel-cta">{t["nav.join"]}</a>
+              <div class="panel-contact">
+                <a href="mailto:info@taupi.eu">info@taupi.eu</a>
+                <a href="tel:+37128333522">+371 28 333 522</a>
+              </div>
               <p class="panel-made">
                 <span>{t["footer.made"]}</span>
                 <span>taupi.eu</span>
@@ -177,6 +181,22 @@ const home = locale === "lv" ? "/" : "/en/";
   .panel-cta:active {
     background: var(--accent);
   }
+  .panel-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 16px;
+  }
+  .panel-contact a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--dim);
+    text-decoration: none;
+  }
+  .panel-contact a:active {
+    color: var(--accent);
+  }
   .panel-made {
     display: flex;
     justify-content: space-between;
@@ -199,7 +219,8 @@ const home = locale === "lv" ? "/" : "/en/";
   #mobile-nav[open] .panel-links a:nth-child(3) { animation-delay: 0.17s; }
   #mobile-nav[open] .panel-links a:nth-child(4) { animation-delay: 0.23s; }
   #mobile-nav[open] .panel-cta { animation-delay: 0.3s; }
-  #mobile-nav[open] .panel-made { animation-delay: 0.36s; }
+  #mobile-nav[open] .panel-contact { animation-delay: 0.35s; }
+  #mobile-nav[open] .panel-made { animation-delay: 0.4s; }
 
   @keyframes panel-fade {
     from { opacity: 0; }
