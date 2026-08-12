@@ -1,6 +1,7 @@
 ---
 layout: "~/layouts/Legal.astro"
 title: "Lietošanas noteikumi"
+description: "Taupi lietotnes lietošanas noteikumi — kas drīkst lietot Taupi, kā darbojas konts un abonements, un kāda ir pušu atbildība."
 updated: "2026-05-08"
 version: "1.1"
 locale: "lv"

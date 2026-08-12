@@ -1,6 +1,7 @@
 ---
 layout: "~/layouts/Legal.astro"
 title: "Privacy Policy"
+description: "How Taupi collects, uses and protects your data — EU data storage, encryption, your GDPR rights and how to reach us with questions."
 updated: "2026-05-08"
 version: "2.1"
 locale: "en"

@@ -10,6 +10,8 @@ const { locale } = Astro.props;
 const t = getDict(locale);
 const altHref = locale === "lv" ? "/en/" : "/";
 const altLabel = locale === "lv" ? "EN" : "LV";
+// Anchors are home-absolute so the nav also works from blog/legal pages.
+const home = locale === "lv" ? "/" : "/en/";
 ---
 <!-- Mobile: tight (px-4, py-3, hide Download button — CTA is below the fold).
      Desktop: unchanged (px-10, py-5). Removed backdrop-blur to avoid scroll
@@ -26,12 +28,17 @@ const altLabel = locale === "lv" ? "EN" : "LV";
 
     <!-- Right cluster -->
     <nav class="flex items-center gap-4 md:gap-10">
-      <a href="#features" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+      <a href={`${home}#features`} class="hidden md:inline eyebrow hover:text-ink transition-colors">
         {t["nav.features"]}
       </a>
-      <a href="#privacy" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+      <a href={`${home}#privacy`} class="hidden md:inline eyebrow hover:text-ink transition-colors">
         {t["nav.privacy"]}
       </a>
+      {locale === "lv" && (
+        <a href="/padomi/" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+          {t["nav.blog"]}
+        </a>
+      )}
       <a
         href={altHref}
         class="eyebrow text-ink/60 hover:text-accent transition-colors"
@@ -40,7 +47,7 @@ const altLabel = locale === "lv" ? "EN" : "LV";
         {altLabel}
       </a>
       <a
-        href="#waitlist"
+        href={`${home}#waitlist`}
         class="hidden md:inline-flex items-center rounded-full bg-ink text-bg px-5 py-2.5 text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
       >
         {t["nav.join"]}

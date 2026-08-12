@@ -8,9 +8,18 @@ interface Props {
   title: string;
   description?: string;
   locale: Locale;
+  /** Pass false on single-language pages (blog) — see Seo.astro. */
+  alternate?: boolean;
+  ogType?: "website" | "article";
 }
 
-const { title, description = "Taupi — zini, kur aiziet tava nauda.", locale } = Astro.props;
+const {
+  title,
+  description = "Taupi — zini, kur aiziet tava nauda.",
+  locale,
+  alternate = true,
+  ogType = "website",
+} = Astro.props;
 
 // Fonts (Sora / DM Sans / JetBrains Mono, matching the RN app's type stack)
 // are self-hosted via @fontsource imports in global.css — no render-blocking
@@ -23,7 +32,7 @@ const { title, description = "Taupi — zini, kur aiziet tava nauda.", locale } 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0D1128" />
 
-    <Seo title={title} description={description} locale={locale} />
+    <Seo title={title} description={description} locale={locale} alternate={alternate} ogType={ogType} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 

@@ -1,0 +1,50 @@
+---
+import Base from "~/layouts/Base.astro";
+import Nav from "~/components/Nav.astro";
+import Footer from "~/components/Footer.astro";
+
+/**
+ * Custom 404 — Astro emits dist/404.html and Vercel serves it (with a real
+ * 404 status) for any unmatched path. LV-first with a small EN line, since
+ * a single 404 page serves both locales.
+ */
+---
+<Base
+  title="Lapa nav atrasta — Taupi"
+  description="Šī lapa neeksistē. Atgriezies uz Taupi sākumlapu."
+  locale="lv"
+  alternate={false}
+>
+  <meta slot="head" name="robots" content="noindex" />
+
+  <Nav locale="lv" />
+
+  <main class="min-h-screen flex items-center px-4 md:px-10">
+    <div class="mx-auto max-w-content w-full py-32">
+      <p class="eyebrow mb-8">404</p>
+      <h1 class="display-xl">
+        Šī lapa <span class="display-accent">nav atrasta</span>.
+      </h1>
+      <p class="mt-8 max-w-[46ch] text-lg text-dim leading-relaxed">
+        Iespējams, saite ir novecojusi vai adresē ieviesusies kļūda.
+        <span class="block mt-2 text-muted text-base">This page doesn't exist — head back to the start.</span>
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a
+          href="/"
+          class="inline-flex items-center rounded-full bg-ink text-bg px-6 py-3 text-sm font-medium hover:bg-accent transition-colors"
+        >
+          Uz sākumu
+        </a>
+        <a
+          href="/padomi/"
+          class="inline-flex items-center rounded-full border border-white/15 text-ink px-6 py-3 text-sm font-medium hover:border-accent hover:text-accent transition-colors"
+        >
+          Padomi
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer locale="lv" />
+</Base>

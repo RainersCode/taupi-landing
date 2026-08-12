@@ -1,6 +1,7 @@
 ---
 layout: "~/layouts/Legal.astro"
 title: "Privātuma politika"
+description: "Kā Taupi vāc, izmanto un aizsargā tavus datus — glabāšana Eiropas Savienībā, šifrēšana, tavas GDPR tiesības un kontakti jautājumiem."
 updated: "2026-05-08"
 version: "2.1"
 locale: "lv"

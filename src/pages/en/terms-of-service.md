@@ -1,6 +1,7 @@
 ---
 layout: "~/layouts/Legal.astro"
 title: "Terms of Service"
+description: "Taupi's terms of service — who can use the app, how accounts and subscriptions work, and what each side is responsible for."
 updated: "2026-05-08"
 version: "1.1"
 locale: "en"

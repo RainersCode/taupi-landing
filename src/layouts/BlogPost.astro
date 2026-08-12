@@ -1,0 +1,112 @@
+---
+import Base from "~/layouts/Base.astro";
+import Nav from "~/components/Nav.astro";
+import Footer from "~/components/Footer.astro";
+import { getDict } from "~/i18n/strings";
+import type { CollectionEntry } from "astro:content";
+
+/**
+ * Blog post shell — same reading column + .legal-prose typography as the
+ * legal pages, plus BlogPosting JSON-LD and a waitlist CTA at the end.
+ * Posts are LV-only for now, so hreflang alternates are disabled.
+ */
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, locale } = post.data;
+const t = getDict(locale);
+
+const site = Astro.site ?? new URL("https://taupi.eu");
+const canonical = new URL(Astro.url.pathname, site).href;
+
+const displayDate = pubDate.toLocaleDateString(locale === "lv" ? "lv-LV" : "en-GB", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  inLanguage: locale,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  mainEntityOfPage: canonical,
+  image: new URL("/og.jpg", site).href,
+  author: { "@id": `${site.href}#org` },
+  publisher: { "@id": `${site.href}#org` },
+};
+
+const homeWaitlist = locale === "lv" ? "/#waitlist" : "/en/#waitlist";
+---
+<Base title={`${title} — Taupi`} description={description} locale={locale} alternate={false} ogType="article">
+  <Nav locale={locale} />
+
+  <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
+    <header class="mb-16 border-b border-white/10 pb-10">
+      <p class="eyebrow mb-6">
+        <a href="/padomi/" class="hover:text-ink transition-colors">← {t["blog.back"]}</a>
+      </p>
+      <h1
+        class="font-display font-extrabold text-ink"
+        style="font-size: clamp(32px, 4.5vw, 60px); letter-spacing: -0.035em; line-height: 1.05;"
+      >
+        {title}
+      </h1>
+      <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+        <span class="eyebrow text-muted">{displayDate}</span>
+        {post.data.tags.length > 0 && (
+          <span class="eyebrow text-muted">{post.data.tags.join(" · ")}</span>
+        )}
+      </div>
+    </header>
+
+    <article class="legal-prose">
+      <slot />
+    </article>
+
+    <!-- Waitlist CTA — every post funnels back to the product. -->
+    <aside
+      class="relative overflow-hidden mt-20 rounded-2xl border border-white/10 p-8 md:p-12"
+      style="background: rgba(22, 27, 54, 0.6);"
+    >
+      <!-- Soft brand glow in the corner — matches the hero's treatment. -->
+      <div
+        aria-hidden
+        class="pointer-events-none absolute inset-0"
+        style="background: radial-gradient(55% 90% at 88% 0%, rgba(90, 107, 255, 0.16), transparent 65%);"
+      >
+      </div>
+
+      <div class="relative">
+        <p class="eyebrow mb-6" style="color: #38BDF8;">{t["hero.eyebrow.tester"]}</p>
+        <h2
+          class="font-display font-bold text-ink"
+          style="font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -0.025em; line-height: 1.15;"
+        >
+          {t["blog.cta.title"]}
+        </h2>
+        <p class="mt-4 text-dim max-w-[56ch]" style="line-height: 1.65;">
+          {t["blog.cta.body"]}
+        </p>
+        <div class="mt-9">
+          <a
+            href={homeWaitlist}
+            class="inline-flex items-center gap-2 rounded-full bg-ink text-bg px-6 py-3 text-sm font-medium hover:bg-accent transition-colors"
+          >
+            {t["blog.cta.button"]}
+            <span aria-hidden>→</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <Footer locale={locale} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+</Base>

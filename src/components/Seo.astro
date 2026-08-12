@@ -10,11 +10,15 @@ interface Props {
   title: string;
   description: string;
   locale: "lv" | "en";
+  /** Set false on pages that exist in one language only (e.g. blog posts)
+      so we never emit hreflang links to URLs that 404. */
+  alternate?: boolean;
+  ogType?: "website" | "article";
 }
 
-const { title, description, locale } = Astro.props;
+const { title, description, locale, alternate = true, ogType = "website" } = Astro.props;
 
-import { launch } from "~/config";
+import { launch, socials } from "~/config";
 
 const site = Astro.site ?? new URL("https://taupi.eu");
 const path = Astro.url.pathname;
@@ -26,7 +30,7 @@ const enPath = isEn ? path : path === "/" ? "/en/" : `/en${path}`;
 const canonical = new URL(path, site).href;
 const lvUrl = new URL(lvPath, site).href;
 const enUrl = new URL(enPath, site).href;
-const ogImage = new URL("/og.jpg", site).href;
+const ogImage = new URL(locale === "en" ? "/og-en.jpg" : "/og.jpg", site).href;
 
 const graph: Record<string, unknown>[] = [
   {
@@ -35,6 +39,8 @@ const graph: Record<string, unknown>[] = [
     name: "Taupi",
     url: site.href,
     logo: new URL("/taupi-mark.png", site).href,
+    email: "info@taupi.eu",
+    ...(socials.length ? { sameAs: socials.map((s) => s.href) } : {}),
   },
   {
     "@type": "WebSite",
@@ -67,14 +73,18 @@ const jsonLd = { "@context": "https://schema.org", "@graph": graph };
 <meta name="description" content={description} />
 
 <link rel="canonical" href={canonical} />
-<link rel="alternate" hreflang="lv" href={lvUrl} />
-<link rel="alternate" hreflang="en" href={enUrl} />
-<link rel="alternate" hreflang="x-default" href={lvUrl} />
+{alternate && (
+  <>
+    <link rel="alternate" hreflang="lv" href={lvUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={lvUrl} />
+  </>
+)}
 
 <meta property="og:site_name" content="Taupi" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:width" content="1200" />

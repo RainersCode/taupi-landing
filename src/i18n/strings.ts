@@ -12,6 +12,7 @@ export const strings: Record<Locale, Dict> = {
   lv: {
     "nav.features": "Iespējas",
     "nav.privacy": "Privātums",
+    "nav.blog": "Padomi",
 
     "hero.eyebrow": "Drīzumā App Store un Google Play",
     "hero.title": "Seko līdzi savām",
@@ -114,14 +115,27 @@ export const strings: Record<Locale, Dict> = {
     "faq.a5": "Eiropas Savienībā (eu-central-1), šifrēti gan pārsūtot, gan glabājot. Bez reklāmām un sekotājiem — datus vari eksportēt vai dzēst jebkurā brīdī.",
 
     "footer.made": "Darināts Latvijā.",
+    "footer.legal.about": "Par Taupi",
     "footer.legal.privacy": "Privātuma politika",
     "footer.legal.terms": "Lietošanas noteikumi",
     "footer.legal.support": "Atbalsts",
+
+    "blog.eyebrow": "Padomi",
+    "blog.title": "Padomi par naudu, budžetu un taupīšanu.",
+    "blog.intro":
+      "Praktiski, latviski rakstīti padomi par ikdienas finansēm — bez sarežģītiem terminiem un tukšas teorijas.",
+    "blog.back": "Visi padomi",
+    "blog.readmore": "Lasīt rakstu",
+    "blog.cta.title": "Izmēģini Taupi",
+    "blog.cta.body":
+      "Dienas budžets, čeku skenēšana ar AI un ieskati — viss vienuviet. Piesakies, un dosim ziņu, tiklīdz Taupi būs lejupielādējams.",
+    "blog.cta.button": "Pieteikties gaidīšanas sarakstam",
   },
 
   en: {
     "nav.features": "Features",
     "nav.privacy": "Privacy",
+    "nav.blog": "Tips",
 
     "hero.eyebrow": "Coming soon to the App Store and Google Play",
     "hero.title": "Track your",
@@ -224,9 +238,21 @@ export const strings: Record<Locale, Dict> = {
     "faq.a5": "In the European Union (eu-central-1), encrypted in transit and at rest. No ads, no trackers — export or delete your data anytime.",
 
     "footer.made": "Made in Latvia.",
+    "footer.legal.about": "About Taupi",
     "footer.legal.privacy": "Privacy Policy",
     "footer.legal.terms": "Terms of Service",
     "footer.legal.support": "Support",
+
+    "blog.eyebrow": "Tips",
+    "blog.title": "Tips on money, budgeting and saving.",
+    "blog.intro":
+      "Practical everyday-finance tips — no jargon, no empty theory.",
+    "blog.back": "All tips",
+    "blog.readmore": "Read article",
+    "blog.cta.title": "Try Taupi",
+    "blog.cta.body":
+      "A daily budget, AI receipt scanning and insights — all in one place. Join the waitlist and we'll email you the moment Taupi is ready.",
+    "blog.cta.button": "Join the waitlist",
   },
 };
 
