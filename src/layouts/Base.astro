@@ -2,6 +2,7 @@
 import "~/styles/global.css";
 import SmoothScroll from "~/components/SmoothScroll";
 import Seo from "~/components/Seo.astro";
+import Analytics from "@vercel/analytics/astro";
 import type { Locale } from "~/i18n/strings";
 
 interface Props {
@@ -35,6 +36,10 @@ const {
     <Seo title={title} description={description} locale={locale} alternate={alternate} ogType={ogType} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Cookieless visit counting (Vercel Web Analytics) — no trackers,
+         in line with the privacy promise. -->
+    <Analytics />
 
     <!-- Page-specific head extras (preloads etc.) -->
     <slot name="head" />
