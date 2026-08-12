@@ -53,9 +53,11 @@ const home = locale === "lv" ? "/" : "/en/";
         {t["nav.join"]}
       </a>
 
-      <!-- Mobile menu — native <details> dropdown (no JS island, matching
-           the FAQ's approach); an inline one-liner closes it after a tap. -->
-      <details id="mobile-nav" class="md:hidden relative">
+      <!-- Mobile menu — native <details> toggle opening a full-screen
+           panel with display-scale links (the site's own type language),
+           staggered rise-in and a soft brand glow. No JS island; a tiny
+           inline script closes it after a tap and locks page scroll. -->
+      <details id="mobile-nav" class="md:hidden">
         <summary
           class="list-none cursor-pointer flex items-center justify-center w-10 h-10 -mr-1.5 text-ink"
           aria-label={locale === "lv" ? "Izvēlne" : "Menu"}
@@ -68,28 +70,25 @@ const home = locale === "lv" ? "/" : "/en/";
           </svg>
         </summary>
 
-        <div
-          class="absolute right-0 mt-3 w-60 rounded-2xl border border-white/10 py-2 divide-y divide-white/5"
-          style="background: rgba(13, 17, 40, 0.97); box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6);"
-        >
-          <a href={`${home}#features`} class="block px-5 py-3.5 eyebrow hover:text-ink transition-colors">
-            {t["nav.features"]}
-          </a>
-          <a href={`${home}#privacy`} class="block px-5 py-3.5 eyebrow hover:text-ink transition-colors">
-            {t["nav.privacy"]}
-          </a>
-          {locale === "lv" && (
-            <a href="/padomi/" class="block px-5 py-3.5 eyebrow hover:text-ink transition-colors">
-              {t["nav.blog"]}
-            </a>
-          )}
-          <a
-            href={`${home}#waitlist`}
-            class="block px-5 py-3.5 eyebrow transition-colors"
-            style="color: #38BDF8;"
-          >
-            {t["nav.join"]}
-          </a>
+        <div class="nav-panel">
+          <nav class="panel-inner">
+            <div class="panel-links">
+              <a href={`${home}#features`}>{t["nav.features"]}</a>
+              <a href={`${home}#privacy`}>{t["nav.privacy"]}</a>
+              {locale === "lv" && <a href="/padomi/">{t["nav.blog"]}</a>}
+              <a href={locale === "en" ? "/en/par-taupi/" : "/par-taupi/"}>
+                {t["footer.legal.about"]}
+              </a>
+            </div>
+
+            <div class="panel-bottom">
+              <a href={`${home}#waitlist`} class="panel-cta">{t["nav.join"]}</a>
+              <p class="panel-made">
+                <span>{t["footer.made"]}</span>
+                <span>taupi.eu</span>
+              </p>
+            </div>
+          </nav>
         </div>
       </details>
     </nav>
@@ -110,12 +109,132 @@ const home = locale === "lv" ? "/" : "/en/";
   #mobile-nav[open] .nav-close {
     display: block;
   }
+
+  /* Full-screen panel. Sits on z:-1 inside the fixed header's stacking
+     context: above the page, below the header row — logo, EN switch and
+     the ✕ stay visible and tappable while the menu is open. */
+  #mobile-nav .nav-panel {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(55% 40% at 85% 8%, rgba(90, 107, 255, 0.16), transparent 65%),
+      radial-gradient(45% 35% at 8% 96%, rgba(56, 189, 248, 0.08), transparent 65%),
+      #0d1128;
+  }
+  #mobile-nav[open] .nav-panel {
+    display: flex;
+    overflow-y: auto;
+    animation: panel-fade 0.3s ease both;
+  }
+
+  .panel-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: 104px 24px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .panel-links {
+    display: flex;
+    flex-direction: column;
+  }
+  .panel-links a {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(30px, 8.5vw, 40px);
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .panel-links a:active {
+    color: var(--accent);
+  }
+
+  .panel-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .panel-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    border-radius: 9999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+  }
+  .panel-cta:active {
+    background: var(--accent);
+  }
+  .panel-made {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Staggered rise-in for links + bottom group */
+  #mobile-nav[open] .panel-links a,
+  #mobile-nav[open] .panel-bottom > * {
+    animation: panel-rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  #mobile-nav[open] .panel-links a:nth-child(1) { animation-delay: 0.05s; }
+  #mobile-nav[open] .panel-links a:nth-child(2) { animation-delay: 0.11s; }
+  #mobile-nav[open] .panel-links a:nth-child(3) { animation-delay: 0.17s; }
+  #mobile-nav[open] .panel-links a:nth-child(4) { animation-delay: 0.23s; }
+  #mobile-nav[open] .panel-cta { animation-delay: 0.3s; }
+  #mobile-nav[open] .panel-made { animation-delay: 0.36s; }
+
+  @keyframes panel-fade {
+    from { opacity: 0; }
+  }
+  @keyframes panel-rise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-nav[open] .nav-panel,
+    #mobile-nav[open] .panel-links a,
+    #mobile-nav[open] .panel-bottom > * {
+      animation: none;
+    }
+  }
 </style>
 
 <script is:inline>
-  // Close the mobile menu after tapping a link — same-page anchor taps
-  // don't reload the page, so the panel would otherwise stay open.
-  document.querySelectorAll("#mobile-nav a").forEach((a) => {
-    a.addEventListener("click", () => document.getElementById("mobile-nav").removeAttribute("open"));
-  });
+  // Close the menu after tapping a link (same-page anchors don't reload),
+  // and lock page scroll behind the full-screen panel while it's open.
+  (() => {
+    const nav = document.getElementById("mobile-nav");
+    if (!nav) return;
+    nav.addEventListener("toggle", () => {
+      document.documentElement.style.overflow = nav.open ? "hidden" : "";
+    });
+    nav.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => nav.removeAttribute("open"));
+    });
+  })();
 </script>
