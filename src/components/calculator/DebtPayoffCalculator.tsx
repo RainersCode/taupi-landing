@@ -2,10 +2,21 @@ import { useEffect, useRef, useState } from "react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { debtPayoff, type DebtPayoffResult } from "~/lib/finance";
-import { MoneyField, glass, useMoney, interpolate, pluralKey, futureMonth } from "./fields";
+import { debtPayoffSeries } from "~/lib/finance-web";
+import { ControlCell, MoneyField, StageGlow, glass, useMoney, interpolate, pluralKey, futureMonth } from "./fields";
 
 const STORE_KEY = "taupi:dp:v1";
 const MAX_DEBTS = 6;
+const SNOW_COLOR = "#7C8CFF";
+const AVAL_COLOR = "#38BDF8";
+
+// Chart geometry (viewBox units — scales responsively)
+const W = 640;
+const H = 320;
+const PAD = { t: 16, r: 14, b: 30, l: 14 };
+
+const shortMoney = (n: number) =>
+  n >= 1000 ? `€${Math.round(n / 1000)}k` : `€${Math.round(n)}`;
 
 type Row = { id: string; balance: number; apr: number; min: number };
 
@@ -34,9 +45,9 @@ const isRows = (v: unknown): v is Row[] =>
   );
 
 /**
- * Debt payoff calculator — the app's month-by-month debtPayoff simulation,
- * presented as two strategy cards (snowball vs avalanche) with a verdict
- * sentence naming the cheaper one.
+ * Debt payoff calculator. The hero is a race: two balance lines falling to
+ * zero (snowball vs avalanche) with the saving as a giant figure. Debts are
+ * edited in the instrument strip below.
  */
 export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
   const t = getDict(locale);
@@ -76,155 +87,238 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
 
   const snow = debts.length ? debtPayoff(debts, extra, "snowball") : null;
   const aval = debts.length ? debtPayoff(debts, extra, "avalanche") : null;
+  const snowSeries = debts.length ? debtPayoffSeries(debts, extra, "snowball") : null;
+  const avalSeries = debts.length ? debtPayoffSeries(debts, extra, "avalanche") : null;
 
-  const maxInterest = Math.max(snow?.totalInterest ?? 0, aval?.totalInterest ?? 0);
   // Rounded like the displayed values, so a sub-€1 gap never names a winner.
   const gap = snow && aval ? Math.round(snow.totalInterest) - Math.round(aval.totalInterest) : 0;
-  let verdict = "";
-  if (snow && aval) {
-    verdict =
-      gap === 0
-        ? t["dp.same"]
-        : interpolate(t["dp.diff"], {
-            name: t[gap > 0 ? "dp.avalanche" : "dp.snowball"],
-            amount: money(Math.abs(gap)),
-          });
-  }
+  const winnerKey = gap > 0 ? "dp.avalanche" : "dp.snowball";
 
-  const card = (
-    nameKey: "dp.snowball" | "dp.avalanche",
-    result: DebtPayoffResult | null,
-    cheapest: boolean,
-  ) => (
-    <div
-      className="rounded-2xl p-5"
-      style={{
-        background: "rgba(255,255,255,0.04)",
-        border: `1px solid ${cheapest && gap !== 0 ? "rgba(45,212,167,0.45)" : "rgba(255,255,255,0.10)"}`,
-      }}
-    >
-      <div className="flex items-center justify-between gap-3">
-        <p className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-dim">
-          {t[nameKey]}
-        </p>
-        {cheapest && gap !== 0 && (
-          <span
-            className="rounded-full px-2.5 py-1 text-[10.5px] font-mono font-medium tracking-[0.1em] uppercase"
-            style={{ background: "rgba(45,212,167,0.12)", color: "#2DD4A7" }}
-          >
-            ✓ {t["dp.cheapest"]}
+  // ── Chart ──
+  const maxMonths = Math.max(snowSeries?.length ?? 0, avalSeries?.length ?? 0) - 1;
+  const startBalance = Math.max(snowSeries?.[0] ?? 0, avalSeries?.[0] ?? 0, 1);
+  const x = (m: number) => PAD.l + (m / Math.max(1, maxMonths)) * (W - PAD.l - PAD.r);
+  const y = (v: number) => PAD.t + (1 - v / startBalance) * (H - PAD.t - PAD.b);
+  const baseline = y(0);
+  const linePath = (series: number[]) =>
+    series.map((v, m) => `${m === 0 ? "M" : "L"}${x(m).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+  // Year ticks every 12 months, thinned so labels never collide.
+  const yearStep = maxMonths > 96 ? 24 : 12;
+  const yearTicks: number[] = [];
+  for (let m = yearStep; m <= maxMonths; m += yearStep) yearTicks.push(m);
+
+  const chip = (nameKey: "dp.snowball" | "dp.avalanche", result: DebtPayoffResult | null, color: string) => {
+    const cheapest = gap !== 0 && ((nameKey === "dp.avalanche") === gap > 0);
+    return (
+      <div
+        className="rounded-2xl p-4"
+        style={{
+          background: "rgba(255,255,255,0.04)",
+          border: `1px solid ${cheapest ? "rgba(45,212,167,0.45)" : "rgba(255,255,255,0.10)"}`,
+        }}
+      >
+        <div className="flex items-center justify-between gap-2">
+          <span className="flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.16em] uppercase text-dim">
+            <span aria-hidden className="w-2.5 h-2.5 rounded-full" style={{ background: color }} />
+            {t[nameKey]}
           </span>
+          {cheapest && (
+            <span
+              className="rounded-full px-2 py-0.5 text-[10px] font-mono font-medium tracking-[0.08em] uppercase"
+              style={{ background: "rgba(45,212,167,0.12)", color: "#2DD4A7" }}
+            >
+              ✓ {t["dp.cheapest"]}
+            </span>
+          )}
+        </div>
+        {result && (
+          <>
+            <p className="mt-3 text-[13.5px] font-medium text-ink tabular-nums" style={{ lineHeight: 1.45 }}>
+              {interpolate(t[pluralKey(locale, result.months, "dp.free")], {
+                n: result.months,
+                date: futureMonth(locale, result.months),
+              })}
+            </p>
+            <p className="mt-1 text-[12.5px] text-dim tabular-nums">
+              {interpolate(t["dp.interest"], { amount: money(result.totalInterest) })}
+            </p>
+          </>
         )}
       </div>
-      <p className="mt-1.5 text-[12.5px] text-muted" style={{ lineHeight: 1.5 }}>
-        {t[`${nameKey}.desc`]}
-      </p>
-      {result ? (
-        <>
-          <p className="mt-4 text-[14px] font-medium text-ink tabular-nums" style={{ lineHeight: 1.5 }}>
-            {interpolate(t[pluralKey(locale, result.months, "dp.free")], {
-              n: result.months,
-              date: futureMonth(locale, result.months),
-            })}
-          </p>
-          <p className="mt-1 text-[13px] text-dim tabular-nums">
-            {interpolate(t["dp.interest"], { amount: money(result.totalInterest) })}
-          </p>
-          <div
-            aria-hidden
-            className="mt-3 h-2 rounded-full overflow-hidden"
-            style={{ background: "rgba(255,255,255,0.07)" }}
-          >
-            <div
-              className="bc-anim h-full rounded-full"
-              style={{
-                width: `${maxInterest > 0 ? (result.totalInterest / maxInterest) * 100 : 0}%`,
-                background: cheapest && gap !== 0 ? "#2DD4A7" : "#7C8CFF",
-              }}
-            />
-          </div>
-        </>
-      ) : (
-        <p className="mt-4 text-[13px]" style={{ color: "#FF3B87", lineHeight: 1.5 }}>
-          {t["dp.never"]}
-        </p>
-      )}
-    </div>
-  );
+    );
+  };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[440px_1fr] gap-6 lg:gap-14 items-start">
-      {/* Inputs */}
-      <div className="rounded-3xl p-6 md:p-8" style={glass}>
-        <p className="eyebrow mb-4">{t["dp.debts"]}</p>
-        {rows.map((row, i) => (
-          <div key={row.id} className="mb-5 pb-1 border-b border-white/[0.07] last:border-0">
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-mono text-[11px] font-medium tracking-[0.14em] uppercase text-muted">
-                {interpolate(t["dp.debt.n"], { n: i + 1 })}
+    <div>
+      {debts.length === 0 ? (
+        <p className="text-dim text-[15px]">{t["dp.enter"]}</p>
+      ) : !snow || !aval || !snowSeries || !avalSeries ? (
+        <p className="text-[15px] max-w-[52ch]" style={{ color: "#FF3B87", lineHeight: 1.6 }}>
+          {t["dp.never"]}
+        </p>
+      ) : (
+        <div className="relative grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10 lg:gap-14 items-center">
+          <StageGlow color="rgba(56,189,248,0.09)" />
+
+          {/* The answer */}
+          <div>
+            <p className="eyebrow mb-3">
+              {gap === 0 ? t["dp.tie.label"] : interpolate(t["dp.saves.label"], { name: t[winnerKey] })}
+            </p>
+            <p
+              className="font-display font-extrabold tracking-tightest tabular-nums"
+              style={{
+                fontSize: "clamp(52px, 6vw, 92px)",
+                color: gap === 0 ? "#F5F5F7" : "#2DD4A7",
+                lineHeight: 0.95,
+              }}
+            >
+              {money(gap === 0 ? aval.totalInterest : Math.abs(gap))}
+            </p>
+            {gap === 0 && (
+              <p className="mt-4 text-[13.5px] text-dim max-w-[44ch]" style={{ lineHeight: 1.6 }}>
+                {t["dp.same"]}
               </p>
-              {rows.length > 1 && (
+            )}
+
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-3" aria-live="polite">
+              {chip("dp.snowball", snow, SNOW_COLOR)}
+              {chip("dp.avalanche", aval, AVAL_COLOR)}
+            </div>
+          </div>
+
+          {/* The race to zero */}
+          <div>
+            <p className="font-mono text-[10.5px] font-medium tracking-[0.18em] uppercase text-muted mb-2">
+              {t["dp.chart"]}
+            </p>
+            <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={t["dp.chart"]}>
+              {[0.25, 0.5, 0.75].map((f) => (
+                <line
+                  key={f}
+                  x1={PAD.l}
+                  x2={W - PAD.r}
+                  y1={y(startBalance * f)}
+                  y2={y(startBalance * f)}
+                  stroke="rgba(255,255,255,0.06)"
+                />
+              ))}
+              <line x1={PAD.l} x2={W - PAD.r} y1={baseline} y2={baseline} stroke="rgba(255,255,255,0.14)" />
+
+              <path
+                d={linePath(snowSeries)}
+                fill="none"
+                stroke={SNOW_COLOR}
+                strokeWidth={gap < 0 ? 3 : 2}
+                strokeLinecap="round"
+                opacity={gap > 0 ? 0.75 : 1}
+              />
+              <path
+                d={linePath(avalSeries)}
+                fill="none"
+                stroke={AVAL_COLOR}
+                strokeWidth={gap > 0 ? 3 : 2}
+                strokeLinecap="round"
+                opacity={gap < 0 ? 0.75 : 1}
+              />
+
+              {/* touchdown dots — the debt-free moments */}
+              <circle cx={x(snowSeries.length - 1)} cy={baseline} r="4.5" fill={SNOW_COLOR} />
+              <circle cx={x(avalSeries.length - 1)} cy={baseline} r="4.5" fill={AVAL_COLOR} />
+
+              <text
+                x={W - PAD.r}
+                y={y(startBalance) + 4}
+                textAnchor="end"
+                fill="#64646F"
+                style={{ font: "500 11px 'JetBrains Mono', monospace" }}
+              >
+                {shortMoney(startBalance)}
+              </text>
+              {yearTicks.map((m) => (
+                <g key={m}>
+                  <line x1={x(m)} x2={x(m)} y1={baseline} y2={baseline + 4} stroke="rgba(255,255,255,0.25)" />
+                  <text
+                    x={x(m)}
+                    y={H - 8}
+                    textAnchor="middle"
+                    fill="#64646F"
+                    style={{ font: "500 11px 'JetBrains Mono', monospace" }}
+                  >
+                    {m / 12}{locale === "lv" ? " g." : "y"}
+                  </text>
+                </g>
+              ))}
+            </svg>
+          </div>
+        </div>
+      )}
+
+      {/* Instrument strip: the debts + the extra amount */}
+      <div className="mt-12 rounded-3xl p-6 md:p-8" style={glass}>
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_260px] gap-10">
+          <div>
+            <p className="font-mono text-[10.5px] font-medium tracking-[0.18em] uppercase text-muted mb-5">
+              {t["dp.debts"]}
+            </p>
+            <div className="flex flex-wrap items-start gap-x-10 gap-y-6">
+              {rows.map((row, i) => (
+                <div key={row.id} className="w-full sm:w-[300px]">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-mono text-[10.5px] font-medium tracking-[0.14em] uppercase text-dim">
+                      {interpolate(t["dp.debt.n"], { n: i + 1 })}
+                    </p>
+                    {rows.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeRow(row.id)}
+                        aria-label={t["dp.remove"]}
+                        title={t["dp.remove"]}
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        style={{ background: "rgba(255,255,255,0.05)" }}
+                      >
+                        <svg width="10" height="10" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                          <path d="M2 2l7 7M9 2L2 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <MoneyField label={t["dp.balance"]} value={row.balance} onChange={(v) => update(row.id, { balance: v })} />
+                    <MoneyField label={t["dp.apr"]} value={row.apr} onChange={(v) => update(row.id, { apr: v })} unit="%" max={100} />
+                    <MoneyField label={t["dp.min"]} value={row.min} onChange={(v) => update(row.id, { min: v })} />
+                  </div>
+                </div>
+              ))}
+              {rows.length < MAX_DEBTS && (
                 <button
                   type="button"
-                  onClick={() => removeRow(row.id)}
-                  aria-label={t["dp.remove"]}
-                  title={t["dp.remove"]}
-                  className="w-6 h-6 rounded-full flex items-center justify-center text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  style={{ background: "rgba(255,255,255,0.05)" }}
+                  onClick={addRow}
+                  className="flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-medium text-brand-light hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  style={{ border: "1px solid rgba(255,255,255,0.14)" }}
                 >
-                  <svg width="10" height="10" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-                    <path d="M2 2l7 7M9 2L2 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                    <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
+                  {t["dp.add"]}
                 </button>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-4">
-              <MoneyField label={t["dp.balance"]} value={row.balance} onChange={(v) => update(row.id, { balance: v })} />
-              <MoneyField label={t["dp.apr"]} value={row.apr} onChange={(v) => update(row.id, { apr: v })} unit="%" max={100} />
-              <MoneyField label={t["dp.min"]} value={row.min} onChange={(v) => update(row.id, { min: v })} />
-            </div>
           </div>
-        ))}
-        {rows.length < MAX_DEBTS && (
-          <button
-            type="button"
-            onClick={addRow}
-            className="flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-medium text-brand-light hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            style={{ border: "1px solid rgba(255,255,255,0.14)" }}
-          >
-            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-              <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-            {t["dp.add"]}
-          </button>
-        )}
 
-        <div className="mt-7 pt-5 border-t border-white/10">
-          <MoneyField label={t["dp.extra"]} value={extra} onChange={setExtra} hint={t["dp.extra.hint"]} />
+          <div className="lg:border-l lg:border-white/10 lg:pl-10">
+            <ControlCell
+              label={t["dp.extra"]}
+              value={extra}
+              onChange={setExtra}
+              min={0}
+              max={1000}
+              step={10}
+              hint={t["dp.extra.hint"]}
+              fill="#38BDF8"
+            />
+          </div>
         </div>
-      </div>
-
-      {/* Results */}
-      <div className="lg:sticky lg:top-28">
-        {debts.length === 0 ? (
-          <p className="text-dim text-[15px]">{t["dp.enter"]}</p>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {card("dp.snowball", snow, gap < 0)}
-              {card("dp.avalanche", aval, gap > 0)}
-            </div>
-            {verdict && snow && aval && (
-              <p
-                className="mt-6 pl-3 text-[14px] text-ink"
-                style={{ borderLeft: "2px solid #2DD4A7", lineHeight: 1.6 }}
-                aria-live="polite"
-              >
-                {verdict}
-              </p>
-            )}
-          </>
-        )}
       </div>
     </div>
   );

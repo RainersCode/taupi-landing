@@ -95,6 +95,114 @@ export function MoneyField({
   );
 }
 
+/** Instrument-panel cell: mono uppercase label, a BIG editable value and a
+ *  slider beneath — the tool pages' primary control. Typing past the slider
+ *  range is allowed (the slider just pegs); commit on blur/Enter. */
+export function ControlCell({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step = 1,
+  unit = "€",
+  suffix,
+  hint,
+  fill = "#5A6BFF",
+  editable = true,
+  hardClamp = false,
+}: {
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+  min: number;
+  max: number;
+  step?: number;
+  unit?: string;
+  /** Rendered after the value (e.g. "%", "mēn.") instead of a prefix unit. */
+  suffix?: string;
+  hint?: string;
+  fill?: string;
+  editable?: boolean;
+  /** Clamp typed values to [min,max] too (sliders always clamp). */
+  hardClamp?: boolean;
+}) {
+  const rounded = Math.round(value * 100) / 100;
+  const [text, setText] = useState(String(rounded));
+  useEffect(() => {
+    setText(String(rounded));
+  }, [rounded]);
+
+  const commit = () => {
+    const parsed = Number.parseFloat(text.replace(",", "."));
+    if (Number.isFinite(parsed)) {
+      const v = Math.max(hardClamp ? min : 0, parsed);
+      onChange(hardClamp ? Math.min(max, v) : v);
+    } else {
+      setText(String(rounded));
+    }
+  };
+
+  const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
+
+  return (
+    <div>
+      <p className="font-mono text-[10.5px] font-medium tracking-[0.18em] uppercase text-muted mb-2">
+        {label}
+      </p>
+      <div className="flex items-baseline gap-1.5">
+        {!suffix && <span className="text-dim text-[17px]">{unit}</span>}
+        {editable ? (
+          <input
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onBlur={commit}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+            }}
+            inputMode="decimal"
+            aria-label={label}
+            className="w-full min-w-0 bg-transparent font-display font-bold text-[26px] text-ink tracking-tight outline-none tabular-nums border-b border-transparent focus:border-accent transition-colors"
+          />
+        ) : (
+          <span className="font-display font-bold text-[26px] text-ink tracking-tight tabular-nums">
+            {text}
+          </span>
+        )}
+        {suffix && <span className="text-dim text-[15px] shrink-0">{suffix}</span>}
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={Math.min(max, Math.max(min, value))}
+        onChange={(e) => onChange(Number(e.target.value))}
+        aria-label={label}
+        aria-valuetext={`${value}${suffix ?? ""}`}
+        className="bc-range mt-1.5"
+        style={{ "--bc-fill": fill, "--bc-pct": `${pct}%` } as CSSProperties}
+      />
+      {hint && (
+        <p className="mt-1.5 text-[11.5px] text-muted" style={{ lineHeight: 1.5 }}>
+          {hint}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** Soft radial glow behind a result stage — the landing hero's atmosphere. */
+export function StageGlow({ color = "rgba(90,107,255,0.13)" }: { color?: string }) {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 -z-10"
+      style={{ background: `radial-gradient(55% 65% at 70% 35%, ${color}, transparent 70%)` }}
+    />
+  );
+}
+
 /** Slider row: label left, mono value right, colored .bc-range below. */
 export function SliderField({
   label,

@@ -122,7 +122,10 @@ const tools = [
             <p class="mt-2.5 text-[14px] text-dim" style="line-height: 1.55;">
               {t[`tools.${tool.key}.desc`]}
             </p>
-            <p class="mt-5 eyebrow text-accent">{t["tools.open"]} →</p>
+            <p class="mt-5 eyebrow text-accent">
+              {t["tools.open"]}
+              <span class="inline-block ml-1 transition-transform group-hover:translate-x-1" aria-hidden>→</span>
+            </p>
           </a>
         ))}
       </div>

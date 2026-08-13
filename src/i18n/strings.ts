@@ -240,6 +240,8 @@ export const strings: Record<Locale, Dict> = {
       "Pēc {years} gadiem tavā kontā būtu ~{future}, no kuriem {growth} būtu nopelnījuši procenti — ne tu.",
     "cc.sentence.one":
       "Pēc {years} gada tavā kontā būtu ~{future}, no kuriem {growth} būtu nopelnījuši procenti — ne tu.",
+    "cc.crossover": "Procenti apsteidz iemaksas",
+    "cc.chart.years": "gadi",
     "cc.method.title": "Kā strādā saliktie procenti?",
     "cc.method.body":
       "Saliktie procenti nozīmē, ka atdevi pelna ne tikai tava iemaksātā nauda, bet arī iepriekš nopelnītie procenti. Sākumā atšķirība šķiet niecīga, bet gadu gaitā tieši šis “procenti uz procentiem” efekts kļūst par lielāko uzkrājuma daļu. Tāpēc laiks ir svarīgāks par summu — agri sākt ar mazu iemaksu parasti pārspēj vēlu sākt ar lielu. Aprēķins pieņem nemainīgu gada atdevi ar ikmēneša kapitalizāciju; reālas investīcijas svārstās, un vēsturiskā atdeve negarantē nākotnes rezultātus.",
@@ -264,6 +266,7 @@ export const strings: Record<Locale, Dict> = {
     "ef.plan.one": "Atliekot {monthly} mēnesī, mērķi sasniegsi pēc {n} mēneša — {date}.",
     "ef.plan.enter": "Ievadi, cik vari atlikt mēnesī, un redzēsi, kad sasniegsi mērķi.",
     "ef.enter": "Ievadi mēneša izdevumus, lai sāktu.",
+    "ef.months.hint": "3 mēn., ja alga stabila; 6 vai vairāk, ja ienākumi svārstās.",
     "ef.method.title": "Kāpēc tieši 3–6 mēneši?",
     "ef.method.body":
       "Drošības spilvens ir nauda negaidītajam — salūzusi veļasmašīna, zobārsts, darba zaudēšana. Klasiskā vadlīnija ir 3–6 mēnešu izdevumu summa: 3 mēneši, ja alga ir stabila un saistību maz; 6 vai vairāk, ja ienākumi svārstās, esi pašnodarbinātais vai ģimenē ir viens pelnītājs. Glabā to atsevišķi no ikdienas konta — krājkontā vai depozītā, kur vari ātri piekļūt. Šī nauda nav investīcijām: tās uzdevums ir būt uz vietas, nevis augt.",
@@ -293,6 +296,9 @@ export const strings: Record<Locale, Dict> = {
     "dp.never":
       "Ar šiem skaitļiem parādi nesarūk — maksājumi nesedz procentus. Palielini maksājumus vai papildu summu.",
     "dp.enter": "Ievadi vismaz vienu kredītu ar atlikumu un mēneša maksājumu.",
+    "dp.saves.label": "{name} ietaupa",
+    "dp.tie.label": "Procentos abām",
+    "dp.chart": "Atlikums laika gaitā",
     "dp.method.title": "Sniega bumba vai lavīna?",
     "dp.method.body":
       "Abas stratēģijas strādā vienādi: katru mēnesi maksā visiem kredītiem minimumus, un visu pārpalikušo naudu met uz vienu prioritāro kredītu. Atšķiras tikai prioritāte. Lavīna izvēlas kredītu ar augstāko likmi — tā matemātiski ietaupa visvairāk procentos. Sniega bumba izvēlas mazāko atlikumu — pirmais nomaksātais kredīts pienāk ātrāk, un šī uzvaras sajūta daudziem palīdz neapstāties. Ja atšķirība procentos ir maza, izvēlies to, pie kuras tiešām turēsies.",
@@ -531,6 +537,8 @@ export const strings: Record<Locale, Dict> = {
       "After {years} years you'd have ~{future} — {growth} of it earned by interest, not by you.",
     "cc.sentence.one":
       "After {years} year you'd have ~{future} — {growth} of it earned by interest, not by you.",
+    "cc.crossover": "Interest overtakes deposits",
+    "cc.chart.years": "years",
     "cc.method.title": "How does compound interest work?",
     "cc.method.body":
       "Compound interest means returns are earned not just by the money you put in, but also by the interest you've already earned. At first the difference looks tiny, but over the years this “interest on interest” effect becomes the biggest part of the pot. That's why time matters more than the amount — starting early with a small contribution usually beats starting late with a big one. The calculation assumes a constant yearly return with monthly compounding; real investments fluctuate, and past performance doesn't guarantee future results.",
@@ -555,6 +563,7 @@ export const strings: Record<Locale, Dict> = {
     "ef.plan.one": "Setting aside {monthly} a month, you'll reach the target in {n} month — {date}.",
     "ef.plan.enter": "Enter what you can set aside monthly to see when you'll reach the target.",
     "ef.enter": "Enter your monthly expenses to start.",
+    "ef.months.hint": "3 months if your salary is stable; 6 or more if your income fluctuates.",
     "ef.method.title": "Why 3–6 months?",
     "ef.method.body":
       "An emergency fund is money for the unexpected — a broken washing machine, a dentist bill, losing your job. The classic guideline is 3–6 months of expenses: 3 months if your salary is stable and obligations few; 6 or more if your income fluctuates, you're self-employed or your household has a single earner. Keep it separate from your everyday account — in a savings account or deposit you can reach quickly. This money is not for investing: its job is to be there, not to grow.",
@@ -584,6 +593,9 @@ export const strings: Record<Locale, Dict> = {
     "dp.never":
       "With these numbers the debts never shrink — the payments don't cover the interest. Increase the payments or the extra amount.",
     "dp.enter": "Enter at least one debt with a balance and a monthly payment.",
+    "dp.saves.label": "{name} saves",
+    "dp.tie.label": "Interest for both",
+    "dp.chart": "Balance over time",
     "dp.method.title": "Snowball or avalanche?",
     "dp.method.body":
       "Both strategies work the same way: every month you pay the minimum on every debt, then throw all the leftover money at one priority debt. Only the priority differs. Avalanche picks the debt with the highest rate — mathematically it saves the most interest. Snowball picks the smallest balance — your first paid-off debt arrives sooner, and that feeling of a win keeps many people going. If the interest difference is small, pick the one you'll actually stick with.",

@@ -14,6 +14,7 @@ import {
 } from "~/lib/affordability";
 import { futureValue } from "~/lib/finance";
 import AllocationRow from "./AllocationRow";
+import { StageGlow } from "./fields";
 
 // Bar/row colors — the app's calculator palette (BudgetCalculatorScreen), so
 // the web tool and the app screenshots read as one product. Exported for the
@@ -368,7 +369,8 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
     : glass;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6 lg:gap-12 items-start">
+    <div className="relative grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6 lg:gap-12 items-start">
+      <StageGlow color={whatIfActive ? "rgba(56,189,248,0.08)" : "rgba(90,107,255,0.09)"} />
       {/* ── Summary panel — sticky on desktop so the verdict follows the sliders ── */}
       <aside className="lg:sticky lg:top-28 rounded-3xl p-6 md:p-8" style={panelStyle}>
         {/* Mode switch */}
@@ -479,7 +481,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 {evald.overAllocated ? t["bc.over"] : t["bc.free"]}
               </span>
               <span
-                className="font-display font-extrabold text-[36px] tracking-tight tabular-nums"
+                className="font-display font-extrabold text-[42px] tracking-tight tabular-nums"
                 style={{ color: freeColor }}
               >
                 {evald.free < 0 ? "−" : ""}€{nf.format(Math.abs(Math.round(evald.free)))}
