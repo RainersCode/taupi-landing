@@ -58,7 +58,12 @@ const legend = [
   { color: "#FF3B87", label: t["bc.legend.bad"] },
 ];
 ---
-<Base title={title} description={description} locale={locale}>
+<Base
+  title={title}
+  description={description}
+  locale={locale}
+  ogImage={`/og/budget${locale === "en" ? "-en" : ""}.jpg`}
+>
   <Nav locale={locale} />
 
   <main class="pt-32 md:pt-40 pb-8">

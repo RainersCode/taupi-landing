@@ -29,8 +29,10 @@ const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey
 const t = getDict(locale);
 const hubHref = locale === "lv" ? "/kalkulatori/" : "/en/kalkulatori/";
 const faqItems = faqKey ? toolFaqs[faqKey]?.[locale] : undefined;
+// Branded per-tool OG card (scripts/generate-tool-og.mjs) keyed like the FAQ.
+const ogImage = faqKey ? `/og/${faqKey}${locale === "en" ? "-en" : ""}.jpg` : undefined;
 ---
-<Base title={title} description={description} locale={locale}>
+<Base title={title} description={description} locale={locale} ogImage={ogImage}>
   <Nav locale={locale} />
 
   <main class="pt-32 md:pt-40 pb-8">

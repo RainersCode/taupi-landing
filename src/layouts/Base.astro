@@ -12,6 +12,8 @@ interface Props {
   /** Pass false on single-language pages (blog) — see Seo.astro. */
   alternate?: boolean;
   ogType?: "website" | "article";
+  /** Page-specific OG image path — see Seo.astro. */
+  ogImage?: string;
 }
 
 const {
@@ -20,6 +22,7 @@ const {
   locale,
   alternate = true,
   ogType = "website",
+  ogImage,
 } = Astro.props;
 
 // Fonts (Sora / DM Sans / JetBrains Mono, matching the RN app's type stack)
@@ -33,7 +36,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0D1128" />
 
-    <Seo title={title} description={description} locale={locale} alternate={alternate} ogType={ogType} />
+    <Seo title={title} description={description} locale={locale} alternate={alternate} ogType={ogType} ogImage={ogImage} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 

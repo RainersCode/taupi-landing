@@ -52,7 +52,12 @@ const tools = [
   },
 ];
 ---
-<Base title={title} description={description} locale={locale}>
+<Base
+  title={title}
+  description={description}
+  locale={locale}
+  ogImage={`/og/tools${locale === "en" ? "-en" : ""}.jpg`}
+>
   <Nav locale={locale} />
 
   <main class="pt-32 md:pt-40 pb-8">

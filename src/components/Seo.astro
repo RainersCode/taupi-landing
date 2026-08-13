@@ -14,9 +14,12 @@ interface Props {
       so we never emit hreflang links to URLs that 404. */
   alternate?: boolean;
   ogType?: "website" | "article";
+  /** Page-specific OG image path (e.g. "/og/budget.jpg"); defaults to the
+      site-wide per-locale card. */
+  ogImage?: string;
 }
 
-const { title, description, locale, alternate = true, ogType = "website" } = Astro.props;
+const { title, description, locale, alternate = true, ogType = "website", ogImage: ogImageProp } = Astro.props;
 
 import { launch, socials } from "~/config";
 
@@ -30,7 +33,7 @@ const enPath = isEn ? path : path === "/" ? "/en/" : `/en${path}`;
 const canonical = new URL(path, site).href;
 const lvUrl = new URL(lvPath, site).href;
 const enUrl = new URL(enPath, site).href;
-const ogImage = new URL(locale === "en" ? "/og-en.jpg" : "/og.jpg", site).href;
+const ogImage = new URL(ogImageProp ?? (locale === "en" ? "/og-en.jpg" : "/og.jpg"), site).href;
 
 const graph: Record<string, unknown>[] = [
   {
