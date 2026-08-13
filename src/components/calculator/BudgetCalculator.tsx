@@ -206,6 +206,24 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
   if (freeDiff < 0) deltaColor = "#FF3B87";
   else if (freeDiff > 0) deltaColor = "#2DD4A7";
 
+  // One readable sentence instead of before→after number rows: what you'd
+  // have left, how that compares to "Tagad", and what it means per year.
+  const buildDeltaSentence = (): string => {
+    if (!compare) return "";
+    if (freeDiff === 0) return fmt("bc.delta.equal", { free: money(compare.freeAfter) });
+    const overAfter = Math.round(compare.freeAfter) < 0;
+    const vars = {
+      free: money(Math.abs(compare.freeAfter)),
+      diff: money(Math.abs(freeDiff)),
+      annual: money(Math.abs(freeDiff * 12)),
+    };
+    if (overAfter) return fmt(freeDiff > 0 ? "bc.delta.moreOver" : "bc.delta.lessOver", vars);
+    return fmt(freeDiff > 0 ? "bc.delta.more" : "bc.delta.less", vars);
+  };
+  const deltaSentence = buildDeltaSentence();
+
+  // Secondary note only when a benchmark actually changed bands — "nothing
+  // changed" is already the sentence's job.
   const buildDeltaNote = (): string => {
     if (!compare) return "";
     const worse = compare.worsened.length;
@@ -214,14 +232,34 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
     if (worse > 1) return fmt("bc.delta.worse", { n: worse });
     if (better === 1) return t["bc.delta.better.one"];
     if (better > 1) return fmt("bc.delta.better", { n: better });
-    return t["bc.delta.same"];
+    return "";
   };
   const deltaNote = buildDeltaNote();
+
+  // Bar segments for a given allocation — used once in "Tagad", twice in
+  // "Ko ja?" (the real bar stays visible above the scenario bar).
+  const segments = (amts: Amounts) =>
+    LINES.filter((k) => amts[k] > 0).map((k) => (
+      <div
+        key={k}
+        className="bc-anim h-full"
+        style={{
+          width: `${Math.min(100, (amts[k] / income) * 100)}%`,
+          background: LINE_COLORS[k],
+        }}
+      />
+    ));
+
+  const whatIfActive = mode === "whatIf";
+  // The sandbox gets its own accent ring so it never reads as the real budget.
+  const panelStyle = whatIfActive
+    ? { ...glass, border: "1px solid rgba(56,189,248,0.35)" }
+    : glass;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6 lg:gap-12 items-start">
       {/* ── Summary panel — sticky on desktop so the verdict follows the sliders ── */}
-      <aside className="lg:sticky lg:top-28 rounded-3xl p-6 md:p-8" style={glass}>
+      <aside className="lg:sticky lg:top-28 rounded-3xl p-6 md:p-8" style={panelStyle}>
         {/* Mode switch */}
         <div
           className="flex rounded-full p-1"
@@ -229,15 +267,17 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
         >
           {(["now", "whatIf"] as CalcMode[]).map((m) => {
             const active = mode === m;
+            // "Tagad" owns brand indigo; the "Ko ja?" sandbox owns accent
+            // cyan — the color split carries through the ring and bar labels.
+            let chipClass = "text-dim hover:text-ink";
+            if (active) chipClass = m === "whatIf" ? "bg-accent text-bg" : "bg-brand text-white";
             return (
               <button
                 key={m}
                 type="button"
                 onClick={() => switchMode(m)}
                 aria-pressed={active}
-                className={`flex-1 rounded-full py-2 text-[13.5px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                  active ? "bg-brand text-white" : "text-dim hover:text-ink"
-                }`}
+                className={`flex-1 rounded-full py-2 text-[13.5px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${chipClass}`}
               >
                 {t[m === "now" ? "bc.mode.now" : "bc.mode.whatIf"]}
               </button>
@@ -278,29 +318,50 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
 
         {income > 0 && (
           <>
-            {/* Signature: one slim bar carving income into category segments */}
-            <div
-              aria-hidden
-              className="mt-8 flex h-3.5 rounded-full overflow-hidden"
-              style={{
-                background: "rgba(255,255,255,0.07)",
-                outline: evald.overAllocated ? "1px solid rgba(255,59,135,0.55)" : "none",
-                outlineOffset: 2,
-              }}
-            >
-              {evald.lines
-                .filter((l) => l.amount > 0)
-                .map((l) => (
-                  <div
-                    key={l.key}
-                    className="bc-anim h-full"
-                    style={{
-                      width: `${Math.min(100, (l.amount / income) * 100)}%`,
-                      background: LINE_COLORS[l.key],
-                    }}
-                  />
-                ))}
-            </div>
+            {/* Signature: one slim bar carving income into category segments.
+                In "Ko ja?" the real budget stays visible above the scenario
+                bar, so the comparison is something you SEE, not decode. */}
+            {compare ? (
+              <div aria-hidden className="mt-7">
+                <p className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase text-muted mb-1.5">
+                  {t["bc.mode.now"]}
+                </p>
+                <div
+                  className="flex h-2 rounded-full overflow-hidden opacity-50"
+                  style={{ background: "rgba(255,255,255,0.07)" }}
+                >
+                  {segments(amounts)}
+                </div>
+                <p
+                  className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase mt-3.5 mb-1.5"
+                  style={{ color: "#38BDF8" }}
+                >
+                  {t["bc.mode.whatIf"]}
+                </p>
+                <div
+                  className="flex h-3.5 rounded-full overflow-hidden"
+                  style={{
+                    background: "rgba(255,255,255,0.07)",
+                    outline: evald.overAllocated ? "1px solid rgba(255,59,135,0.55)" : "none",
+                    outlineOffset: 2,
+                  }}
+                >
+                  {segments(activeAmounts)}
+                </div>
+              </div>
+            ) : (
+              <div
+                aria-hidden
+                className="mt-8 flex h-3.5 rounded-full overflow-hidden"
+                style={{
+                  background: "rgba(255,255,255,0.07)",
+                  outline: evald.overAllocated ? "1px solid rgba(255,59,135,0.55)" : "none",
+                  outlineOffset: 2,
+                }}
+              >
+                {segments(activeAmounts)}
+              </div>
+            )}
 
             <div className="mt-5 flex items-baseline justify-between">
               <span className="text-[13px] font-medium text-dim">
@@ -315,30 +376,23 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
               </span>
             </div>
 
-            {/* What-if delta — before → after, monthly and yearly */}
+            {/* What-if verdict — one readable sentence, colored by outcome */}
             {compare && (
               <div className="mt-6 pt-5 border-t border-white/10">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-[12.5px] font-medium text-dim">{t["bc.delta.free"]}</span>
-                  <span className="font-mono text-[14px] text-ink tabular-nums">
-                    {money(compare.freeBefore)} →{" "}
-                    <span style={{ color: deltaColor, fontWeight: 700 }}>{money(compare.freeAfter)}</span>
-                  </span>
-                </div>
-                <div className="mt-2 flex items-baseline justify-between">
-                  <span className="text-[12.5px] font-medium text-dim">{t["bc.delta.annual"]}</span>
-                  <span className="font-mono text-[14px] text-ink tabular-nums">
-                    {money(compare.annualBefore)} →{" "}
-                    <span style={{ color: deltaColor, fontWeight: 700 }}>{money(compare.annualAfter)}</span>
-                  </span>
-                </div>
-                <p className="mt-3 text-[12px] font-mono text-muted text-center" aria-live="polite">
-                  {deltaNote}
+                <p
+                  className="pl-3 text-[13.5px] text-ink"
+                  style={{ borderLeft: `2px solid ${deltaColor}`, lineHeight: 1.6 }}
+                  aria-live="polite"
+                >
+                  {deltaSentence}
                 </p>
+                {deltaNote && (
+                  <p className="mt-3 text-[12px] font-mono text-muted">{deltaNote}</p>
+                )}
                 <button
                   type="button"
                   onClick={resetWhatIf}
-                  className="mt-3 block mx-auto text-[12px] text-muted underline underline-offset-2 hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+                  className="mt-4 text-[12px] text-muted underline underline-offset-2 hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
                 >
                   {t["bc.whatIf.reset"]}
                 </button>
