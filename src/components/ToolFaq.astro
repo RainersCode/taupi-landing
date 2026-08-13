@@ -1,0 +1,71 @@
+---
+/**
+ * FAQ section for a calculator page — the landing Faq.astro's accordion
+ * idiom (native <details>, chevron, no JS) in the tool pages' narrower
+ * reading column, plus FAQPage JSON-LD for rich results.
+ */
+import type { FaqItem } from "~/i18n/toolFaqs";
+import { getDict } from "~/i18n/strings";
+import type { Locale } from "~/i18n/strings";
+
+interface Props {
+  locale: Locale;
+  items: FaqItem[];
+}
+const { locale, items } = Astro.props;
+const t = getDict(locale);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: items.map((it) => ({
+    "@type": "Question",
+    name: it.q,
+    acceptedAnswer: { "@type": "Answer", text: it.a },
+  })),
+};
+---
+<section class="mx-auto max-w-3xl px-6 md:px-10 mt-20 md:mt-28">
+  <p class="eyebrow mb-5">{t["faq.eyebrow"]}</p>
+  <h2
+    class="font-display font-bold text-ink"
+    style="font-size: clamp(24px, 3vw, 36px); letter-spacing: -0.02em; line-height: 1.2;"
+  >
+    {t["faq.title"]}
+  </h2>
+
+  <div class="mt-4">
+    {items.map((it) => (
+      <details class="tf-item group border-b border-white/10">
+        <summary class="flex items-center justify-between gap-6 cursor-pointer list-none py-5">
+          <span
+            class="font-display font-semibold text-ink"
+            style="font-size: clamp(15.5px, 1.3vw, 18px); letter-spacing: -0.01em; line-height: 1.35;"
+          >
+            {it.q}
+          </span>
+          <svg class="tf-chevron shrink-0" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 7l5 5 5-5" stroke="#38BDF8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </summary>
+        <p class="pb-6 text-dim max-w-[62ch]" style="font-size: 15px; line-height: 1.65;">
+          {it.a}
+        </p>
+      </details>
+    ))}
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+<style>
+  .tf-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .tf-chevron {
+    transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .tf-item[open] .tf-chevron {
+    transform: rotate(180deg);
+  }
+</style>

@@ -8,8 +8,10 @@ import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
+import ToolFaq from "~/components/ToolFaq.astro";
 import BudgetCalculator, { LINE_COLORS } from "~/components/calculator/BudgetCalculator";
 import { getCollection } from "astro:content";
+import { toolFaqs } from "~/i18n/toolFaqs";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
 import { BENCHMARKS, LINES } from "~/lib/affordability";
@@ -173,6 +175,8 @@ const legend = [
       )}
       </div>
     </section>
+
+    <ToolFaq locale={locale} items={toolFaqs.budget[locale]} />
   </main>
 
   <DownloadCTA locale={locale} />

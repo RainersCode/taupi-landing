@@ -9,6 +9,8 @@ import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
+import ToolFaq from "~/components/ToolFaq.astro";
+import { toolFaqs } from "~/i18n/toolFaqs";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
 
@@ -20,10 +22,13 @@ interface Props {
   subKey: string;
   methodTitleKey: string;
   methodBodyKey: string;
+  /** Key into toolFaqs — renders the FAQ section + FAQPage schema. */
+  faqKey?: string;
 }
-const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey } = Astro.props;
+const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey, faqKey } = Astro.props;
 const t = getDict(locale);
 const hubHref = locale === "lv" ? "/kalkulatori/" : "/en/kalkulatori/";
+const faqItems = faqKey ? toolFaqs[faqKey]?.[locale] : undefined;
 ---
 <Base title={title} description={description} locale={locale}>
   <Nav locale={locale} />
@@ -60,6 +65,8 @@ const hubHref = locale === "lv" ? "/kalkulatori/" : "/en/kalkulatori/";
         {t["tp.app.note"]}
       </p>
     </section>
+
+    {faqItems && faqItems.length > 0 && <ToolFaq locale={locale} items={faqItems} />}
   </main>
 
   <DownloadCTA locale={locale} />
