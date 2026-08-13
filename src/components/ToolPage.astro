@@ -1,0 +1,67 @@
+---
+/**
+ * Shared scaffold for single-calculator pages: back-link to the hub,
+ * header, the tool island (slot), a method section for the SEO substance,
+ * the app-note bridge and the download CTA. EN pages keep the LV slug so
+ * Seo.astro's mechanical /en+path hreflang mapping resolves.
+ */
+import Base from "~/layouts/Base.astro";
+import Nav from "~/components/Nav.astro";
+import Footer from "~/components/Footer.astro";
+import DownloadCTA from "~/components/DownloadCTA.astro";
+import { getDict } from "~/i18n/strings";
+import type { Locale } from "~/i18n/strings";
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  h1Key: string;
+  subKey: string;
+  methodTitleKey: string;
+  methodBodyKey: string;
+}
+const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey } = Astro.props;
+const t = getDict(locale);
+const hubHref = locale === "lv" ? "/kalkulatori/" : "/en/kalkulatori/";
+---
+<Base title={title} description={description} locale={locale}>
+  <Nav locale={locale} />
+
+  <main class="pt-32 md:pt-40 pb-8">
+    <header class="mx-auto max-w-6xl px-6 md:px-10 mb-10 md:mb-14">
+      <p class="eyebrow mb-6">
+        <a href={hubHref} class="hover:text-ink transition-colors">← {t["tools.back"]}</a>
+      </p>
+      <h1 class="display-xl text-ink">{t[h1Key]}</h1>
+      <p class="mt-6 text-dim max-w-[56ch] text-lg" style="line-height: 1.65;">
+        {t[subKey]}
+      </p>
+    </header>
+
+    <section class="mx-auto max-w-6xl px-6 md:px-10">
+      <slot />
+    </section>
+
+    <section class="mx-auto max-w-3xl px-6 md:px-10 mt-24 md:mt-32">
+      <p class="eyebrow mb-5">{t["bc.method.eyebrow"]}</p>
+      <h2
+        class="font-display font-bold text-ink"
+        style="font-size: clamp(24px, 3vw, 36px); letter-spacing: -0.02em; line-height: 1.2;"
+      >
+        {t[methodTitleKey]}
+      </h2>
+      <p class="mt-5 text-dim" style="line-height: 1.7;">{t[methodBodyKey]}</p>
+
+      <p
+        class="mt-10 px-5 py-4 rounded-xl text-[15px] text-ink"
+        style="background: rgba(90, 107, 255, 0.08); border: 1px solid rgba(90, 107, 255, 0.25); line-height: 1.6;"
+      >
+        {t["tp.app.note"]}
+      </p>
+    </section>
+  </main>
+
+  <DownloadCTA locale={locale} />
+  <Footer locale={locale} />
+</Base>

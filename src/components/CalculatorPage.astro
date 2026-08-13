@@ -62,7 +62,11 @@ const legend = [
   <main class="pt-32 md:pt-40 pb-8">
     <!-- ── Page header ── -->
     <header class="mx-auto max-w-6xl px-6 md:px-10 mb-10 md:mb-14">
-      <p class="eyebrow mb-6">{t["bc.eyebrow"]}</p>
+      <p class="eyebrow mb-6">
+        <a href={locale === "lv" ? "/kalkulatori/" : "/en/kalkulatori/"} class="hover:text-ink transition-colors">
+          ← {t["tools.back"]}
+        </a>
+      </p>
       <h1 class="display-xl text-ink">{t["bc.title"]}</h1>
       <p class="mt-6 text-dim max-w-[56ch] text-lg" style="line-height: 1.65;">
         {t["bc.sub"]}

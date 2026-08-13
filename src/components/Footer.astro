@@ -16,11 +16,11 @@ const privacyHref = locale === "en" ? "/en/privacy-policy/" : "/privacy-policy/"
 const termsHref = locale === "en" ? "/en/terms-of-service/" : "/terms-of-service/";
 const aboutHref = locale === "en" ? "/en/par-taupi/" : "/par-taupi/";
 
-const calcHref = locale === "en" ? "/en/budzeta-kalkulators/" : "/budzeta-kalkulators/";
+const toolsHref = locale === "en" ? "/en/kalkulatori/" : "/kalkulatori/";
 
 const pages = [
   { href: aboutHref, label: t["footer.legal.about"] },
-  { href: calcHref, label: t["nav.calc"] },
+  { href: toolsHref, label: t["nav.tools"] },
   ...(locale === "lv" ? [{ href: "/padomi/", label: t["blog.eyebrow"] }] : []),
   { href: privacyHref, label: t["footer.legal.privacy"] },
   { href: termsHref, label: t["footer.legal.terms"] },

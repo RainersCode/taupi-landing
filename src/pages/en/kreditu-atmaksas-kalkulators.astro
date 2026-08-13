@@ -1,0 +1,15 @@
+---
+import ToolPage from "~/components/ToolPage.astro";
+import DebtPayoffCalculator from "~/components/calculator/DebtPayoffCalculator";
+---
+<ToolPage
+  locale="en"
+  title="Debt payoff calculator — snowball vs avalanche | Taupi"
+  description="Compare debt payoff strategies: snowball vs avalanche — which frees you from debt sooner and how much it saves in interest. Free, no sign-up."
+  h1Key="dp.title"
+  subKey="dp.sub"
+  methodTitleKey="dp.method.title"
+  methodBodyKey="dp.method.body"
+>
+  <DebtPayoffCalculator client:load locale="en" />
+</ToolPage>

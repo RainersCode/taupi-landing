@@ -1,0 +1,15 @@
+---
+import ToolPage from "~/components/ToolPage.astro";
+import DebtPayoffCalculator from "~/components/calculator/DebtPayoffCalculator";
+---
+<ToolPage
+  locale="lv"
+  title="Kredītu atmaksas kalkulators — sniega bumba vai lavīna | Taupi"
+  description="Salīdzini kredītu atmaksas stratēģijas: sniega bumba pret lavīnu — kura ātrāk atbrīvo no parādiem un cik ietaupa procentu maksājumos. Bezmaksas rīks latviski."
+  h1Key="dp.title"
+  subKey="dp.sub"
+  methodTitleKey="dp.method.title"
+  methodBodyKey="dp.method.body"
+>
+  <DebtPayoffCalculator client:load locale="lv" />
+</ToolPage>

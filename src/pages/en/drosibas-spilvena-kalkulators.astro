@@ -1,0 +1,15 @@
+---
+import ToolPage from "~/components/ToolPage.astro";
+import EmergencyFundCalculator from "~/components/calculator/EmergencyFundCalculator";
+---
+<ToolPage
+  locale="en"
+  title="Emergency fund calculator — how much to save | Taupi"
+  description="Work out your emergency fund: monthly expenses × 3–6 months, what's still missing and when you'll reach the target. Free, no sign-up."
+  h1Key="ef.title"
+  subKey="ef.sub"
+  methodTitleKey="ef.method.title"
+  methodBodyKey="ef.method.body"
+>
+  <EmergencyFundCalculator client:load locale="en" />
+</ToolPage>

@@ -40,10 +40,10 @@ const home = locale === "lv" ? "/" : "/en/";
         </a>
       )}
       <a
-        href={locale === "en" ? "/en/budzeta-kalkulators/" : "/budzeta-kalkulators/"}
+        href={locale === "en" ? "/en/kalkulatori/" : "/kalkulatori/"}
         class="hidden md:inline eyebrow hover:text-ink transition-colors"
       >
-        {t["nav.calc"]}
+        {t["nav.tools"]}
       </a>
       <a
         href={altHref}
@@ -81,8 +81,8 @@ const home = locale === "lv" ? "/" : "/en/";
             <div class="panel-links">
               <a href={`${home}#features`}>{t["nav.features"]}</a>
               <a href={`${home}#privacy`}>{t["nav.privacy"]}</a>
-              <a href={locale === "en" ? "/en/budzeta-kalkulators/" : "/budzeta-kalkulators/"}>
-                {t["nav.calc"]}
+              <a href={locale === "en" ? "/en/kalkulatori/" : "/kalkulatori/"}>
+                {t["nav.tools"]}
               </a>
               {locale === "lv" && <a href="/padomi/">{t["nav.blog"]}</a>}
               <a href={locale === "en" ? "/en/par-taupi/" : "/par-taupi/"}>

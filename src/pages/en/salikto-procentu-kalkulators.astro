@@ -1,0 +1,15 @@
+---
+import ToolPage from "~/components/ToolPage.astro";
+import CompoundCalculator from "~/components/calculator/CompoundCalculator";
+---
+<ToolPage
+  locale="en"
+  title="Compound interest calculator — how your savings grow | Taupi"
+  description="Free compound interest calculator: enter your monthly contribution, return and years — see how much of the pot is earned by interest. No sign-up."
+  h1Key="cc.title"
+  subKey="cc.sub"
+  methodTitleKey="cc.method.title"
+  methodBodyKey="cc.method.body"
+>
+  <CompoundCalculator client:load locale="en" />
+</ToolPage>
