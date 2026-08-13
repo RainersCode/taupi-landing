@@ -75,7 +75,9 @@ function DebtInput({
   };
   return (
     <div>
-      <p className="font-mono text-[10px] font-medium tracking-[0.14em] uppercase text-muted mb-1.5">
+      {/* Reserve two label lines and bottom-align the text, so a wrapping
+          label ("Min. maksājums") never pushes its input out of row. */}
+      <p className="font-mono text-[10px] font-medium tracking-[0.14em] uppercase text-muted mb-1.5 min-h-[27px] flex items-end">
         {label}
       </p>
       <div className="flex items-baseline gap-1 border-b border-white/12 focus-within:border-accent transition-colors pb-1">
@@ -410,7 +412,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                       </button>
                     )}
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-4 items-end">
                     <DebtInput label={t["dp.balance"]} value={row.balance} onChange={(v) => update(row.id, { balance: v })} />
                     <DebtInput label={t["dp.apr"]} value={row.apr} onChange={(v) => update(row.id, { apr: v })} unit="%" max={100} />
                     <DebtInput label={t["dp.min"]} value={row.min} onChange={(v) => update(row.id, { min: v })} />
