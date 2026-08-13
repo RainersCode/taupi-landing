@@ -60,72 +60,139 @@ const tools = [
         {tools.map((tool) => (
           <a
             href={tool.href}
-            class="group block rounded-3xl p-7 bg-white/[0.04] border border-white/10 hover:border-accent/40 transition-colors"
+            class="group block rounded-3xl p-5 pb-7 bg-white/[0.04] border border-white/10 hover:border-accent/40 transition-colors"
           >
-            <div class="flex items-center justify-between gap-4 mb-6">
-              {/* Mini-visual — the tool's signature element in miniature */}
+            {/* Preview tile — a miniature of the tool's REAL visualization
+                (same gradients, curves and palette as the page itself). */}
+            <div
+              class="relative rounded-2xl overflow-hidden mb-6"
+              style="background: rgba(9, 12, 30, 0.55); border: 1px solid rgba(255,255,255,0.06);"
+            >
+              <span
+                class="absolute top-3 right-3 rounded-full px-2.5 py-1 font-mono text-[9px] font-medium tracking-[0.16em] uppercase text-dim"
+                style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);"
+              >
+                {t[`tools.${tool.key}.tag`]}
+              </span>
+
               {tool.viz === "budget" && (
-                <svg width="64" height="36" viewBox="0 0 64 36" fill="none" aria-hidden="true">
-                  <rect x="0" y="14" width="18" height="8" rx="2" fill="#7C8CFF" />
-                  <rect x="20" y="14" width="12" height="8" rx="2" fill="#4FC3F7" />
-                  <rect x="34" y="14" width="10" height="8" rx="2" fill="#81C784" />
-                  <rect x="46" y="14" width="8" height="8" rx="2" fill="#34D399" />
-                  <rect x="56" y="14" width="8" height="8" rx="2" fill="rgba(255,255,255,0.14)" />
+                <svg viewBox="0 0 280 120" class="w-full h-auto block" aria-hidden="true">
+                  <defs>
+                    <clipPath id="tb-bar"><rect x="24" y="30" width="232" height="14" rx="7" /></clipPath>
+                  </defs>
+                  <rect x="24" y="30" width="232" height="14" rx="7" fill="rgba(255,255,255,0.07)" />
+                  <g clip-path="url(#tb-bar)">
+                    <rect x="24" y="30" width="76" height="14" fill="#7C8CFF" />
+                    <rect x="100" y="30" width="20" height="14" fill="#64B5F6" />
+                    <rect x="120" y="30" width="24" height="14" fill="#4FC3F7" />
+                    <rect x="144" y="30" width="34" height="14" fill="#81C784" />
+                    <rect x="178" y="30" width="38" height="14" fill="#34D399" />
+                    <rect x="216" y="30" width="18" height="14" fill="#B0A8C9" />
+                  </g>
+                  <rect x="24" y="72" width="232" height="4" rx="2" fill="rgba(255,255,255,0.08)" />
+                  <rect x="24" y="72" width="104" height="4" rx="2" fill="#7C8CFF" />
+                  <circle cx="128" cy="74" r="6" fill="#F5F5F7" />
+                  <rect x="24" y="96" width="232" height="4" rx="2" fill="rgba(255,255,255,0.08)" />
+                  <rect x="24" y="96" width="150" height="4" rx="2" fill="#81C784" />
+                  <circle cx="174" cy="98" r="6" fill="#F5F5F7" />
                 </svg>
               )}
+
               {tool.viz === "compound" && (
-                <svg width="64" height="36" viewBox="0 0 64 36" fill="none" aria-hidden="true">
-                  <path
-                    d="M2 32 C 20 30, 34 26, 44 18 S 58 6, 62 3"
-                    stroke="#2DD4A7"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                  />
-                  <path d="M2 32 H 62" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" stroke-linecap="round" />
-                  <circle cx="62" cy="3" r="3" fill="#2DD4A7" />
+                <svg viewBox="0 0 280 120" class="w-full h-auto block" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="tc-g" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#2DD4A7" stop-opacity="0.32" />
+                      <stop offset="100%" stop-color="#2DD4A7" stop-opacity="0.02" />
+                    </linearGradient>
+                    <linearGradient id="tc-c" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#5A6BFF" stop-opacity="0.32" />
+                      <stop offset="100%" stop-color="#5A6BFF" stop-opacity="0.04" />
+                    </linearGradient>
+                  </defs>
+                  <line x1="20" x2="260" y1="62" y2="62" stroke="rgba(255,255,255,0.05)" />
+                  <line x1="20" x2="260" y1="100" y2="100" stroke="rgba(255,255,255,0.12)" />
+                  <path d="M20 98 C 120 92, 200 62, 260 22 L260 100 L20 100 Z" fill="url(#tc-g)" />
+                  <path d="M20 98 C 110 90, 190 76, 260 60 L260 100 L20 100 Z" fill="url(#tc-c)" />
+                  <path d="M20 98 C 110 90, 190 76, 260 60" fill="none" stroke="#5A6BFF" stroke-width="2" />
+                  <path d="M20 98 C 120 92, 200 62, 260 22" fill="none" stroke="#2DD4A7" stroke-width="2.5" stroke-linecap="round" />
+                  <circle cx="260" cy="22" r="4" fill="#2DD4A7" />
                 </svg>
               )}
+
               {tool.viz === "emergency" && (
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                  <circle cx="20" cy="20" r="15" stroke="rgba(255,255,255,0.12)" stroke-width="5" />
+                <svg viewBox="0 0 280 120" class="w-full h-auto block" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="te-g" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#5A6BFF" />
+                      <stop offset="100%" stop-color="#38BDF8" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="140" cy="60" r="38" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10" />
                   <circle
-                    cx="20"
-                    cy="20"
-                    r="15"
-                    stroke="#38BDF8"
-                    stroke-width="5"
+                    cx="140"
+                    cy="60"
+                    r="38"
+                    fill="none"
+                    stroke="url(#te-g)"
+                    stroke-width="10"
                     stroke-linecap="round"
-                    stroke-dasharray="94.2"
-                    stroke-dashoffset="31.4"
-                    transform="rotate(-90 20 20)"
+                    stroke-dasharray="238.76"
+                    stroke-dashoffset="76.4"
+                    transform="rotate(-90 140 60)"
+                    style="filter: drop-shadow(0 0 8px rgba(56,189,248,0.3));"
                   />
+                  <text
+                    x="140"
+                    y="66"
+                    text-anchor="middle"
+                    fill="#F5F5F7"
+                    style="font: 800 17px Sora, system-ui, sans-serif; letter-spacing: -0.02em;"
+                  >
+                    68%
+                  </text>
                 </svg>
               )}
+
               {tool.viz === "debt" && (
-                <svg width="64" height="36" viewBox="0 0 64 36" fill="none" aria-hidden="true">
-                  <rect x="2" y="4" width="10" height="30" rx="2" fill="#FF8A80" />
-                  <rect x="16" y="12" width="10" height="22" rx="2" fill="#FF8A80" opacity="0.75" />
-                  <rect x="30" y="20" width="10" height="14" rx="2" fill="#FF8A80" opacity="0.5" />
-                  <rect x="44" y="27" width="10" height="7" rx="2" fill="#FF8A80" opacity="0.3" />
-                  <path d="M56 31 l2.5 2.5 L64 26" stroke="#2DD4A7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                <svg viewBox="0 0 280 120" class="w-full h-auto block" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="td-w" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#2DD4A7" stop-opacity="0.25" />
+                      <stop offset="100%" stop-color="#2DD4A7" stop-opacity="0.02" />
+                    </linearGradient>
+                    <linearGradient id="td-l" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#7C8CFF" stop-opacity="0.22" />
+                      <stop offset="100%" stop-color="#7C8CFF" stop-opacity="0.02" />
+                    </linearGradient>
+                  </defs>
+                  <line x1="20" x2="260" y1="60" y2="60" stroke="rgba(255,255,255,0.05)" />
+                  <line x1="20" x2="260" y1="100" y2="100" stroke="rgba(255,255,255,0.12)" />
+                  <path d="M20 22 C 95 42, 180 72, 252 100 L20 100 Z" fill="url(#td-l)" />
+                  <path d="M20 22 C 88 48, 152 82, 208 100 L20 100 Z" fill="url(#td-w)" />
+                  <path d="M20 22 C 95 42, 180 72, 252 100" fill="none" stroke="#7C8CFF" stroke-width="2" opacity="0.85" />
+                  <path d="M20 22 C 88 48, 152 82, 208 100" fill="none" stroke="#2DD4A7" stroke-width="2.5" stroke-linecap="round" />
+                  <circle cx="208" cy="100" r="4" fill="#2DD4A7" />
+                  <circle cx="252" cy="100" r="4" fill="#7C8CFF" />
                 </svg>
               )}
-              <span class="eyebrow text-muted">{t[`tools.${tool.key}.tag`]}</span>
             </div>
 
-            <p
-              class="font-display font-bold text-ink text-[20px] group-hover:text-accent transition-colors"
-              style="letter-spacing: -0.015em; line-height: 1.25;"
-            >
-              {t[`tools.${tool.key}.title`]}
-            </p>
-            <p class="mt-2.5 text-[14px] text-dim" style="line-height: 1.55;">
-              {t[`tools.${tool.key}.desc`]}
-            </p>
-            <p class="mt-5 eyebrow text-accent">
-              {t["tools.open"]}
-              <span class="inline-block ml-1 transition-transform group-hover:translate-x-1" aria-hidden>→</span>
-            </p>
+            <div class="px-2">
+              <p
+                class="font-display font-bold text-ink text-[20px] group-hover:text-accent transition-colors"
+                style="letter-spacing: -0.015em; line-height: 1.25;"
+              >
+                {t[`tools.${tool.key}.title`]}
+              </p>
+              <p class="mt-2.5 text-[14px] text-dim" style="line-height: 1.55;">
+                {t[`tools.${tool.key}.desc`]}
+              </p>
+              <p class="mt-5 eyebrow text-accent">
+                {t["tools.open"]}
+                <span class="inline-block ml-1 transition-transform group-hover:translate-x-1" aria-hidden>→</span>
+              </p>
+            </div>
           </a>
         ))}
       </div>
