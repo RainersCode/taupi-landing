@@ -42,6 +42,8 @@ Te noder vienkāršs princips no r/personalfinance: **izvēlies instrumentu pēc
 
 Un šeit strādā **saliktie procenti**: jo agrāk sāc, jo vairāk laika tavai naudai augt. Pat neliela summa, kas regulāri tiek atlikta divdesmit gadu garumā, pārspēj lielu summu, kas sākta krāt piecus gadus pirms mērķa.
 
+Cik tas nozīmē tavos skaitļos? [Budžeta kalkulatorā](/budzeta-kalkulators/) vari ievadīt savus ienākumus, pavilkt gadu un atdeves slīdņus un uzreiz redzēt, par ko brīvā nauda var izaugt.
+
 ## 7. solis — automatizē un neaiztiec
 
 Labākais finanšu plāns ir tas, kas strādā bez gribasspēka. Algas dienā — automātisks pārskaitījums uz uzkrājumiem un mērķiem, un tikai pēc tam sākas tērēšana. Vienreiz gadā pārskati: vai spilvens joprojām atbilst izdevumiem, vai abonementi joprojām vajadzīgi, vai mērķi nav mainījušies.

@@ -28,6 +28,8 @@ Ja kaut kas nav bijis tavā plānā un maksā vairāk par summu, kas tev šķiet
 
 Mēneša budžets ir par lielu, lai ar to strādātu ikdienā — 15. datumā ir grūti pateikt, vai 700 atlikušie eiro ir daudz vai maz. Sadali brīvo naudu (pēc īres, rēķiniem un uzkrājumiem) ar dienu skaitu mēnesī, un tev ir viens skaidrs skaitlis: cik šodien vari tērēt. Šis viens skaitlis maina lēmumus vairāk nekā jebkura atskaite mēneša beigās.
 
+Cik brīvas naudas paliek tieši tavā budžetā? To dažās minūtēs vari pārbaudīt ar mūsu [bezmaksas budžeta kalkulatoru](/budzeta-kalkulators/) — tas uzreiz parāda arī to, vai tavs sadalījums iekļaujas ieteicamajās robežās.
+
 ## 6. Uzkrāj automātiski — algas dienā
 
 Ja taupi to, kas "paliek pāri mēneša beigās", pāri parasti nepaliek nekas. Apgriez secību: algas dienā automātisks pārskaitījums uz krājkontu, un tikai tad sākas tērēšana. Pat 20 eiro mēnesī ir vērtīgi — ne tik daudz summas, cik paraduma dēļ.
