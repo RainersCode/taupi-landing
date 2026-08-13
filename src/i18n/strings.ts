@@ -298,6 +298,9 @@ export const strings: Record<Locale, Dict> = {
     "dp.enter": "Ievadi vismaz vienu kredītu ar atlikumu un mēneša maksājumu.",
     "dp.saves.label": "{name} ietaupa",
     "dp.tie.label": "Procentos abām",
+    "dp.col.free": "Brīvs pēc",
+    "dp.col.date": "Datums",
+    "dp.col.interest": "Procentos",
     "dp.chart": "Atlikums laika gaitā",
     "dp.method.title": "Sniega bumba vai lavīna?",
     "dp.method.body":
@@ -595,6 +598,9 @@ export const strings: Record<Locale, Dict> = {
     "dp.enter": "Enter at least one debt with a balance and a monthly payment.",
     "dp.saves.label": "{name} saves",
     "dp.tie.label": "Interest for both",
+    "dp.col.free": "Free in",
+    "dp.col.date": "Date",
+    "dp.col.interest": "Interest",
     "dp.chart": "Balance over time",
     "dp.method.title": "Snowball or avalanche?",
     "dp.method.body":

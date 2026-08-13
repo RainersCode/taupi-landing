@@ -40,6 +40,15 @@ export function futureMonth(locale: Locale, monthsAhead: number): string {
   });
 }
 
+/** Compact variant for tight table cells, e.g. "janv. 2030" / "Jan 2030". */
+export function futureMonthShort(locale: Locale, monthsAhead: number): string {
+  const d = new Date();
+  d.setMonth(d.getMonth() + monthsAhead);
+  if (Number.isNaN(d.getTime())) return "";
+  const m = d.toLocaleDateString(locale === "lv" ? "lv-LV" : "en-GB", { month: "short" });
+  return `${m} ${d.getFullYear()}`;
+}
+
 /** Money/number text field: dim label, unit prefix, underlined input.
  *  Commits on blur/Enter so typing never fights external updates. */
 export function MoneyField({
