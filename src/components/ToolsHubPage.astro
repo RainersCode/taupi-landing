@@ -1,14 +1,13 @@
 ---
 /**
- * The /kalkulatori/ hub — every tool as a card with a Lucide icon in a
- * tinted tile (same icon language as the app's own calculator hub) plus
- * title, description and CTA.
+ * The /kalkulatori/ hub — every tool as a card with a REAL screenshot of
+ * that tool's stage (public/tools/*.jpg, regenerated with
+ * scripts/capture-tool-previews.mjs) plus title, description and CTA.
  */
 import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
-import { ChartPie, TrendingUp, ShieldCheck, Layers } from "@lucide/astro";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
 
@@ -21,31 +20,34 @@ const { locale, title, description } = Astro.props;
 const t = getDict(locale);
 const prefix = locale === "lv" ? "" : "/en";
 
-// Icons mirror the app's CalculatorsHubScreen (pie-chart / trending-up /
-// shield-checkmark / layers); accents are each tool's signature color.
+// Accents are each tool's signature color (border beam + chip tint).
 const tools = [
   {
     key: "budget",
     href: `${prefix}/budzeta-kalkulators/`,
-    icon: ChartPie,
+    img: "/tools/budget.jpg",
+    imgH: 495,
     accent: "#7C8CFF",
   },
   {
     key: "compound",
     href: `${prefix}/salikto-procentu-kalkulators/`,
-    icon: TrendingUp,
+    img: "/tools/compound.jpg",
+    imgH: 375,
     accent: "#2DD4A7",
   },
   {
     key: "emergency",
     href: `${prefix}/drosibas-spilvena-kalkulators/`,
-    icon: ShieldCheck,
+    img: "/tools/emergency.jpg",
+    imgH: 375,
     accent: "#38BDF8",
   },
   {
     key: "debt",
     href: `${prefix}/kreditu-atmaksas-kalkulators/`,
-    icon: Layers,
+    img: "/tools/debt.jpg",
+    imgH: 399,
     accent: "#FF8A80",
   },
 ];
@@ -77,14 +79,28 @@ const tools = [
                 script below). */}
             <span class="card-spot" aria-hidden></span>
 
-            <div class="relative flex items-center justify-between gap-4 mb-7">
-              <span
-                class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
-                style={`background: ${tool.accent}1a; border: 1px solid ${tool.accent}40;`}
+            {/* Real product screenshot as the card visual */}
+            <div class="relative rounded-2xl overflow-hidden mb-6 border border-white/[0.07]">
+              <img
+                src={tool.img}
+                alt=""
+                width="920"
+                height={tool.imgH}
+                loading="lazy"
+                class="w-full h-[190px] object-cover object-left-top"
+              />
+              <div
+                aria-hidden
+                class="absolute inset-0 pointer-events-none"
+                style="background: linear-gradient(180deg, transparent 55%, rgba(13,17,40,0.5));"
               >
-                <tool.icon size={22} color={tool.accent} stroke-width={1.8} aria-hidden="true" />
+              </div>
+              <span
+                class="absolute top-3 right-3 rounded-full px-2.5 py-1 font-mono text-[9px] font-medium tracking-[0.16em] uppercase"
+                style={`background: rgba(13,17,40,0.7); border: 1px solid ${tool.accent}40; color: ${tool.accent};`}
+              >
+                {t[`tools.${tool.key}.tag`]}
               </span>
-              <span class="eyebrow text-muted">{t[`tools.${tool.key}.tag`]}</span>
             </div>
 
             <div class="relative">
