@@ -40,6 +40,12 @@ const home = locale === "lv" ? "/" : "/en/";
         </a>
       )}
       <a
+        href={locale === "en" ? "/en/budzeta-kalkulators/" : "/budzeta-kalkulators/"}
+        class="hidden md:inline eyebrow hover:text-ink transition-colors"
+      >
+        {t["nav.calc"]}
+      </a>
+      <a
         href={altHref}
         class="eyebrow text-ink/60 hover:text-accent transition-colors"
         aria-label={`Switch to ${altLabel}`}
@@ -75,6 +81,9 @@ const home = locale === "lv" ? "/" : "/en/";
             <div class="panel-links">
               <a href={`${home}#features`}>{t["nav.features"]}</a>
               <a href={`${home}#privacy`}>{t["nav.privacy"]}</a>
+              <a href={locale === "en" ? "/en/budzeta-kalkulators/" : "/budzeta-kalkulators/"}>
+                {t["nav.calc"]}
+              </a>
               {locale === "lv" && <a href="/padomi/">{t["nav.blog"]}</a>}
               <a href={locale === "en" ? "/en/par-taupi/" : "/par-taupi/"}>
                 {t["footer.legal.about"]}
@@ -218,6 +227,7 @@ const home = locale === "lv" ? "/" : "/en/";
   #mobile-nav[open] .panel-links a:nth-child(2) { animation-delay: 0.11s; }
   #mobile-nav[open] .panel-links a:nth-child(3) { animation-delay: 0.17s; }
   #mobile-nav[open] .panel-links a:nth-child(4) { animation-delay: 0.23s; }
+  #mobile-nav[open] .panel-links a:nth-child(5) { animation-delay: 0.29s; }
   #mobile-nav[open] .panel-cta { animation-delay: 0.3s; }
   #mobile-nav[open] .panel-contact { animation-delay: 0.35s; }
   #mobile-nav[open] .panel-made { animation-delay: 0.4s; }
