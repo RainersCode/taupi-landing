@@ -7,8 +7,9 @@ import type { CollectionEntry } from "astro:content";
 
 /**
  * Blog post shell — same reading column + .legal-prose typography as the
- * legal pages, plus BlogPosting JSON-LD and a waitlist CTA at the end.
- * Posts are LV-only for now, so hreflang alternates are disabled.
+ * legal pages, plus BlogPosting JSON-LD. The signup funnel lives in the
+ * footer's newsletter band (no in-page CTA — two adjacent forms read as
+ * broken). Posts are LV-only for now, so hreflang alternates are disabled.
  */
 interface Props {
   post: CollectionEntry<"blog">;
@@ -41,7 +42,6 @@ const jsonLd = {
   publisher: { "@id": `${site.href}#org` },
 };
 
-const homeWaitlist = locale === "lv" ? "/#waitlist" : "/en/#waitlist";
 ---
 <Base title={`${title} — Taupi`} description={description} locale={locale} alternate={false} ogType="article">
   <Nav locale={locale} />
@@ -68,42 +68,6 @@ const homeWaitlist = locale === "lv" ? "/#waitlist" : "/en/#waitlist";
     <article class="legal-prose">
       <slot />
     </article>
-
-    <!-- Waitlist CTA — every post funnels back to the product. -->
-    <aside
-      class="relative overflow-hidden mt-20 rounded-2xl border border-white/10 p-8 md:p-12"
-      style="background: rgba(22, 27, 54, 0.6);"
-    >
-      <!-- Soft brand glow in the corner — matches the hero's treatment. -->
-      <div
-        aria-hidden
-        class="pointer-events-none absolute inset-0"
-        style="background: radial-gradient(55% 90% at 88% 0%, rgba(90, 107, 255, 0.16), transparent 65%);"
-      >
-      </div>
-
-      <div class="relative">
-        <p class="eyebrow mb-6" style="color: #38BDF8;">{t["hero.eyebrow.tester"]}</p>
-        <h2
-          class="font-display font-bold text-ink"
-          style="font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -0.025em; line-height: 1.15;"
-        >
-          {t["blog.cta.title"]}
-        </h2>
-        <p class="mt-4 text-dim max-w-[56ch]" style="line-height: 1.65;">
-          {t["blog.cta.body"]}
-        </p>
-        <div class="mt-9">
-          <a
-            href={homeWaitlist}
-            class="inline-flex items-center gap-2 rounded-full bg-ink text-bg px-6 py-3 text-sm font-medium hover:bg-accent transition-colors"
-          >
-            {t["blog.cta.button"]}
-            <span aria-hidden>→</span>
-          </a>
-        </div>
-      </div>
-    </aside>
   </main>
 
   <Footer locale={locale} />
