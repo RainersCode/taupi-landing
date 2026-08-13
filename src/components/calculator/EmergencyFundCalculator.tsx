@@ -99,64 +99,70 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
             )}
           </div>
 
-          {/* The ring */}
+          {/* The ring — center content is an HTML overlay (flex-centered),
+              not SVG <text>: baseline math never reads optically centered. */}
           <div className="flex justify-center lg:justify-end">
-            <svg
-              width={RING_SIZE}
-              height={RING_SIZE}
-              viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}
+            <div
+              className="relative"
+              style={{ width: RING_SIZE, height: RING_SIZE }}
               role="img"
               aria-label={`${r.pct}% — ${money(saved)}`}
             >
-              <defs>
-                <linearGradient id="ef-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#5A6BFF" />
-                  <stop offset="100%" stopColor="#38BDF8" />
-                </linearGradient>
-              </defs>
-              <circle
-                cx={RING_SIZE / 2}
-                cy={RING_SIZE / 2}
-                r={radius}
-                fill="none"
-                stroke="rgba(255,255,255,0.07)"
-                strokeWidth={RING_STROKE}
-              />
-              <circle
-                cx={RING_SIZE / 2}
-                cy={RING_SIZE / 2}
-                r={radius}
-                fill="none"
-                stroke={funded ? "#2DD4A7" : "url(#ef-grad)"}
-                strokeWidth={RING_STROKE}
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference * (1 - progress)}
-                transform={`rotate(-90 ${RING_SIZE / 2} ${RING_SIZE / 2})`}
-                style={{
-                  transition: "stroke-dashoffset 400ms cubic-bezier(0.22, 0.8, 0.2, 1)",
-                  filter: `drop-shadow(0 0 14px ${funded ? "rgba(45,212,167,0.35)" : "rgba(56,189,248,0.3)"})`,
-                }}
-              />
-              <text
-                x="50%"
-                y="47%"
-                textAnchor="middle"
-                fill={funded ? "#2DD4A7" : "#F5F5F7"}
-                style={{ font: "800 52px Sora, system-ui, sans-serif", letterSpacing: "-0.03em" }}
+              <svg
+                width={RING_SIZE}
+                height={RING_SIZE}
+                viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}
+                aria-hidden="true"
               >
-                {funded ? "100%" : `${r.pct}%`}
-              </text>
-              <text
-                x="50%"
-                y="60%"
-                textAnchor="middle"
-                fill="#A8A8B3"
-                style={{ font: "500 16px 'JetBrains Mono', monospace" }}
-              >
-                {money(saved)}
-              </text>
-            </svg>
+                <defs>
+                  <linearGradient id="ef-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#5A6BFF" />
+                    <stop offset="100%" stopColor="#38BDF8" />
+                  </linearGradient>
+                </defs>
+                <circle
+                  cx={RING_SIZE / 2}
+                  cy={RING_SIZE / 2}
+                  r={radius}
+                  fill="none"
+                  stroke="rgba(255,255,255,0.07)"
+                  strokeWidth={RING_STROKE}
+                />
+                <circle
+                  cx={RING_SIZE / 2}
+                  cy={RING_SIZE / 2}
+                  r={radius}
+                  fill="none"
+                  stroke={funded ? "#2DD4A7" : "url(#ef-grad)"}
+                  strokeWidth={RING_STROKE}
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={circumference * (1 - progress)}
+                  transform={`rotate(-90 ${RING_SIZE / 2} ${RING_SIZE / 2})`}
+                  style={{
+                    transition: "stroke-dashoffset 400ms cubic-bezier(0.22, 0.8, 0.2, 1)",
+                    filter: `drop-shadow(0 0 14px ${funded ? "rgba(45,212,167,0.35)" : "rgba(56,189,248,0.3)"})`,
+                  }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span
+                  className="font-display font-extrabold tabular-nums"
+                  style={{
+                    fontSize: 54,
+                    letterSpacing: "-0.03em",
+                    lineHeight: 1,
+                    color: funded ? "#2DD4A7" : "#F5F5F7",
+                  }}
+                >
+                  {funded ? "100" : r.pct}
+                  <span style={{ fontSize: 30, fontWeight: 700, color: "#64646F" }}>%</span>
+                </span>
+                <span className="mt-2 font-mono text-[15px] text-dim tabular-nums">
+                  {money(saved)}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       ) : (
