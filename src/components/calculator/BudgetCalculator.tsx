@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import {
@@ -9,7 +10,9 @@ import {
   compareScenarios,
   type LineKey,
   type LineEval,
+  type CustomLine,
 } from "~/lib/affordability";
+import { futureValue } from "~/lib/finance";
 import AllocationRow from "./AllocationRow";
 
 // Bar/row colors — the app's calculator palette (BudgetCalculatorScreen), so
@@ -44,6 +47,9 @@ const LABEL_KEYS: Record<LineKey, string> = {
 };
 
 const DEFAULT_INCOME = 1500;
+const DEFAULT_YEARS = 10;
+const DEFAULT_RETURN = 7;
+const MAX_CUSTOM = 8;
 const STORE_KEY = "taupi:bc:v1";
 
 const glass = {
@@ -53,10 +59,28 @@ const glass = {
 };
 
 type Amounts = Record<LineKey, number>;
+type Scenario = { amounts: Amounts; custom: CustomLine[] };
 type CalcMode = "now" | "whatIf";
 
 const isAmounts = (v: unknown): v is Amounts =>
   !!v && typeof v === "object" && LINES.every((k) => typeof (v as Amounts)[k] === "number");
+
+const isCustomLines = (v: unknown): v is CustomLine[] =>
+  Array.isArray(v) &&
+  v.every(
+    (c) =>
+      c &&
+      typeof c.id === "string" &&
+      typeof c.name === "string" &&
+      typeof c.amount === "number",
+  );
+
+const newId = (): string =>
+  typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2);
+
+const customTotal = (c: CustomLine[]) => c.reduce((s, l) => s + l.amount, 0);
 
 export default function BudgetCalculator({ locale }: { locale: Locale }) {
   const t = getDict(locale);
@@ -74,15 +98,22 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
   const [income, setIncome] = useState<number>(DEFAULT_INCOME);
   const [incomeText, setIncomeText] = useState<string>(String(DEFAULT_INCOME));
   const [amounts, setAmounts] = useState<Amounts>(() => recommendedAmounts(DEFAULT_INCOME, 0));
+  // "Manas rindas" — user-defined lines. They roll into the "Citi" threshold
+  // and are never touched by the lock-to-income redistribution (they're
+  // deliberate commitments, not a buffer to scale).
+  const [custom, setCustom] = useState<CustomLine[]>([]);
   const [locked, setLocked] = useState(false);
   const [mode, setMode] = useState<CalcMode>("now");
   // "Ko ja?" scenario — null until first opened. Edits there never leak into
   // the real "Tagad" numbers.
-  const [whatIf, setWhatIf] = useState<Amounts | null>(null);
+  const [whatIf, setWhatIf] = useState<Scenario | null>(null);
   // While showing the recommended split, holds the user's own amounts so a
   // second tap restores them. null = sliders show the user's values.
   const [savedAmounts, setSavedAmounts] = useState<Amounts | null>(null);
   const showingRecommended = savedAmounts !== null;
+  // Investment mini-projection: what the monthly free amount could become.
+  const [investYears, setInvestYears] = useState(DEFAULT_YEARS);
+  const [investPct, setInvestPct] = useState(DEFAULT_RETURN);
 
   // ── localStorage persistence (silent autosave — no Save button on web) ──
   const hydrated = useRef(false);
@@ -96,7 +127,21 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
           setIncomeText(String(Math.round(s.income)));
           setAmounts(s.amounts);
           setLocked(!!s.locked);
-          if (isAmounts(s.whatIf)) setWhatIf(s.whatIf);
+          setCustom(isCustomLines(s.custom) ? s.custom : []);
+          // whatIf was a flat Amounts record before custom lines existed —
+          // migrate the old shape instead of dropping the saved scenario.
+          if (isAmounts(s.whatIf)) {
+            setWhatIf({ amounts: s.whatIf, custom: [] });
+          } else if (s.whatIf && isAmounts(s.whatIf.amounts)) {
+            setWhatIf({
+              amounts: s.whatIf.amounts,
+              custom: isCustomLines(s.whatIf.custom) ? s.whatIf.custom : [],
+            });
+          }
+          if (typeof s.invest?.years === "number" && typeof s.invest?.pct === "number") {
+            setInvestYears(Math.min(40, Math.max(1, Math.round(s.invest.years))));
+            setInvestPct(Math.min(15, Math.max(0, s.invest.pct)));
+          }
         }
       }
     } catch {
@@ -108,23 +153,55 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
   useEffect(() => {
     if (!hydrated.current) return;
     try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({ income, amounts, locked, whatIf }));
+      localStorage.setItem(
+        STORE_KEY,
+        JSON.stringify({
+          income,
+          amounts,
+          custom,
+          locked,
+          whatIf,
+          invest: { years: investYears, pct: investPct },
+        }),
+      );
     } catch {
       // Storage full/blocked — the tool still works, it just won't remember.
     }
-  }, [income, amounts, locked, whatIf]);
+  }, [income, amounts, custom, locked, whatIf, investYears, investPct]);
 
   // ── Scenario plumbing (functional updaters, as in the app) ──
-  const activeAmounts = mode === "whatIf" && whatIf ? whatIf : amounts;
+  const whatIfActive = mode === "whatIf" && whatIf !== null;
+  const activeAmounts = whatIfActive ? whatIf!.amounts : amounts;
+  const activeCustom = whatIfActive ? whatIf!.custom : custom;
+  const activeCustomTotal = customTotal(activeCustom);
+
   type AmountsArg = Amounts | ((prev: Amounts) => Amounts);
   const setActiveAmounts = (next: AmountsArg) => {
     if (mode === "whatIf") {
       setWhatIf((w) => {
-        const prev = w ?? amounts;
-        return typeof next === "function" ? next(prev) : next;
+        const prev = w ?? { amounts, custom: custom.map((c) => ({ ...c })) };
+        return {
+          amounts: typeof next === "function" ? next(prev.amounts) : next,
+          custom: prev.custom,
+        };
       });
     } else {
       setAmounts((prev) => (typeof next === "function" ? next(prev) : next));
+    }
+  };
+
+  type CustomArg = CustomLine[] | ((prev: CustomLine[]) => CustomLine[]);
+  const setActiveCustom = (next: CustomArg) => {
+    if (mode === "whatIf") {
+      setWhatIf((w) => {
+        const prev = w ?? { amounts: { ...amounts }, custom };
+        return {
+          amounts: prev.amounts,
+          custom: typeof next === "function" ? next(prev.custom) : next,
+        };
+      });
+    } else {
+      setCustom((prev) => (typeof next === "function" ? next(prev) : next));
     }
   };
 
@@ -132,22 +209,35 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
     // The "showing recommended" snapshot is scenario-specific — switching
     // modes with it armed would restore the WRONG scenario's amounts.
     setSavedAmounts(null);
-    if (m === "whatIf" && !whatIf) setWhatIf({ ...amounts });
+    if (m === "whatIf" && !whatIf) {
+      setWhatIf({ amounts: { ...amounts }, custom: custom.map((c) => ({ ...c })) });
+    }
     setMode(m);
   };
 
   const resetWhatIf = () => {
     setSavedAmounts(null);
-    setWhatIf({ ...amounts });
+    setWhatIf({ amounts: { ...amounts }, custom: custom.map((c) => ({ ...c })) });
   };
 
   const handleChange = (key: LineKey, value: number) => {
     // Dragging takes over from the recommended preset.
     setSavedAmounts(null);
+    // Lock-to-income rescales the 7 standard lines only — custom lines are
+    // deliberate commitments and stay put.
     setActiveAmounts((prev) =>
       locked ? redistributeLocked(prev, key, value, income) : { ...prev, [key]: value },
     );
   };
+
+  const addCustomLine = () =>
+    setActiveCustom((prev) =>
+      prev.length >= MAX_CUSTOM ? prev : [...prev, { id: newId(), name: "", amount: 0 }],
+    );
+  const updateCustomLine = (id: string, patch: Partial<CustomLine>) =>
+    setActiveCustom((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  const removeCustomLine = (id: string) =>
+    setActiveCustom((prev) => prev.filter((c) => c.id !== id));
 
   const toggleRecommended = () => {
     if (showingRecommended) {
@@ -166,10 +256,13 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
     setIncome(DEFAULT_INCOME);
     setIncomeText(String(DEFAULT_INCOME));
     setAmounts(recommendedAmounts(DEFAULT_INCOME, 0));
+    setCustom([]);
     setLocked(false);
     setSavedAmounts(null);
     setWhatIf(null);
     setMode("now");
+    setInvestYears(DEFAULT_YEARS);
+    setInvestPct(DEFAULT_RETURN);
   };
 
   const commitIncome = () => {
@@ -177,8 +270,14 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
     setIncome(Number.isFinite(parsed) && parsed > 0 ? parsed : 0);
   };
 
-  const evald = evaluateAllocation(income, activeAmounts);
-  const compare = mode === "whatIf" && whatIf ? compareScenarios(income, amounts, whatIf) : null;
+  const evald = evaluateAllocation(income, activeAmounts, activeCustomTotal);
+  const compare = whatIfActive
+    ? compareScenarios(income, { amounts, custom }, whatIf!)
+    : null;
+  // "Tagad" evaluation for the comparison bar (only needed in "Ko ja?").
+  const baseEvald = whatIfActive
+    ? evaluateAllocation(income, amounts, customTotal(custom))
+    : null;
 
   const buildHint = (line: LineEval): string | undefined => {
     if (line.status === "good") return undefined;
@@ -190,10 +289,12 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
 
   // "Ko ja?" only: a quiet "↑ no €500" on a line that differs from "Tagad".
   const buildChangeNote = (key: LineKey): string | undefined => {
-    if (mode !== "whatIf" || !whatIf) return undefined;
+    if (!whatIfActive) return undefined;
     const base = amounts[key];
-    if (Math.abs(whatIf[key] - base) < 0.5) return undefined;
-    return fmt(whatIf[key] > base ? "bc.change.up" : "bc.change.down", { amount: money(base) });
+    if (Math.abs(whatIf!.amounts[key] - base) < 0.5) return undefined;
+    return fmt(whatIf!.amounts[key] > base ? "bc.change.up" : "bc.change.down", {
+      amount: money(base),
+    });
   };
 
   const freePct = income > 0 ? Math.round((Math.abs(evald.free) / income) * 100) : 0;
@@ -236,21 +337,31 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
   };
   const deltaNote = buildDeltaNote();
 
-  // Bar segments for a given allocation — used once in "Tagad", twice in
-  // "Ko ja?" (the real bar stays visible above the scenario bar).
-  const segments = (amts: Amounts) =>
-    LINES.filter((k) => amts[k] > 0).map((k) => (
-      <div
-        key={k}
-        className="bc-anim h-full"
-        style={{
-          width: `${Math.min(100, (amts[k] / income) * 100)}%`,
-          background: LINE_COLORS[k],
-        }}
-      />
-    ));
+  // Bar segments from evaluated lines — "other" then includes the custom-
+  // line total, matching what the rows display.
+  const segments = (lines: LineEval[]) =>
+    lines
+      .filter((l) => l.amount > 0)
+      .map((l) => (
+        <div
+          key={l.key}
+          className="bc-anim h-full"
+          style={{
+            width: `${Math.min(100, (l.amount / income) * 100)}%`,
+            background: LINE_COLORS[l.key],
+          }}
+        />
+      ));
 
-  const whatIfActive = mode === "whatIf";
+  // ── Investment mini-projection (futureValue is the app's formula) ──
+  const monthlyFree = Math.max(0, evald.free);
+  const fv = futureValue(0, monthlyFree, investPct, investYears * 12);
+  // Latvian counts "1, 21, 31 gada" but "2–20, 22–30 gadiem".
+  const yearsKey =
+    (locale === "lv" ? investYears % 10 === 1 && investYears % 100 !== 11 : investYears === 1)
+      ? "bc.invest.after.one"
+      : "bc.invest.after";
+
   // The sandbox gets its own accent ring so it never reads as the real budget.
   const panelStyle = whatIfActive
     ? { ...glass, border: "1px solid rgba(56,189,248,0.35)" }
@@ -321,7 +432,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
             {/* Signature: one slim bar carving income into category segments.
                 In "Ko ja?" the real budget stays visible above the scenario
                 bar, so the comparison is something you SEE, not decode. */}
-            {compare ? (
+            {baseEvald ? (
               <div aria-hidden className="mt-7">
                 <p className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase text-muted mb-1.5">
                   {t["bc.mode.now"]}
@@ -330,7 +441,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                   className="flex h-2 rounded-full overflow-hidden opacity-50"
                   style={{ background: "rgba(255,255,255,0.07)" }}
                 >
-                  {segments(amounts)}
+                  {segments(baseEvald.lines)}
                 </div>
                 <p
                   className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase mt-3.5 mb-1.5"
@@ -346,7 +457,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                     outlineOffset: 2,
                   }}
                 >
-                  {segments(activeAmounts)}
+                  {segments(evald.lines)}
                 </div>
               </div>
             ) : (
@@ -359,7 +470,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                   outlineOffset: 2,
                 }}
               >
-                {segments(activeAmounts)}
+                {segments(evald.lines)}
               </div>
             )}
 
@@ -398,6 +509,76 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 </button>
               </div>
             )}
+
+            {/* ── Invest the free money — compound projection (app formula).
+                In "Ko ja?" it uses the scenario's free amount, so experiments
+                immediately show their long-term upside. ── */}
+            {Math.round(monthlyFree) > 0 && (
+              <div className="mt-6 pt-5 border-t border-white/10">
+                <p className="eyebrow mb-4">{t["bc.invest.eyebrow"]}</p>
+
+                <div className="flex items-baseline justify-between">
+                  <span className="text-[12.5px] text-dim">{t["bc.invest.years"]}</span>
+                  <span className="font-mono text-[13px] text-ink tabular-nums">{investYears}</span>
+                </div>
+                <input
+                  type="range"
+                  min={1}
+                  max={40}
+                  step={1}
+                  value={investYears}
+                  onChange={(e) => setInvestYears(Number(e.target.value))}
+                  aria-label={t["bc.invest.years"]}
+                  aria-valuetext={String(investYears)}
+                  className="bc-range mt-1"
+                  style={{
+                    "--bc-fill": "#2DD4A7",
+                    "--bc-pct": `${((investYears - 1) / 39) * 100}%`,
+                  } as CSSProperties}
+                />
+
+                <div className="mt-2 flex items-baseline justify-between">
+                  <span className="text-[12.5px] text-dim">{t["bc.invest.return"]}</span>
+                  <span className="font-mono text-[13px] text-ink tabular-nums">
+                    {investPct.toLocaleString(locale === "lv" ? "lv-LV" : "en-GB")}%
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={15}
+                  step={0.5}
+                  value={investPct}
+                  onChange={(e) => setInvestPct(Number(e.target.value))}
+                  aria-label={t["bc.invest.return"]}
+                  aria-valuetext={`${investPct}%`}
+                  className="bc-range mt-1"
+                  style={{
+                    "--bc-fill": "#2DD4A7",
+                    "--bc-pct": `${(investPct / 15) * 100}%`,
+                  } as CSSProperties}
+                />
+
+                <div className="mt-4 flex items-baseline justify-between">
+                  <span className="text-[13px] font-medium text-dim">
+                    {fmt(yearsKey, { years: investYears })}
+                  </span>
+                  <span
+                    className="font-display font-extrabold text-[24px] tracking-tight tabular-nums"
+                    style={{ color: "#2DD4A7" }}
+                  >
+                    ~{money(fv.future)}
+                  </span>
+                </div>
+                <p className="mt-1 text-[12px] font-mono text-muted text-right tabular-nums">
+                  {fmt("bc.invest.contrib", { amount: money(fv.contributed) })} ·{" "}
+                  {fmt("bc.invest.growth", { amount: money(fv.growth) })}
+                </p>
+                <p className="mt-3 text-[11px] text-muted" style={{ lineHeight: 1.5 }}>
+                  {t["bc.invest.note"]}
+                </p>
+              </div>
+            )}
           </>
         )}
       </aside>
@@ -411,9 +592,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
               type="button"
               onClick={toggleRecommended}
               className={`rounded-full px-4 py-2 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                showingRecommended
-                  ? "text-ink"
-                  : "text-brand-light hover:text-ink"
+                showingRecommended ? "text-ink" : "text-brand-light hover:text-ink"
               }`}
               style={{ border: "1px solid rgba(255,255,255,0.14)" }}
             >
@@ -438,11 +617,65 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                   pct={line.pct}
                   hint={buildHint(line)}
                   changeNote={buildChangeNote(line.key)}
-                  onChange={(v) => handleChange(line.key, v)}
+                  // The "other" row displays base + custom total; convert back
+                  // to the base amount before storing, or the custom total
+                  // ratchets into amounts.other on every edit.
+                  onChange={(v) =>
+                    handleChange(
+                      line.key,
+                      line.key === "other" ? Math.max(0, v - activeCustomTotal) : v,
+                    )
+                  }
                   money={money}
                 />
               ))}
             </div>
+
+            {/* ── "Manas rindas" — user-defined lines, rolled into "Citi" ── */}
+            <div className="mt-8 flex items-center justify-between gap-4">
+              <p className="eyebrow">{t["bc.custom.header"]}</p>
+              {activeCustom.length < MAX_CUSTOM && (
+                <button
+                  type="button"
+                  onClick={addCustomLine}
+                  className="flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-medium text-brand-light hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  style={{ border: "1px solid rgba(255,255,255,0.14)" }}
+                >
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                    <path
+                      d="M5.5 1v9M1 5.5h9"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  {t["bc.custom.add"]}
+                </button>
+              )}
+            </div>
+            <p className="mt-1.5 text-[12px] text-muted">{t["bc.custom.hint"]}</p>
+
+            {activeCustom.length > 0 && (
+              <div className="mt-1">
+                {activeCustom.map((line) => (
+                  <AllocationRow
+                    key={line.id}
+                    label={line.name}
+                    labelPlaceholder={t["bc.custom.placeholder"]}
+                    color="#A8A8B3"
+                    statusColor="#64646F"
+                    amount={line.amount}
+                    income={income}
+                    pct={income > 0 ? (line.amount / income) * 100 : 0}
+                    onChange={(v) => updateCustomLine(line.id, { amount: v })}
+                    onLabelChange={(v) => updateCustomLine(line.id, { name: v })}
+                    onRemove={() => removeCustomLine(line.id)}
+                    removeLabel={t["bc.custom.remove"]}
+                    money={money}
+                  />
+                ))}
+              </div>
+            )}
 
             {/* Lock-to-income toggle */}
             <label className="mt-6 flex items-start gap-2.5 cursor-pointer select-none w-fit">

@@ -7,9 +7,13 @@ import type { CSSProperties } from "react";
  * counterpart of the app's gesture-driven AllocationRow — a native range
  * input carries the interaction (keyboard arrows included) and the text
  * input covers precise entry.
+ *
+ * With `onLabelChange`/`onRemove` set, the label becomes an editable name
+ * field with a delete button — the custom-line ("Manas rindas") variant.
  */
 export default function AllocationRow({
   label,
+  labelPlaceholder,
   color,
   statusColor,
   amount,
@@ -18,9 +22,13 @@ export default function AllocationRow({
   hint,
   changeNote,
   onChange,
+  onLabelChange,
+  onRemove,
+  removeLabel,
   money,
 }: {
   label: string;
+  labelPlaceholder?: string;
   color: string;
   statusColor: string;
   amount: number;
@@ -29,6 +37,9 @@ export default function AllocationRow({
   hint?: string;
   changeNote?: string;
   onChange: (value: number) => void;
+  onLabelChange?: (value: string) => void;
+  onRemove?: () => void;
+  removeLabel?: string;
   money: (n: number) => string;
 }) {
   const rounded = Math.round(amount);
@@ -51,6 +62,7 @@ export default function AllocationRow({
   };
 
   const fillPct = income > 0 ? Math.min(100, (amount / income) * 100) : 0;
+  const ariaName = label || labelPlaceholder || "";
 
   return (
     <div className="py-4 border-b border-white/[0.07] last:border-0">
@@ -60,7 +72,38 @@ export default function AllocationRow({
           className="w-2.5 h-2.5 rounded-[4px] shrink-0"
           style={{ background: color }}
         />
-        <span className="text-[15px] text-ink font-medium">{label}</span>
+        {onLabelChange ? (
+          <>
+            <input
+              value={label}
+              onChange={(e) => onLabelChange(e.target.value)}
+              placeholder={labelPlaceholder}
+              aria-label={labelPlaceholder}
+              className="flex-1 min-w-0 bg-transparent text-[15px] text-ink placeholder:text-muted outline-none border-b border-white/15 focus:border-accent transition-colors"
+            />
+            {onRemove && (
+              <button
+                type="button"
+                onClick={onRemove}
+                aria-label={removeLabel}
+                title={removeLabel}
+                className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                style={{ background: "rgba(255,255,255,0.05)" }}
+              >
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                  <path
+                    d="M2 2l7 7M9 2L2 9"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            )}
+          </>
+        ) : (
+          <span className="text-[15px] text-ink font-medium">{label}</span>
+        )}
         <span className="ml-auto flex items-baseline gap-3">
           <span
             className="font-mono text-[12px] tabular-nums"
@@ -78,7 +121,7 @@ export default function AllocationRow({
                 if (e.key === "Enter") (e.target as HTMLInputElement).blur();
               }}
               inputMode="numeric"
-              aria-label={`${label} — €`}
+              aria-label={`${ariaName} — €`}
               className="w-[58px] bg-transparent text-right font-mono text-[15px] text-ink outline-none border-b border-white/15 focus:border-accent transition-colors tabular-nums"
             />
           </span>
@@ -92,7 +135,7 @@ export default function AllocationRow({
         step={5}
         value={rounded}
         onChange={(e) => onChange(Number(e.target.value))}
-        aria-label={label}
+        aria-label={ariaName}
         aria-valuetext={`${money(amount)} · ${Math.round(pct)}%`}
         className="bc-range mt-2"
         style={{ "--bc-fill": color, "--bc-pct": `${fillPct}%` } as CSSProperties}

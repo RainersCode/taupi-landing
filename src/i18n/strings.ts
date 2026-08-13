@@ -178,6 +178,21 @@ export const strings: Record<Locale, Dict> = {
     "bc.change.up": "↑ no {amount}",
     "bc.change.down": "↓ no {amount}",
 
+    "bc.custom.header": "Manas rindas",
+    "bc.custom.add": "Pievienot rindu",
+    "bc.custom.hint": "Šīs rindas ieskaitās “Citi” slieksnī.",
+    "bc.custom.placeholder": "Piem. bērnudārzs",
+    "bc.custom.remove": "Dzēst rindu",
+
+    "bc.invest.eyebrow": "Ja ieguldīsi brīvo naudu",
+    "bc.invest.years": "Gadi",
+    "bc.invest.return": "Atdeve gadā",
+    "bc.invest.after": "Pēc {years} gadiem",
+    "bc.invest.after.one": "Pēc {years} gada",
+    "bc.invest.contrib": "iemaksas {amount}",
+    "bc.invest.growth": "pieaugums +{amount}",
+    "bc.invest.note": "Pieņemot nemainīgu gada atdevi. Vēsturiskā atdeve negarantē nākotnes rezultātus.",
+
     "bc.method.eyebrow": "Metode",
     "bc.method.title": "Kā tas tiek aprēķināts?",
     "bc.method.body":
@@ -361,6 +376,21 @@ export const strings: Record<Locale, Dict> = {
     "bc.delta.same": "Indicators unchanged",
     "bc.change.up": "↑ from {amount}",
     "bc.change.down": "↓ from {amount}",
+
+    "bc.custom.header": "My lines",
+    "bc.custom.add": "Add a line",
+    "bc.custom.hint": "These count toward the “Other” threshold.",
+    "bc.custom.placeholder": "e.g. childcare",
+    "bc.custom.remove": "Remove line",
+
+    "bc.invest.eyebrow": "If you invest what's free",
+    "bc.invest.years": "Years",
+    "bc.invest.return": "Yearly return",
+    "bc.invest.after": "After {years} years",
+    "bc.invest.after.one": "After {years} year",
+    "bc.invest.contrib": "contributions {amount}",
+    "bc.invest.growth": "growth +{amount}",
+    "bc.invest.note": "Assumes a constant yearly return. Past performance doesn't guarantee future results.",
 
     "bc.method.eyebrow": "Method",
     "bc.method.title": "How is this calculated?",

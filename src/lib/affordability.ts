@@ -17,11 +17,29 @@ export type LineStatus = "good" | "amber" | "over" | "under";
 
 export interface LineEval {
   key: LineKey;
+  /** Displayed / threshold amount — for "other" this INCLUDES the custom-line
+   *  total (matches what the row shows and what the benchmark % is judged
+   *  against). Use `baseAmount` when writing a new value back into state. */
   amount: number;
+  /** The raw `amounts[key]` this line was built from — equal to `amount` for
+   *  every line except "other". Callers editing a line must write back a
+   *  value derived from `baseAmount`, or the custom-line total ratchets into
+   *  `amounts.other` on every edit. */
+  baseAmount: number;
   pct: number;
   status: LineStatus;
   targetKind: "max" | "min";
   targetPct: number;
+}
+
+// A user-defined budget line ("Manas rindas"). It has no benchmark of its
+// own — there's no research threshold for e.g. "Bērnudārzs" — so its amount
+// (a) subtracts from free money like any other line, and (b) rolls into the
+// existing "other"/"Citi" threshold rather than getting a new one.
+export interface CustomLine {
+  id: string;
+  name: string;
+  amount: number;
 }
 
 // Healthy-spending guidelines as % of income (take-home). `higherBetter` lines
@@ -65,13 +83,15 @@ export function evaluateLine(
 export function evaluateAllocation(
   income: number,
   amounts: Record<LineKey, number>,
+  customTotal = 0,
 ): { lines: LineEval[]; allocated: number; free: number; overAllocated: boolean } {
   const lines: LineEval[] = LINES.map((key) => {
-    const amount = amounts[key];
+    const baseAmount = amounts[key];
+    const amount = key === "other" ? baseAmount + customTotal : baseAmount;
     const { pct, status, targetKind, targetPct } = evaluateLine(key, amount, income);
-    return { key, amount, pct, status, targetKind, targetPct };
+    return { key, amount, baseAmount, pct, status, targetKind, targetPct };
   });
-  const allocated = LINES.reduce((s, k) => s + amounts[k], 0);
+  const allocated = LINES.reduce((s, k) => s + amounts[k], 0) + customTotal;
   const free = income - allocated;
   return { lines, allocated, free, overAllocated: free < 0 };
 }
@@ -137,15 +157,16 @@ export interface ScenarioDelta {
 
 export function compareScenarios(
   income: number,
-  base: Record<LineKey, number>,
-  next: Record<LineKey, number>,
+  base: { amounts: Record<LineKey, number>; custom: CustomLine[] },
+  next: { amounts: Record<LineKey, number>; custom: CustomLine[] },
 ): {
   freeBefore: number; freeAfter: number;
   annualBefore: number; annualAfter: number;
   worsened: ScenarioDelta[]; improved: ScenarioDelta[];
 } {
-  const a = evaluateAllocation(income, base);
-  const b = evaluateAllocation(income, next);
+  const sum = (c: CustomLine[]) => c.reduce((s, l) => s + l.amount, 0);
+  const a = evaluateAllocation(income, base.amounts, sum(base.custom));
+  const b = evaluateAllocation(income, next.amounts, sum(next.custom));
   const worsened: ScenarioDelta[] = [];
   const improved: ScenarioDelta[] = [];
   for (const key of LINES) {
