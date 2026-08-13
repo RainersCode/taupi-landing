@@ -3,7 +3,7 @@ import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { debtPayoff, type DebtPayoffResult } from "~/lib/finance";
 import { debtPayoffSeries } from "~/lib/finance-web";
-import { ControlCell, StageGlow, glass, useMoney, interpolate, futureMonthShort } from "./fields";
+import { ControlCell, FlowMoney, StageGlow, glass, interpolate, futureMonthShort } from "./fields";
 
 const STORE_KEY = "taupi:dp:v1";
 const MAX_DEBTS = 6;
@@ -105,7 +105,6 @@ function DebtInput({
  */
 export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
   const t = getDict(locale);
-  const money = useMoney(locale);
 
   const [rows, setRows] = useState<Row[]>(DEFAULT_ROWS);
   const [extra, setExtra] = useState(150);
@@ -190,7 +189,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
         )}
       </span>
       <span className="font-display font-bold text-[17px] text-ink tabular-nums whitespace-nowrap">
-        {result.months}
+        <FlowMoney value={result.months} locale={locale} prefix="" />
         <span className="ml-1 font-body font-normal text-[11.5px] text-muted">{t["ef.monthsShort"]}</span>
       </span>
       <span className="hidden sm:block font-mono text-[12px] text-dim tabular-nums whitespace-nowrap">
@@ -200,7 +199,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
         className="font-mono text-[13.5px] tabular-nums text-right whitespace-nowrap"
         style={{ color: cheapest ? WIN_COLOR : "#F5F5F7" }}
       >
-        {money(result.totalInterest)}
+        <FlowMoney value={result.totalInterest} locale={locale} />
       </span>
     </div>
   );
@@ -230,7 +229,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                 lineHeight: 0.95,
               }}
             >
-              {money(gap === 0 ? aval.totalInterest : Math.abs(gap))}
+              <FlowMoney value={gap === 0 ? aval.totalInterest : Math.abs(gap)} locale={locale} />
             </p>
             {gap === 0 && (
               <p className="mt-4 text-[13.5px] text-dim max-w-[44ch]" style={{ lineHeight: 1.6 }}>

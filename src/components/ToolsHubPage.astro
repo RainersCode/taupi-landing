@@ -67,9 +67,17 @@ const tools = [
         {tools.map((tool) => (
           <a
             href={tool.href}
-            class="group block rounded-3xl p-7 bg-white/[0.04] border border-white/10 hover:border-accent/40 transition-colors"
+            class="tool-card group relative block rounded-3xl p-7 bg-white/[0.04] border border-white/10 hover:border-accent/40 transition-colors overflow-hidden"
           >
-            <div class="flex items-center justify-between gap-4 mb-7">
+            {/* Border beam — a light segment orbiting the card edge
+                (Magic UI's border-beam technique: offset-path animation). */}
+            <span class="card-beam" aria-hidden style={`--beam-color: ${tool.accent};`}></span>
+            {/* Spotlight — cursor-following glow (Aceternity card-spotlight
+                technique: radial gradient at --mx/--my, set by the tiny
+                script below). */}
+            <span class="card-spot" aria-hidden></span>
+
+            <div class="relative flex items-center justify-between gap-4 mb-7">
               <span
                 class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                 style={`background: ${tool.accent}1a; border: 1px solid ${tool.accent}40;`}
@@ -79,19 +87,21 @@ const tools = [
               <span class="eyebrow text-muted">{t[`tools.${tool.key}.tag`]}</span>
             </div>
 
-            <p
-              class="font-display font-bold text-ink text-[20px] group-hover:text-accent transition-colors"
-              style="letter-spacing: -0.015em; line-height: 1.25;"
-            >
-              {t[`tools.${tool.key}.title`]}
-            </p>
-            <p class="mt-2.5 text-[14px] text-dim" style="line-height: 1.55;">
-              {t[`tools.${tool.key}.desc`]}
-            </p>
-            <p class="mt-5 eyebrow text-accent">
-              {t["tools.open"]}
-              <span class="inline-block ml-1 transition-transform group-hover:translate-x-1" aria-hidden>→</span>
-            </p>
+            <div class="relative">
+              <p
+                class="font-display font-bold text-ink text-[20px] group-hover:text-accent transition-colors"
+                style="letter-spacing: -0.015em; line-height: 1.25;"
+              >
+                {t[`tools.${tool.key}.title`]}
+              </p>
+              <p class="mt-2.5 text-[14px] text-dim" style="line-height: 1.55;">
+                {t[`tools.${tool.key}.desc`]}
+              </p>
+              <p class="mt-5 eyebrow text-accent">
+                {t["tools.open"]}
+                <span class="inline-block ml-1 transition-transform group-hover:translate-x-1" aria-hidden>→</span>
+              </p>
+            </div>
           </a>
         ))}
       </div>
@@ -101,3 +111,64 @@ const tools = [
   <DownloadCTA locale={locale} />
   <Footer locale={locale} />
 </Base>
+
+<style>
+  /* ── Border beam (Magic UI technique): a short gradient segment travels
+     the card's rounded-rect perimeter via offset-path. Staggered starts so
+     the four cards never pulse in sync. Falls back to nothing where
+     offset-path rect() is unsupported. ── */
+  .card-beam {
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--beam-color), transparent);
+    offset-path: rect(0 auto auto 0 round 24px);
+    animation: card-beam-orbit 8s linear infinite;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+  .tool-card:nth-child(2) .card-beam { animation-delay: -2s; }
+  .tool-card:nth-child(3) .card-beam { animation-delay: -4s; }
+  .tool-card:nth-child(4) .card-beam { animation-delay: -6s; }
+
+  @keyframes card-beam-orbit {
+    to { offset-distance: 100%; }
+  }
+
+  /* ── Spotlight (Aceternity technique): radial glow that follows the
+     cursor; --mx/--my set by the script below. ── */
+  .card-spot {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(90, 107, 255, 0.14),
+      transparent 70%
+    );
+  }
+  .tool-card:hover .card-spot {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-beam {
+      animation: none;
+      display: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  // Spotlight cursor tracking — sets --mx/--my per card.
+  document.querySelectorAll(".tool-card").forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", e.clientX - r.left + "px");
+      card.style.setProperty("--my", e.clientY - r.top + "px");
+    });
+  });
+</script>

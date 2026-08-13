@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { emergencyFund, monthsToGoal } from "~/lib/finance";
-import { ControlCell, StageGlow, glass, useMoney, interpolate, pluralKey, futureMonth } from "./fields";
+import { ControlCell, FlowMoney, StageGlow, glass, useMoney, interpolate, pluralKey, futureMonth } from "./fields";
 
 const STORE_KEY = "taupi:ef:v1";
 const RING_SIZE = 280;
@@ -83,7 +83,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
               className="font-display font-extrabold tracking-tightest tabular-nums"
               style={{ fontSize: "clamp(52px, 6vw, 92px)", color: accent, lineHeight: 0.95 }}
             >
-              {money(r.target)}
+              <FlowMoney value={r.target} locale={locale} />
             </p>
             <p className="mt-5 text-[15px] text-dim tabular-nums" style={{ lineHeight: 1.6 }} aria-live="polite">
               {summary}
@@ -155,11 +155,11 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
                     color: funded ? "#2DD4A7" : "#F5F5F7",
                   }}
                 >
-                  {funded ? "100" : r.pct}
+                  <FlowMoney value={funded ? 100 : r.pct} locale={locale} prefix="" />
                   <span style={{ fontSize: 30, fontWeight: 700, color: "#64646F" }}>%</span>
                 </span>
                 <span className="mt-2 font-mono text-[15px] text-dim tabular-nums">
-                  {money(saved)}
+                  <FlowMoney value={saved} locale={locale} />
                 </span>
               </div>
             </div>

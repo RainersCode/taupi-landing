@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
+import NumberFlow from "@number-flow/react";
 import type { Locale } from "~/i18n/strings";
 
 /**
@@ -24,6 +25,36 @@ export function useMoney(locale: Locale) {
 
 export const interpolate = (template: string, vars: Record<string, string | number>) =>
   (template ?? "").replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
+
+/** NumberFlow (number-flow.barvian.me) with the site's money conventions:
+ *  odometer-style transitions on every value change, locale grouping, no
+ *  decimals. Pass prefix="" for plain numbers, suffix="%" for percents.
+ *  Negative signs stay OUTSIDE (callers pass the absolute value) so the
+ *  colored sign treatment keeps working. */
+export function FlowMoney({
+  value,
+  locale,
+  prefix = "€",
+  suffix,
+  className,
+}: {
+  value: number;
+  locale: Locale;
+  prefix?: string;
+  suffix?: string;
+  className?: string;
+}) {
+  return (
+    <NumberFlow
+      value={Math.round(value)}
+      prefix={prefix}
+      suffix={suffix}
+      locales={locale === "lv" ? "lv-LV" : "en-GB"}
+      format={{ maximumFractionDigits: 0 }}
+      className={className}
+    />
+  );
+}
 
 /** Latvian counts "1, 21, 31 gada/mēneša" but "2–20, 22–30 gadiem/mēnešiem". */
 export const pluralKey = (locale: Locale, n: number, key: string) =>

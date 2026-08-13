@@ -14,7 +14,7 @@ import {
 } from "~/lib/affordability";
 import { futureValue } from "~/lib/finance";
 import AllocationRow from "./AllocationRow";
-import { StageGlow } from "./fields";
+import { FlowMoney, StageGlow } from "./fields";
 
 // Bar/row colors — the app's calculator palette (BudgetCalculatorScreen), so
 // the web tool and the app screenshots read as one product. Exported for the
@@ -484,8 +484,11 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 className="font-display font-extrabold text-[42px] tracking-tight tabular-nums"
                 style={{ color: freeColor }}
               >
-                {evald.free < 0 ? "−" : ""}€{nf.format(Math.abs(Math.round(evald.free)))}
-                <span className="ml-2 font-mono font-normal text-[13px] text-muted">{freePct}%</span>
+                {evald.free < 0 ? "−" : ""}
+                <FlowMoney value={Math.abs(evald.free)} locale={locale} />
+                <span className="ml-2 font-mono font-normal text-[13px] text-muted">
+                  <FlowMoney value={freePct} locale={locale} prefix="" suffix="%" />
+                </span>
               </span>
             </div>
 
@@ -569,7 +572,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                     className="font-display font-extrabold text-[24px] tracking-tight tabular-nums"
                     style={{ color: "#2DD4A7" }}
                   >
-                    ~{money(fv.future)}
+                    ~<FlowMoney value={Math.max(0, fv.future)} locale={locale} />
                   </span>
                 </div>
                 <p className="mt-1 text-[12px] font-mono text-muted text-right tabular-nums">

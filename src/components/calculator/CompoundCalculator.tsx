@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { futureValue } from "~/lib/finance";
-import { ControlCell, StageGlow, glass, useMoney, interpolate, pluralKey } from "./fields";
+import { ControlCell, FlowMoney, StageGlow, glass, useMoney, interpolate, pluralKey } from "./fields";
 
 const STORE_KEY = "taupi:cc:v1";
 const CONTRIB_COLOR = "#5A6BFF"; // brand — the money you put in
@@ -109,7 +109,7 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
               className="font-display font-extrabold tracking-tightest tabular-nums"
               style={{ fontSize: "clamp(52px, 6vw, 92px)", color: GROWTH_COLOR, lineHeight: 0.95 }}
             >
-              ~{money(r.future)}
+              ~<FlowMoney value={Math.max(0, r.future)} locale={locale} />
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
@@ -119,7 +119,9 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
               >
                 <span aria-hidden className="w-2.5 h-2.5 rounded-full" style={{ background: CONTRIB_COLOR }} />
                 {t["cc.contrib"]}
-                <span className="font-mono text-ink tabular-nums">{money(r.contributed)}</span>
+                <span className="font-mono text-ink tabular-nums">
+                  <FlowMoney value={Math.max(0, r.contributed)} locale={locale} />
+                </span>
               </span>
               <span
                 className="flex items-center gap-2.5 rounded-full px-4 py-2 text-[13px] text-dim"
@@ -127,7 +129,9 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
               >
                 <span aria-hidden className="w-2.5 h-2.5 rounded-full" style={{ background: GROWTH_COLOR }} />
                 {t["cc.growth"]}
-                <span className="font-mono text-ink tabular-nums">+{money(Math.max(0, r.growth))}</span>
+                <span className="font-mono text-ink tabular-nums">
+                  +<FlowMoney value={Math.max(0, r.growth)} locale={locale} />
+                </span>
               </span>
             </div>
 
