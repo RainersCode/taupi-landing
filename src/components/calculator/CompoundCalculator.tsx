@@ -13,6 +13,17 @@ const W = 640;
 const H = 320;
 const PAD = { t: 16, r: 14, b: 30, l: 14 };
 
+// Hero type scale by digit count — the figure must never wrap to a second line.
+const HERO_SIZES: Record<number, string> = {
+  1: "clamp(52px, 6vw, 92px)",
+  2: "clamp(52px, 6vw, 92px)",
+  3: "clamp(52px, 6vw, 92px)",
+  4: "clamp(52px, 6vw, 92px)",
+  5: "clamp(48px, 5.4vw, 82px)",
+  6: "clamp(40px, 4.6vw, 70px)",
+  7: "clamp(32px, 3.8vw, 58px)",
+};
+
 const shortMoney = (n: number) =>
   n >= 1000 ? `€${Math.round(n / 1000)}k` : `€${Math.round(n)}`;
 
@@ -72,6 +83,11 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
     }
   }
 
+  // The hero figure has to stay on ONE line however long it grows, so the
+  // type scale steps down as digits are added (€1 446 → €1 286 065).
+  const heroDigits = String(Math.round(Math.max(0, r.future))).length;
+  const heroSize = HERO_SIZES[Math.min(heroDigits, 7)] ?? HERO_SIZES[4];
+
   const maxV = Math.max(1, samples[years].future);
   const x = (year: number) => PAD.l + (year / years) * (W - PAD.l - PAD.r);
   const y = (v: number) => PAD.t + (1 - v / maxV) * (H - PAD.t - PAD.b);
@@ -106,10 +122,19 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
           <div>
             <p className="eyebrow mb-3">{t["cc.result"]}</p>
             <p
-              className="font-display font-extrabold tracking-tightest tabular-nums"
-              style={{ fontSize: "clamp(52px, 6vw, 92px)", color: GROWTH_COLOR, lineHeight: 0.95 }}
+              className="font-display font-extrabold tracking-tightest tabular-nums flex items-center whitespace-nowrap"
+              style={{ fontSize: heroSize, color: GROWTH_COLOR, lineHeight: 0.95 }}
             >
-              ~<FlowMoney value={Math.max(0, r.future)} locale={locale} />
+              <span
+                aria-hidden
+                className="shrink-0"
+                style={{ fontSize: "0.46em", opacity: 0.55, marginRight: "0.26em" }}
+              >
+                ~
+              </span>
+              <span className="shrink-0">
+                <FlowMoney value={Math.max(0, r.future)} locale={locale} />
+              </span>
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
