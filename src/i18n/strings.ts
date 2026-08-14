@@ -229,7 +229,7 @@ export const strings: Record<Locale, Dict> = {
 
     "cc.title": "Salikto procentu kalkulators.",
     "cc.sub":
-      "Ievadi, cik atliec katru mēnesi, un redzi, par ko tas izaug gadu gaitā — procenti pelna procentus.",
+      "Ievadi, cik atlicis katru mēnesi, un redzi, par ko tas izaug gadu gaitā — procenti pelna procentus.",
     "cc.start": "Sākuma summa",
     "cc.monthly": "Ikmēneša iemaksa",
     "cc.result": "Nākotnes vērtība",
