@@ -1,28 +1,30 @@
 ---
 title: "Kā ieskenēt čeku"
-description: "Nofotografē veikala čeku, un Taupi ar AI izlasa pirkumus, cenas un kategorijas. Arī: ko darīt, ja summa nesakrīt."
+description: "Viens foto — un visas čeka pozīcijas ar cenām un kategorijām ir budžetā. Arī: ja summa nesakrīt."
 order: 5
+group: "pamati"
 updatedDate: 2026-08-15
 ---
 
-Čeku skenēšana ir ātrākais veids, kā ievadīt lielu pirkumu: viens foto, un visas pozīcijas ar kategorijām ir budžetā.
+Čeku skenēšana ir ātrākais veids, kā ievadīt lielu pirkumu: AI izlasa veikalu, datumu un katru pozīciju.
 
 ## Kā ieskenēt čeku
 
-1. Sākuma ekrānā nospied **skenēšanas** ātro darbību (rāmīša ikona).
-2. Nofotografē čeku — vai izvēlies attēlu no galerijas. Derēs arī e-čeka PDF.
-3. Uzgaidi brīdi — AI izlasa veikalu, datumu un visas pozīcijas ar cenām.
+1. Sākuma ekrānā nospied ātro darbību `Skenēt` (rāmīša ikona)
+2. Nospied `Fotografēt` un nofotografē čeku — vai `No galerijas` / `No failiem`, ja čeks jau ir attēlā vai PDF
+3. Uzgaidi brīdi — kamēr rāda **Lasa čeku…**, neaizver lietotni
 
 ![Skenēšanas sākuma ekrāns](/gids/skenet-sakums.png)
 
 ![Taupi lasa čeku](/gids/skenet-lasa.png)
 
-## Kā pārbaudīt nolasītās pozīcijas
+## Kā pārbaudīt rezultātu
 
-1. Rezultātu ekrānā redzēsi visas atpazītās pozīcijas — katru vari atzīmēt vai noņemt.
-2. Pārbaudi kopsummu ekrāna augšā: tai jāsakrīt ar čeka gala summu.
-3. Kategorijas AI pieliek pats (pārtika sadalās arī apakškategorijās) — vajadzības gadījumā tās vari mainīt.
-4. Nospied pievienošanas pogu — atzīmētās pozīcijas nonāk budžetā kā izdevumi.
+1. Augšā redzi atpazīto kopsummu — salīdzini to ar čeka gala summu
+2. Sadaļā **Pārbaude** apstiprini datumu un izvēlies kontu rindā **Maksāt no**
+3. Noritini līdz **Preces** — noņem ķeksi pozīcijām, ko negribi pievienot
+4. Kategorijas AI pieliek pats — vajadzības gadījumā nomaini ar pieskārienu
+5. Nospied `Pievienot izdevumus`
 
 ![Atpazītā kopsumma un pārbaude](/gids/skenet-rezultati.png)
 
@@ -30,11 +32,12 @@ updatedDate: 2026-08-15
 
 ## Ko darīt, ja summa nesakrīt
 
-1. Biežākais iemesls — akcijas un atlaides, ko čeki drukā dažādos veidos; retos gadījumos AI kādu nolasa nepareizi.
-2. Salīdzini pozīcijas ar čeku: lieko atlaidi vari noņemt, nepareizu summu — izlabot ar pieskārienu.
-3. Ja čeks konsekventi lasās nepareizi, uzraksti mums uz info@taupi.eu un pievieno čeka foto — tā mēs skeneri uzlabojam.
+1. Biežākais iemesls — akcijas un atlaides, ko čeki drukā dažādos veidos
+2. Salīdzini pozīcijas ar čeku: lieko rindu noņem, nepareizu summu izlabo ar pieskārienu
+3. Ja kāda veikala čeki konsekventi lasās nepareizi — atsūti čeka foto uz info@taupi.eu, tā mēs skeneri uzlabojam
 
 ## Cik skenējumu ir pieejami
 
-1. Bezmaksas kontā ir noteikts skenējumu skaits mēnesī — atlikušo skaitu redzēsi pie skenēšanas.
-2. Skaits atjaunojas katra mēneša sākumā; **Taupi Premium** dod neierobežotu skenēšanu.
+1. Bezmaksas kontā ir noteikts skenējumu skaits mēnesī — atlikušo redzi skenēšanas ekrāna stūrī
+2. Skaits atjaunojas katra mēneša 1. datumā
+3. **Taupi Premium** dod neierobežotu skenēšanu

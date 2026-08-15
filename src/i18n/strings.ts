@@ -142,6 +142,8 @@ export const strings: Record<Locale, Dict> = {
     "gids.intro":
       "Īsas pamācības ar ekrānuzņēmumiem katram Taupi solim — no budžeta iestatīšanas līdz čeku skenēšanai. Atver vajadzīgo tēmu un seko soļiem.",
     "gids.back": "Viss gids",
+    "gids.group.pamati": "Pamati",
+    "gids.group.ikdiena": "Ikdiena",
     "gids.open": "Atvērt pamācību",
     "gids.toc": "Šajā pamācībā",
     "gids.updated": "Atjaunots:",
@@ -473,6 +475,8 @@ export const strings: Record<Locale, Dict> = {
     "gids.intro":
       "Short walkthroughs with screenshots for every Taupi flow — from budget setup to receipt scanning. Open a topic and follow the steps.",
     "gids.back": "All guides",
+    "gids.group.pamati": "Basics",
+    "gids.group.ikdiena": "Everyday",
     "gids.open": "Open guide",
     "gids.toc": "In this guide",
     "gids.updated": "Updated:",

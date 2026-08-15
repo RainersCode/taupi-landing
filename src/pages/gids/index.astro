@@ -4,11 +4,24 @@ import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import { getCollection } from "astro:content";
 import { getDict } from "~/i18n/strings";
+import {
+  Wallet,
+  CalendarRange,
+  Target,
+  HandCoins,
+  ScanLine,
+  ArrowLeftRight,
+  CircleGauge,
+  Users,
+  LayoutGrid,
+  Sparkles,
+} from "@lucide/astro";
 
 /**
- * Guide index — /gids/. The app's "Palīdzība" entry points here; each
- * guide is a topic hub with anchor-linkable sub-guides. Ordered by the
- * `order` frontmatter (task frequency, not date — guides are evergreen).
+ * Guide index — /gids/. A task hub, not a blog: users come to DO one
+ * thing, so guides render as a compact card grid grouped by intent
+ * (help-center pattern — Stripe/Intercom style) instead of the padomi
+ * editorial list. Ordered by the `order` frontmatter within groups.
  */
 const locale = "lv" as const;
 const t = getDict(locale);
@@ -16,6 +29,26 @@ const t = getDict(locale);
 const guides = (
   await getCollection("gids", ({ data }) => !data.draft && data.locale === "lv")
 ).sort((a, b) => a.data.order - b.data.order);
+
+// Card icon per guide id — library icons only, mirroring the app's own
+// iconography (wallet, target, scan frame, transfer arrows...).
+const ICONS: Record<string, any> = {
+  "budzeta-iestatijumi": Wallet,
+  "jauns-periods": CalendarRange,
+  merki: Target,
+  paradi: HandCoins,
+  "ceku-skenesana": ScanLine,
+  "konti-un-parskaitijumi": ArrowLeftRight,
+  "sakuma-ekrans": CircleGauge,
+  "koplietots-budzets": Users,
+  logriki: LayoutGrid,
+  "ai-ieskati-un-kvotas": Sparkles,
+};
+
+const groups: Array<{ key: "pamati" | "ikdiena"; label: string }> = [
+  { key: "pamati", label: t["gids.group.pamati"] },
+  { key: "ikdiena", label: t["gids.group.ikdiena"] },
+];
 ---
 <Base
   title="Taupi lietošanas gids — soli pa solim pamācības"
@@ -25,8 +58,8 @@ const guides = (
 >
   <Nav locale={locale} />
 
-  <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
-    <header class="mb-16 border-b border-white/10 pb-10">
+  <main class="mx-auto max-w-4xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
+    <header class="mb-14 border-b border-white/10 pb-10">
       <p class="eyebrow mb-6">{t["gids.eyebrow"]}</p>
       <h1
         class="font-display font-extrabold text-ink"
@@ -39,36 +72,41 @@ const guides = (
       </p>
     </header>
 
-    <div>
-      {guides.map((guide, i) => (
-        <article class="group border-b border-white/10 py-10 first:pt-0">
-          <div class="flex items-baseline gap-5">
-            <span class="eyebrow text-muted shrink-0">{String(i + 1).padStart(2, "0")}</span>
-            <div>
-              <h2
-                class="font-display font-bold text-ink"
-                style="font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.02em; line-height: 1.25;"
-              >
-                <a href={`/gids/${guide.id}/`} class="hover:text-accent transition-colors">
-                  {guide.data.title}
-                </a>
-              </h2>
-              <p class="mt-3 text-dim max-w-[62ch]" style="line-height: 1.65;">
-                {guide.data.description}
-              </p>
-              <div class="mt-5">
+    {groups.map((group) => {
+      const items = guides.filter((g) => g.data.group === group.key);
+      if (items.length === 0) return null;
+      return (
+        <section class="mb-14">
+          <p class="eyebrow mb-6">{group.label}</p>
+          <div class="grid gap-5 sm:grid-cols-2">
+            {items.map((guide) => {
+              const Icon = ICONS[guide.id];
+              return (
                 <a
                   href={`/gids/${guide.id}/`}
-                  class="eyebrow text-accent hover:text-ink transition-colors"
+                  class="group flex items-start gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-6 hover:border-accent/40 hover:bg-white/[0.05] transition-colors"
                 >
-                  {t["gids.open"]} →
+                  <span class="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 border border-accent/25 text-accent">
+                    {Icon && <Icon size={22} stroke-width={1.8} />}
+                  </span>
+                  <span>
+                    <span
+                      class="block font-display font-bold text-ink group-hover:text-accent transition-colors"
+                      style="font-size: 17px; letter-spacing: -0.01em; line-height: 1.3;"
+                    >
+                      {guide.data.title}
+                    </span>
+                    <span class="mt-2 block text-dim text-sm" style="line-height: 1.55;">
+                      {guide.data.description}
+                    </span>
+                  </span>
                 </a>
-              </div>
-            </div>
+              );
+            })}
           </div>
-        </article>
-      ))}
-    </div>
+        </section>
+      );
+    })}
   </main>
 
   <Footer locale={locale} />

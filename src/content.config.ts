@@ -34,6 +34,8 @@ const gids = defineCollection({
     title: z.string(),
     description: z.string(),
     order: z.number(),
+    // Index grouping: "pamati" = the setup flows, "ikdiena" = everyday use.
+    group: z.enum(["pamati", "ikdiena"]).default("pamati"),
     updatedDate: z.coerce.date(),
     locale: z.enum(["lv", "en"]).default("lv"),
     draft: z.boolean().default(false),

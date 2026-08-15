@@ -1,47 +1,48 @@
 ---
 title: "Kā aizpildīt budžeta iestatījumus"
-description: "Ienākumi, algas diena, fiksētās izmaksas un sākuma atlikums — kā tos norādīt precīzi, lai dienas budžets rēķinās pareizi."
+description: "Ienākumi, algas diena, fiksētās izmaksas un sākuma atlikums — lai dienas budžets rēķinās pareizi."
 order: 1
+group: "pamati"
 updatedDate: 2026-08-15
 ---
 
-Budžeta iestatījumi ir Taupi pamats: no tiem lietotne izrēķina, cik vari droši iztērēt šodien. Šeit — kā katru soli aizpildīt precīzi.
+Budžeta iestatījumi ir Taupi pamats: no tiem lietotne izrēķina, cik vari droši iztērēt šodien. Pirmajā palaišanā Taupi tevi izved cauri vednim; vēlāk visu vari mainīt šeit.
 
 ## Kā atvērt budžeta iestatījumus
 
-1. Pirmajā palaišanā Taupi tevi izved cauri iestatīšanas vednim automātiski.
-2. Vēlāk tos vari mainīt jebkurā brīdī: atver cilni **Iestatījumi** un izvēlies budžeta sadaļu.
+1. Apakšā nospied cilni `Iest.`
+2. Nospied `Budžeta iestatīšana`
 
 ![Budžeta iestatīšanas sadaļas](/gids/budzets-sadalas.png)
 
-## Kā norādīt ienākumus un algas dienu
+## Kā norādīt ienākumus un sākuma atlikumu
 
-1. Ieraksti savus regulāros mēneša ienākumus — summu, kas ienāk kontā algas dienā.
-2. Norādi **algas dienu** — datumu, kurā parasti saņem algu. Tā ir tava budžeta perioda robeža: periods ilgst no vienas algas dienas līdz nākamajai.
-3. Ja ienākumi svārstās, ieraksti piesardzīgāko (mazāko) summu — pārsteigumi tad būs tikai patīkami.
+Ja ienākumi svārstās, ieraksti piesardzīgāko (mazāko) summu.
+
+1. Sadaļā **Mēneša ienākumi** ieraksti summu, kas ienāk algas dienā
+2. Izvēlies `No algas` vai `No atlikuma` — otrais der, ja negribi šķirot, kur nauda aizgāja: pasaki tikai, cik šobrīd ir kontos
+3. Sadaļā **Šī brīža atlikums** ieraksti, cik naudas tev ir tagad
+4. Sadaļā **Mēneša sākums** izvēlies algas dienu — `Konkrēts datums` un atzīmē datumu
 
 ![Ienākumi un sākuma atlikums budžeta iestatīšanā](/gids/budzets-ienakumi.png)
 
 ## Kā pievienot fiksētās izmaksas
 
-1. Fiksētās izmaksas ir tas, kas no algas aiziet katru mēnesi neatkarīgi no tevis: īre, komunālie, abonementi, kredīta maksājumi.
-2. Pievieno katru pozīciju atsevišķi — vari izvēlēties no gatavajiem piemēriem vai ierakstīt savu.
-3. Šīs summas Taupi atliek malā uzreiz — tās nekad neparādās kā "šodien iztērējamā" nauda.
+Īre, komunālie, abonementi, kredīti — tas, kas aiziet katru mēnesi neatkarīgi no tevis. Taupi šīs summas atliek malā uzreiz, tās nekad nav "šodien iztērējamā" nauda.
+
+1. Atver sadaļu **Fiksētās izmaksas**
+2. Nospied `Pievienot fiksētu izmaksu`
+3. Ieraksti nosaukumu, summu un maksājuma dienu
+4. Atkārto katrai pozīcijai — beigās nospied `Saglabāt konfigurāciju`
 
 ![Fiksēto izmaksu saraksts](/gids/budzets-fiksetas.png)
 
 ## Kā fiksēto izmaksu atzīmēt kā krāšanu
 
-1. Ja kāda fiksētā pozīcija patiesībā ir krāšana — pensijas iemaksa, investīciju plāns — atzīmē to kā krāšanu.
-2. Tā summa joprojām tiek atlikta malā no dienas budžeta, bet statistikā tā skaitās kā ietaupījums, nevis tēriņš.
-
-## Kā norādīt sākuma atlikumu
-
-1. Ieraksti, cik naudas tev ir kontā šobrīd — tas ir punkts, no kura Taupi sāk rēķināt.
-2. Precīzs sākuma atlikums nozīmē precīzu "Atlikums" skaitli uz sākuma ekrāna jau no pirmās dienas.
+Ja pozīcija patiesībā ir krāšana — pensijas iemaksa, investīciju plāns — atzīmē to kā krāšanu: summa joprojām tiek atlikta malā, bet statistikā tā skaitās kā ietaupījums, nevis tēriņš.
 
 ## Kā rēķinās dienas budžets
 
-1. Taupi no ienākumiem atņem fiksētās izmaksas, plānotos izdevumus un mērķu iemaksas.
-2. Atlikušo summu izdala ar dienām, kas palikušas līdz algas dienai — tas ir tavs **dienas budžets**.
-3. Ja šodien iztērē mazāk, rītdienas budžets aug; ja vairāk — sarūk. Skaitlis vienmēr rāda patiesību par šodienu.
+1. Taupi no ienākumiem atņem fiksētās izmaksas, plānotos izdevumus un mērķu iemaksas
+2. Atlikušo izdala ar dienām līdz algai — tas ir tavs **dienas budžets**
+3. Iztērē šodien mazāk — rītdienas budžets aug; iztērē vairāk — sarūk

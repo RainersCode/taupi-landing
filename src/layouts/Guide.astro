@@ -86,21 +86,9 @@ const jsonLd = {
       <slot />
     </article>
 
-    <aside class="mt-16 rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
-      <p class="font-display font-bold text-ink text-xl">{t["gids.cta.title"]}</p>
-      <p class="mt-3 text-dim" style="line-height: 1.65;">{t["gids.cta.body"]}</p>
-      <div class="mt-6 flex flex-wrap items-center justify-center gap-4">
-        <a
-          href="taupi://"
-          class="inline-block rounded-full bg-accent px-7 py-3 font-semibold text-black hover:opacity-90 transition-opacity"
-        >
-          {t["gids.cta.open"]}
-        </a>
-        <a href="/" class="eyebrow text-dim hover:text-ink transition-colors">
-          {t["gids.cta.learnmore"]} →
-        </a>
-      </div>
-    </aside>
+    <p class="mt-16 border-t border-white/10 pt-8">
+      <a href="/gids/" class="eyebrow text-dim hover:text-ink transition-colors">← {t["gids.back"]}</a>
+    </p>
   </main>
 
   <Footer locale={locale} />
@@ -128,5 +116,51 @@ const jsonLd = {
     border-radius: 1rem;
     padding: 1rem 1.25rem;
     color: rgb(255 255 255 / 0.55);
+  }
+  /* Visual steps: ordered lists render as numbered indigo circles — the
+     app's own accent — so the action sequence reads at a glance. */
+  .guide-prose ol {
+    list-style: none;
+    counter-reset: step;
+    padding-left: 0;
+    margin: 1.25rem 0;
+  }
+  .guide-prose ol > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 3.4rem;
+    margin: 1.1rem 0;
+    line-height: 1.6;
+  }
+  .guide-prose ol > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: -0.15rem;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(90 107 255 / 0.16);
+    border: 1px solid rgb(90 107 255 / 0.45);
+    color: #aab4ff;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  /* UI-element convention: `code` inside a guide is a BUTTON/LABEL from the
+     app, rendered as an app-style pill chip (not monospace). */
+  .guide-prose code {
+    display: inline-block;
+    padding: 0.05rem 0.65rem;
+    border-radius: 9999px;
+    background: rgb(90 107 255 / 0.18);
+    border: 1px solid rgb(255 255 255 / 0.16);
+    color: #f5f5f7;
+    font-family: inherit;
+    font-size: 0.88em;
+    font-weight: 600;
+    white-space: nowrap;
   }
 </style>
