@@ -19,7 +19,7 @@ Taupi budžets dzīvo **periodos** — no vienas algas dienas līdz nākamajai. 
 2. Seko soļiem: apstiprini ienākumus (vari ierakstīt faktisko algu, ja tā atšķiras), pārskati fiksētās izmaksas un sākuma atlikumu.
 3. Pabeidzot, jaunais periods kļūst aktīvs, un dienas budžets tiek izrēķināts no jauna.
 
-> 📷 **Ekrānuzņēmums:** Jauna perioda uzsākšanas solis
+![Jauna perioda uzsākšanas apstiprinājums](/gids/periods-sakt.png)
 
 ## Kas notiek ar atlikumu no iepriekšējā perioda
 
@@ -32,4 +32,4 @@ Taupi budžets dzīvo **periodos** — no vienas algas dienas līdz nākamajai. 
 2. Pārskatā redzēsi: cik ienāca, cik iztērēji, cik atliki malā un cik palika pāri.
 3. Vari pārslēgties starp mēnešiem, lai salīdzinātu, kā mainās tavi paradumi.
 
-> 📷 **Ekrānuzņēmums:** Periodu vēstures ekrāns
+![Perioda pārskats](/gids/periodu-vesture.png)

@@ -19,14 +19,14 @@ Parādu sadaļa tur kopā visu, ko esi aizdevis, aizņēmies vai maksā pa daļ�
 2. Izvēlies veidu, ieraksti summu, otru pusi (kam / no kā) un, ja ir, termiņu.
 3. Saglabā — parāds parādās sarakstā ar atmaksas tempu.
 
-> 📷 **Ekrānuzņēmums:** Jauna parāda izveides ekrāns
+![Jauna parāda izveide — veidi un summa](/gids/paradi-izveide.png)
 
 ## Kā atzīmēt maksājumu
 
 1. Atver parādu un pievieno maksājumu — summu, kas atdota vai saņemta.
 2. Atlikusī summa un temps pārrēķinās uzreiz; kad viss atmaksāts, parādu vari noslēgt.
 
-> 📷 **Ekrānuzņēmums:** Parāda maksājuma pievienošana
+![Parādu saraksts ar atlikušo summu](/gids/paradi-saraksts.png)
 
 ## Vai parāds skaita dienas budžetā
 

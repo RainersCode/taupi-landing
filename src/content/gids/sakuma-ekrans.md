@@ -13,7 +13,7 @@ Sākuma ekrāns vienā skatā parāda visu tavu budžeta stāvokli. Šeit — ko
 2. Ja skaitlis ir mīnusā, šodien esi iztērējis vairāk par dienas budžetu — zem apļa redzēsi, cik būs pieejams rīt, ja šodien vairāk netērēsi.
 3. Apļa aizpildījums rāda, cik liela dienas daļa jau iztērēta.
 
-> 📷 **Ekrānuzņēmums:** Sākuma ekrāna aplis ar dienas budžetu
+![Sākuma ekrāna dienas budžeta aplis](/gids/sakums-hero.png)
 
 ## Mērķa temps (mazais aplis)
 
@@ -36,7 +36,7 @@ Sākuma ekrāns vienā skatā parāda visu tavu budžeta stāvokli. Šeit — ko
 1. Kartīte zem apļa rāda, cik šomēnes esi ietaupījis — atliktā nauda, mērķu iemaksas un krāšanas fiksētās izmaksas kopā.
 2. Blakus redzams salīdzinājums ar iepriekšējo mēnesi.
 
-> 📷 **Ekrānuzņēmums:** Ietaupīts kartīte
+![Ietaupīts kartīte un ātrās darbības](/gids/sakums-ietaupits.png)
 
 ## Ātrās darbības
 

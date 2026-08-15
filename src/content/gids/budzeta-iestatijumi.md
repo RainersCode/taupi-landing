@@ -12,7 +12,7 @@ Budžeta iestatījumi ir Taupi pamats: no tiem lietotne izrēķina, cik vari dro
 1. Pirmajā palaišanā Taupi tevi izved cauri iestatīšanas vednim automātiski.
 2. Vēlāk tos vari mainīt jebkurā brīdī: atver cilni **Iestatījumi** un izvēlies budžeta sadaļu.
 
-> 📷 **Ekrānuzņēmums:** Iestatījumu ekrāns ar budžeta sadaļu
+![Budžeta iestatīšanas sadaļas](/gids/budzets-sadalas.png)
 
 ## Kā norādīt ienākumus un algas dienu
 
@@ -20,7 +20,7 @@ Budžeta iestatījumi ir Taupi pamats: no tiem lietotne izrēķina, cik vari dro
 2. Norādi **algas dienu** — datumu, kurā parasti saņem algu. Tā ir tava budžeta perioda robeža: periods ilgst no vienas algas dienas līdz nākamajai.
 3. Ja ienākumi svārstās, ieraksti piesardzīgāko (mazāko) summu — pārsteigumi tad būs tikai patīkami.
 
-> 📷 **Ekrānuzņēmums:** Ienākumu un algas dienas solis
+![Ienākumi un sākuma atlikums budžeta iestatīšanā](/gids/budzets-ienakumi.png)
 
 ## Kā pievienot fiksētās izmaksas
 
@@ -28,7 +28,7 @@ Budžeta iestatījumi ir Taupi pamats: no tiem lietotne izrēķina, cik vari dro
 2. Pievieno katru pozīciju atsevišķi — vari izvēlēties no gatavajiem piemēriem vai ierakstīt savu.
 3. Šīs summas Taupi atliek malā uzreiz — tās nekad neparādās kā "šodien iztērējamā" nauda.
 
-> 📷 **Ekrānuzņēmums:** Fiksēto izmaksu saraksts iestatījumos
+![Fiksēto izmaksu saraksts](/gids/budzets-fiksetas.png)
 
 ## Kā fiksēto izmaksu atzīmēt kā krāšanu
 

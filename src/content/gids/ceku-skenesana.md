@@ -13,7 +13,9 @@ updatedDate: 2026-08-15
 2. Nofotografē čeku — vai izvēlies attēlu no galerijas. Derēs arī e-čeka PDF.
 3. Uzgaidi brīdi — AI izlasa veikalu, datumu un visas pozīcijas ar cenām.
 
-> 📷 **Ekrānuzņēmums:** Skenēšanas kamera ar čeku
+![Skenēšanas sākuma ekrāns](/gids/skenet-sakums.png)
+
+![Taupi lasa čeku](/gids/skenet-lasa.png)
 
 ## Kā pārbaudīt nolasītās pozīcijas
 
@@ -22,7 +24,9 @@ updatedDate: 2026-08-15
 3. Kategorijas AI pieliek pats (pārtika sadalās arī apakškategorijās) — vajadzības gadījumā tās vari mainīt.
 4. Nospied pievienošanas pogu — atzīmētās pozīcijas nonāk budžetā kā izdevumi.
 
-> 📷 **Ekrānuzņēmums:** Skenēšanas rezultātu ekrāns ar pozīcijām
+![Atpazītā kopsumma un pārbaude](/gids/skenet-rezultati.png)
+
+![Nolasītās pozīcijas ar kategorijām](/gids/skenet-pozicijas.png)
 
 ## Ko darīt, ja summa nesakrīt
 

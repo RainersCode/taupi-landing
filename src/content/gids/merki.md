@@ -14,7 +14,7 @@ Mērķis ir veids, kā Taupi tavā vietā atliek naudu: ceļojumam, drošības s
 3. Ieraksti nosaukumu, mērķa summu un termiņu, ja tāds ir.
 4. Saglabā — mērķis parādās sarakstā, un Taupi sāk rēķināt tā tempu.
 
-> 📷 **Ekrānuzņēmums:** Jauna mērķa izveides ekrāns
+![Mērķu ekrāns ar kopējo progresu](/gids/merki-saraksts.png)
 
 ## Kā sasaistīt mērķi ar krājkontu
 
@@ -27,12 +27,14 @@ Mērķis ir veids, kā Taupi tavā vietā atliek naudu: ceļojumam, drošības s
 1. Atver mērķi un nospied iemaksas pogu.
 2. Ieraksti summu — tā tiek pieskaitīta mērķa progresam (un pārskaitīta uz krājkontu, ja mērķis ir sasaistīts).
 
-> 📷 **Ekrānuzņēmums:** Mērķa iemaksas ekrāns
+![Iemaksas pievienošana mērķim](/gids/merki-iemaksa.png)
 
 ## Kā mērķis ietekmē dienas budžetu
 
 1. Krāšanas mērķa temps tiek atlikts malā no tērējamās naudas — sākuma ekrāna aplī to rāda **mērķa tempa** indikators.
 2. Tāpēc, izveidojot mērķi, dienas budžets samazinās: Taupi jau šodien atliek daļu mērķim, lai termiņā tas būtu sasniegts.
+
+![Mērķa progress un temps](/gids/merki-detalas.png)
 
 ## Kā rediģēt vai dzēst mērķi
 

@@ -13,7 +13,7 @@ Konti Taupi atspoguļo, **kur** tava nauda atrodas — ikdienas konts, krājkont
 2. Ieraksti nosaukumu (piemēram, "Swedbank", "Krājkonts", "Skaidrā nauda") un pašreizējo atlikumu.
 3. Kontu skaits nav ierobežots — veido tik, cik tev reāli ir.
 
-> 📷 **Ekrānuzņēmums:** Kontu saraksts
+![Kontu saraksts un neto vērtība](/gids/konti-saraksts.png)
 
 ## Kā pārskaitīt starp kontiem
 
@@ -21,7 +21,7 @@ Konti Taupi atspoguļo, **kur** tava nauda atrodas — ikdienas konts, krājkont
 2. Izvēlies, no kura konta uz kuru, un ieraksti summu.
 3. Pārskaitījums maina abu kontu atlikumus, bet **nav izdevums** — tava nauda tikai pārvietojas, tāpēc budžeta skaitļi nemainās.
 
-> 📷 **Ekrānuzņēmums:** Pārskaitījuma ekrāns
+![Pārskaitījums starp kontiem](/gids/parskaitijums.png)
 
 ## Kā konti savienojas ar budžetu
 

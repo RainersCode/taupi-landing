@@ -21,7 +21,7 @@ Logrīks rāda dienas budžetu un perioda kopainu bez lietotnes atvēršanas —
 2. Sarakstā sameklē **Taupi** — pieejami vairāki izmēri (pilnais pārskats, mazais, nedēļas, mērķu).
 3. Turpini pirkstu uz izvēlētā logrīka un ievelc to sākuma ekrānā.
 
-> 📷 **Ekrānuzņēmums:** Android logrīku saraksts ar Taupi
+![Taupi logrīki Android galerijā](/gids/logriki-android.png)
 
 ## Ko logrīks rāda
 
