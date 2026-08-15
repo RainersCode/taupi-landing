@@ -1,0 +1,132 @@
+---
+import Base from "~/layouts/Base.astro";
+import Nav from "~/components/Nav.astro";
+import Footer from "~/components/Footer.astro";
+import { getDict } from "~/i18n/strings";
+import type { CollectionEntry } from "astro:content";
+import type { MarkdownHeading } from "astro";
+
+/**
+ * Guide shell — a topic hub whose H2 sections are the individual
+ * sub-guides. The TOC is built from those headings, so every sub-guide
+ * is anchor-linkable and the app can open /gids/<id>/#<sub-guide>
+ * directly. Reading column + typography mirror BlogPost; images render
+ * as phone-framed screenshots (see the style block below).
+ */
+interface Props {
+  guide: CollectionEntry<"gids">;
+  headings: MarkdownHeading[];
+}
+
+const { guide, headings } = Astro.props;
+const { title, description, updatedDate, locale } = guide.data;
+const t = getDict(locale);
+
+const site = Astro.site ?? new URL("https://taupi.eu");
+const canonical = new URL(Astro.url.pathname, site).href;
+
+// H2 headings only — those are the sub-guides; deeper levels are steps.
+const toc = headings.filter((h) => h.depth === 2);
+
+const displayDate = updatedDate.toLocaleDateString(locale === "lv" ? "lv-LV" : "en-GB", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  inLanguage: locale,
+  dateModified: updatedDate.toISOString(),
+  mainEntityOfPage: canonical,
+  image: new URL("/og.jpg", site).href,
+  author: { "@id": `${site.href}#org` },
+  publisher: { "@id": `${site.href}#org` },
+};
+---
+<Base title={`${title} — Taupi`} description={description} locale={locale} alternate={false} ogType="article">
+  <Nav locale={locale} />
+
+  <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
+    <header class="mb-12 border-b border-white/10 pb-10">
+      <p class="eyebrow mb-6">
+        <a href="/gids/" class="hover:text-ink transition-colors">← {t["gids.back"]}</a>
+      </p>
+      <h1
+        class="font-display font-extrabold text-ink"
+        style="font-size: clamp(32px, 4.5vw, 60px); letter-spacing: -0.035em; line-height: 1.05;"
+      >
+        {title}
+      </h1>
+      <p class="mt-6 text-dim max-w-[58ch] text-lg" style="line-height: 1.65;">
+        {description}
+      </p>
+      <p class="mt-6 eyebrow text-muted">{t["gids.updated"]} {displayDate}</p>
+    </header>
+
+    {toc.length > 1 && (
+      <nav class="mb-14 rounded-2xl border border-white/10 bg-white/[0.03] p-7" aria-label={t["gids.toc"]}>
+        <p class="eyebrow mb-5">{t["gids.toc"]}</p>
+        <ol class="space-y-3">
+          {toc.map((h) => (
+            <li>
+              <a href={`#${h.slug}`} class="text-dim hover:text-accent transition-colors">
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+
+    <article class="legal-prose guide-prose">
+      <slot />
+    </article>
+
+    <aside class="mt-16 rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+      <p class="font-display font-bold text-ink text-xl">{t["gids.cta.title"]}</p>
+      <p class="mt-3 text-dim" style="line-height: 1.65;">{t["gids.cta.body"]}</p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="taupi://"
+          class="inline-block rounded-full bg-accent px-7 py-3 font-semibold text-black hover:opacity-90 transition-opacity"
+        >
+          {t["gids.cta.open"]}
+        </a>
+        <a href="/" class="eyebrow text-dim hover:text-ink transition-colors">
+          {t["gids.cta.learnmore"]} →
+        </a>
+      </div>
+    </aside>
+  </main>
+
+  <Footer locale={locale} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+</Base>
+
+<style is:global>
+  /* Sub-guide headings get scroll room under the fixed nav. */
+  .guide-prose h2 {
+    scroll-margin-top: 7rem;
+  }
+  /* Screenshots render as phone frames: narrow, rounded, hairline border. */
+  .guide-prose img {
+    display: block;
+    margin: 1.5rem auto;
+    max-width: min(320px, 100%);
+    border-radius: 1.25rem;
+    border: 1px solid rgb(255 255 255 / 0.12);
+  }
+  /* Screenshot placeholder — a blockquote whose first text is 📷 reads as
+     a dashed drop-slot until the real image replaces it. */
+  .guide-prose blockquote {
+    border: 1px dashed rgb(255 255 255 / 0.2);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    color: rgb(255 255 255 / 0.55);
+  }
+</style>

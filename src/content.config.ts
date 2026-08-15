@@ -20,4 +20,24 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+/**
+ * Gids ("Palīdzība") — task-based app guides. Each markdown file in
+ * src/content/gids/ becomes /gids/<filename>/. A guide is a topic hub:
+ * its H2 sections are the individual sub-guides (anchor-linkable, so the
+ * app can deep-link straight to /gids/merki/#ka-dzest-merki). `order`
+ * drives the index listing; LV-only for now, same locale escape hatch
+ * as the blog.
+ */
+const gids = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/gids" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number(),
+    updatedDate: z.coerce.date(),
+    locale: z.enum(["lv", "en"]).default("lv"),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, gids };

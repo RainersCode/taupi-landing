@@ -136,6 +136,19 @@ export const strings: Record<Locale, Dict> = {
       "Dienas budžets, čeku skenēšana ar AI un ieskati — viss vienuviet. Piesakies, un dosim ziņu, tiklīdz Taupi būs lejupielādējams.",
     "blog.cta.button": "Pieteikties gaidīšanas sarakstam",
 
+    "gids.eyebrow": "Lietošanas gids",
+    "gids.title": "Kā lietot Taupi — soli pa solim.",
+    "gids.intro":
+      "Īsas pamācības ar ekrānuzņēmumiem katram Taupi solim — no budžeta iestatīšanas līdz čeku skenēšanai. Atver vajadzīgo tēmu un seko soļiem.",
+    "gids.back": "Viss gids",
+    "gids.open": "Atvērt pamācību",
+    "gids.toc": "Šajā pamācībā",
+    "gids.updated": "Atjaunots:",
+    "gids.cta.title": "Gatavs izmēģināt pašam?",
+    "gids.cta.body": "Atver Taupi un izdari to savā budžetā — pamācība paliks šeit, ja vajadzēs atgriezties.",
+    "gids.cta.open": "Atvērt Taupi",
+    "gids.cta.learnmore": "Vēl nav lietotnes? Uzzini vairāk",
+
     "nav.calc": "Kalkulators",
 
     "bc.eyebrow": "Bezmaksas rīks",
@@ -452,6 +465,19 @@ export const strings: Record<Locale, Dict> = {
     "blog.cta.body":
       "A daily budget, AI receipt scanning and insights — all in one place. Join the waitlist and we'll email you the moment Taupi is ready.",
     "blog.cta.button": "Join the waitlist",
+
+    "gids.eyebrow": "How-to guide",
+    "gids.title": "How to use Taupi — step by step.",
+    "gids.intro":
+      "Short walkthroughs with screenshots for every Taupi flow — from budget setup to receipt scanning. Open a topic and follow the steps.",
+    "gids.back": "All guides",
+    "gids.open": "Open guide",
+    "gids.toc": "In this guide",
+    "gids.updated": "Updated:",
+    "gids.cta.title": "Ready to try it yourself?",
+    "gids.cta.body": "Open Taupi and do it in your own budget — this guide will be here if you need to come back.",
+    "gids.cta.open": "Open Taupi",
+    "gids.cta.learnmore": "Don't have the app yet? Learn more",
 
     "nav.calc": "Calculator",
 
