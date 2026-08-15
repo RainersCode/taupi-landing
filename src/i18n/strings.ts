@@ -136,6 +136,7 @@ export const strings: Record<Locale, Dict> = {
       "Dienas budžets, čeku skenēšana ar AI un ieskati — viss vienuviet. Piesakies, un dosim ziņu, tiklīdz Taupi būs lejupielādējams.",
     "blog.cta.button": "Pieteikties gaidīšanas sarakstam",
 
+    "nav.gids": "Gids",
     "gids.eyebrow": "Lietošanas gids",
     "gids.title": "Kā lietot Taupi — soli pa solim.",
     "gids.intro":
@@ -466,6 +467,7 @@ export const strings: Record<Locale, Dict> = {
       "A daily budget, AI receipt scanning and insights — all in one place. Join the waitlist and we'll email you the moment Taupi is ready.",
     "blog.cta.button": "Join the waitlist",
 
+    "nav.gids": "Guide",
     "gids.eyebrow": "How-to guide",
     "gids.title": "How to use Taupi — step by step.",
     "gids.intro":

@@ -22,6 +22,7 @@ const pages = [
   { href: aboutHref, label: t["footer.legal.about"] },
   { href: toolsHref, label: t["nav.tools"] },
   ...(locale === "lv" ? [{ href: "/padomi/", label: t["blog.eyebrow"] }] : []),
+  ...(locale === "lv" ? [{ href: "/gids/", label: t["nav.gids"] }] : []),
   { href: privacyHref, label: t["footer.legal.privacy"] },
   { href: termsHref, label: t["footer.legal.terms"] },
 ];
