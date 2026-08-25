@@ -25,6 +25,10 @@ interface Props {
 const { frontmatter } = Astro.props;
 const locale = frontmatter.locale ?? "lv";
 const description = frontmatter.description ?? `${frontmatter.title} — Taupi`;
+
+// Home → this page. Legal pages sit one level under root, so the trail below
+// home is a single crumb.
+const breadcrumbs = [{ name: frontmatter.title, href: Astro.url.pathname }];
 ---
 <!doctype html>
 <html lang={locale}>
@@ -37,6 +41,7 @@ const description = frontmatter.description ?? `${frontmatter.title} — Taupi`;
       title={`${frontmatter.title} — Taupi`}
       description={description}
       locale={locale}
+      breadcrumbs={breadcrumbs}
     />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

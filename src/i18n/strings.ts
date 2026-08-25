@@ -126,6 +126,10 @@ export const strings: Record<Locale, Dict> = {
     "footer.news.title": "Uzzini pirmais, kad Taupi iznāks.",
 
     "blog.eyebrow": "Padomi",
+    "blog.sources": "Avoti",
+    "blog.calc.eyebrow": "Izmēģini pats",
+    "blog.calc.title": "Ieliec savus skaitļus",
+    "blog.calc.full": "Atvērt pilno kalkulatoru",
     "blog.title": "Padomi par naudu, budžetu un taupīšanu.",
     "blog.intro":
       "Praktiski, latviski rakstīti padomi par ikdienas finansēm — bez sarežģītiem terminiem un tukšas teorijas.",
@@ -230,6 +234,7 @@ export const strings: Record<Locale, Dict> = {
       "Praktiski rīki naudas lēmumiem — budžetam, uzkrājumiem un kredītiem. Bez reģistrācijas, dati paliek tavā ierīcē.",
     "tools.open": "Atvērt",
     "tools.back": "Visi kalkulatori",
+    "tools.reviewed": "Pēdējoreiz pārbaudīts:",
     "tools.budget.tag": "Budžets",
     "tools.budget.title": "Budžeta kalkulators",
     "tools.budget.desc": "Sadali ienākumus pa kategorijām un redzi, cik paliek pāri.",
@@ -459,6 +464,10 @@ export const strings: Record<Locale, Dict> = {
     "footer.news.title": "Be the first to know when Taupi launches.",
 
     "blog.eyebrow": "Tips",
+    "blog.sources": "Sources",
+    "blog.calc.eyebrow": "Try it yourself",
+    "blog.calc.title": "Put your own numbers in",
+    "blog.calc.full": "Open the full calculator",
     "blog.title": "Tips on money, budgeting and saving.",
     "blog.intro":
       "Practical everyday-finance tips — no jargon, no empty theory.",
@@ -563,6 +572,7 @@ export const strings: Record<Locale, Dict> = {
       "Practical tools for money decisions — budgeting, saving and debt. No sign-up, your data stays on your device.",
     "tools.open": "Open",
     "tools.back": "All calculators",
+    "tools.reviewed": "Last reviewed:",
     "tools.budget.tag": "Budget",
     "tools.budget.title": "Budget calculator",
     "tools.budget.desc": "Split your income across categories and see what stays free.",

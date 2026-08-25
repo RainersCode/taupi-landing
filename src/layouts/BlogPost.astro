@@ -2,7 +2,14 @@
 import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
+import ToolFaq from "~/components/ToolFaq.astro";
+import BudgetCalculator from "~/components/calculator/BudgetCalculator";
+import CompoundCalculator from "~/components/calculator/CompoundCalculator";
+import EmergencyFundCalculator from "~/components/calculator/EmergencyFundCalculator";
+import DebtPayoffCalculator from "~/components/calculator/DebtPayoffCalculator";
+import { path } from "~/i18n/routes";
 import { getDict } from "~/i18n/strings";
+import { author } from "~/config";
 import type { CollectionEntry } from "astro:content";
 
 /**
@@ -16,17 +23,28 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate, updatedDate, locale } = post.data;
+const { title, description, pubDate, updatedDate, locale, calculator, faq, sources } = post.data;
 const t = getDict(locale);
+
+// Embedded tool — the article's payoff. Keyed the same as toolFaqs and the
+// route map, so the "open the full tool" link resolves from the same name.
+// Rendered as explicit branches below rather than a lookup table: a client:*
+// directive needs a statically resolvable import, and an indexed component
+// fails hydration with NoMatchingImport.
 
 const site = Astro.site ?? new URL("https://taupi.eu");
 const canonical = new URL(Astro.url.pathname, site).href;
 
-const displayDate = pubDate.toLocaleDateString(locale === "lv" ? "lv-LV" : "en-GB", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString(locale === "lv" ? "lv-LV" : "en-GB", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+const displayDate = fmtDate(pubDate);
+// Shown only when it differs from publication — "updated today" on a post
+// published today reads as padding, not freshness.
+const reviewedLabel = updatedDate && updatedDate > pubDate ? fmtDate(updatedDate) : undefined;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -38,12 +56,24 @@ const jsonLd = {
   dateModified: (updatedDate ?? pubDate).toISOString(),
   mainEntityOfPage: canonical,
   image: new URL("/og.jpg", site).href,
-  author: { "@id": `${site.href}#org` },
+  // Named Person where config.ts has one — finance content attributed to a
+  // faceless Organization is discounted as a YMYL trust signal.
+  author: { "@id": `${site.href}#${author.name ? "author" : "org"}` },
   publisher: { "@id": `${site.href}#org` },
 };
 
 ---
-<Base title={`${title} — Taupi`} description={description} locale={locale} alternate={false} ogType="article">
+<Base
+  title={`${title} — Taupi`}
+  description={description}
+  locale={locale}
+  alternate={false}
+  ogType="article"
+  breadcrumbs={[
+    { name: t["blog.eyebrow"], href: "/padomi/" },
+    { name: title, href: Astro.url.pathname },
+  ]}
+>
   <Nav locale={locale} />
 
   <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
@@ -59,6 +89,10 @@ const jsonLd = {
       </h1>
       <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2">
         <span class="eyebrow text-muted">{displayDate}</span>
+        {reviewedLabel && (
+          <span class="eyebrow text-muted">{t["tools.reviewed"]} {reviewedLabel}</span>
+        )}
+        {author.name && <span class="eyebrow text-muted">{author.name}</span>}
         {post.data.tags.length > 0 && (
           <span class="eyebrow text-muted">{post.data.tags.join(" · ")}</span>
         )}
@@ -68,7 +102,61 @@ const jsonLd = {
     <article class="legal-prose">
       <slot />
     </article>
+
+    {sources.length > 0 && (
+      <section class="mt-16 border-t border-white/10 pt-8">
+        <p class="eyebrow mb-5">{t["blog.sources"]}</p>
+        <ul class="space-y-3">
+          {sources.map((src) => (
+            <li>
+              <a
+                href={src.href}
+                target="_blank"
+                rel="noopener"
+                class="text-[14px] text-dim hover:text-accent transition-colors"
+                style="line-height: 1.6;"
+              >
+                {src.label} ↗
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
   </main>
+
+  {/* The tool needs more width than the 3xl reading column, so it breaks out
+      into a framed panel — the site's standard rounded/hairline surface. The
+      frame is what makes the wider block read as a deliberate module rather
+      than a paragraph that lost its margin. */}
+  {calculator && (
+    <section class="mx-auto max-w-6xl px-6 md:px-10 pb-8">
+      <div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-10">
+        <p class="eyebrow mb-5">{t["blog.calc.eyebrow"]}</p>
+        <h2
+          class="font-display font-bold text-ink mb-10"
+          style="font-size: clamp(24px, 3vw, 36px); letter-spacing: -0.02em; line-height: 1.2;"
+        >
+          {t["blog.calc.title"]}
+        </h2>
+
+        {calculator === "budget" && <BudgetCalculator client:visible locale={locale} />}
+        {calculator === "compound" && <CompoundCalculator client:visible locale={locale} />}
+        {calculator === "emergency" && <EmergencyFundCalculator client:visible locale={locale} />}
+        {calculator === "debt" && <DebtPayoffCalculator client:visible locale={locale} />}
+
+        <p class="mt-10 pt-6 border-t border-white/10">
+          <a href={path(calculator, locale)} class="eyebrow text-accent hover:text-ink transition-colors">
+            {t["blog.calc.full"]} →
+          </a>
+        </p>
+      </div>
+    </section>
+  )}
+
+  {faq.length > 0 && <ToolFaq locale={locale} items={faq} />}
+
+  <div class="pb-20"></div>
 
   <Footer locale={locale} />
 

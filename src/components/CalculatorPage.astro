@@ -1,8 +1,7 @@
 ---
 /**
- * Shared body for /budzeta-kalkulators/ (lv) and /en/budzeta-kalkulators/.
- * The EN page keeps the LV slug so Seo.astro's mechanical /en+path hreflang
- * mapping resolves (same convention as /en/par-taupi/).
+ * Shared body for the budget calculator — /budzeta-kalkulators/ (lv) and
+ * /en/budget-calculator/. Paths per locale come from ~/i18n/routes.
  */
 import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
@@ -14,15 +13,44 @@ import { getCollection } from "astro:content";
 import { toolFaqs } from "~/i18n/toolFaqs";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
+import { path } from "~/i18n/routes";
 import { BENCHMARKS, LINES } from "~/lib/affordability";
 
 interface Props {
   locale: Locale;
   title: string;
   description: string;
+  /** ISO date the benchmarks and copy were last checked — see ToolPage. */
+  reviewed?: string;
 }
-const { locale, title, description } = Astro.props;
+const { locale, title, description, reviewed } = Astro.props;
 const t = getDict(locale);
+
+const breadcrumbs = [
+  { name: t["tools.title"], href: path("tools", locale) },
+  { name: t["bc.title"], href: path("budget", locale) },
+];
+
+const reviewedLabel = reviewed
+  ? new Date(reviewed).toLocaleDateString(locale === "lv" ? "lv-LV" : "en-GB", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : undefined;
+
+const schema = reviewed
+  ? [
+      {
+        "@type": "WebPage",
+        "@id": new URL(Astro.url.pathname, Astro.site ?? "https://taupi.eu").href,
+        name: t["bc.title"],
+        description,
+        inLanguage: locale,
+        dateModified: reviewed,
+      },
+    ]
+  : [];
 
 // Tip-article cards beside the method section — internal links between the
 // tool and the blog. The blog is lv-only, so the EN page renders the method
@@ -63,6 +91,8 @@ const legend = [
   description={description}
   locale={locale}
   ogImage={`/og/budget${locale === "en" ? "-en" : ""}.jpg`}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
 >
   <Nav locale={locale} />
 
@@ -70,7 +100,7 @@ const legend = [
     <!-- ── Page header ── -->
     <header class="mx-auto max-w-6xl px-6 md:px-10 mb-10 md:mb-14">
       <p class="eyebrow mb-6">
-        <a href={locale === "lv" ? "/kalkulatori/" : "/en/kalkulatori/"} class="hover:text-ink transition-colors">
+        <a href={path("tools", locale)} class="hover:text-ink transition-colors">
           ← {t["tools.back"]}
         </a>
       </p>
@@ -137,6 +167,10 @@ const legend = [
           ))}
         </tbody>
       </table>
+
+      {reviewedLabel && (
+        <p class="mt-6 eyebrow text-muted">{t["tools.reviewed"]} {reviewedLabel}</p>
+      )}
 
       <!-- Bridge to the app: on web you type the numbers, in the app they come
            from your real spending. -->

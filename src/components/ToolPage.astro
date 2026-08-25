@@ -2,8 +2,8 @@
 /**
  * Shared scaffold for single-calculator pages: back-link to the hub,
  * header, the tool island (slot), a method section for the SEO substance,
- * the app-note bridge and the download CTA. EN pages keep the LV slug so
- * Seo.astro's mechanical /en+path hreflang mapping resolves.
+ * the app-note bridge and the download CTA. Paths per locale come from
+ * ~/i18n/routes (EN pages have real English slugs).
  */
 import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
@@ -11,8 +11,11 @@ import Footer from "~/components/Footer.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
 import ToolFaq from "~/components/ToolFaq.astro";
 import { toolFaqs } from "~/i18n/toolFaqs";
+import { getCollection, render } from "astro:content";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
+import { path } from "~/i18n/routes";
+import type { RouteKey } from "~/i18n/routes";
 
 interface Props {
   locale: Locale;
@@ -22,17 +25,63 @@ interface Props {
   subKey: string;
   methodTitleKey: string;
   methodBodyKey: string;
-  /** Key into toolFaqs — renders the FAQ section + FAQPage schema. */
-  faqKey?: string;
+  /** Which tool this is. Keys toolFaqs, the OG card, the route map and the
+      breadcrumb trail — they all use the same four names. */
+  faqKey?: Extract<RouteKey, "budget" | "compound" | "emergency" | "debt">;
+  /** ISO date this page's figures and copy were last checked, e.g.
+      "2026-08-25". Rendered as a visible line and as schema dateModified —
+      the freshness signal bank pages use. Bump it when you edit the page. */
+  reviewed?: string;
 }
-const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey, faqKey } = Astro.props;
+const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey, faqKey, reviewed } =
+  Astro.props;
 const t = getDict(locale);
-const hubHref = locale === "lv" ? "/kalkulatori/" : "/en/kalkulatori/";
+const hubHref = path("tools", locale);
 const faqItems = faqKey ? toolFaqs[faqKey]?.[locale] : undefined;
 // Branded per-tool OG card (scripts/generate-tool-og.mjs) keyed like the FAQ.
 const ogImage = faqKey ? `/og/${faqKey}${locale === "en" ? "-en" : ""}.jpg` : undefined;
+
+// Long-form body for this tool in this locale, if one has been written
+// (src/content/tools/<tool>-<locale>.md). Renders under the method section.
+const deep = faqKey
+  ? (await getCollection("tools", ({ data }) => data.tool === faqKey && data.locale === locale))[0]
+  : undefined;
+const Deep = deep ? (await render(deep)).Content : undefined;
+
+const breadcrumbs = [
+  { name: t["tools.title"], href: hubHref },
+  { name: t[h1Key], href: faqKey ? path(faqKey, locale) : Astro.url.pathname },
+];
+
+const reviewedLabel = reviewed
+  ? new Date(reviewed).toLocaleDateString(locale === "lv" ? "lv-LV" : "en-GB", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : undefined;
+
+const schema = reviewed
+  ? [
+      {
+        "@type": "WebPage",
+        "@id": new URL(Astro.url.pathname, Astro.site ?? "https://taupi.eu").href,
+        name: t[h1Key],
+        description,
+        inLanguage: locale,
+        dateModified: reviewed,
+      },
+    ]
+  : [];
 ---
-<Base title={title} description={description} locale={locale} ogImage={ogImage}>
+<Base
+  title={title}
+  description={description}
+  locale={locale}
+  ogImage={ogImage}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
+>
   <Nav locale={locale} />
 
   <main class="pt-32 md:pt-40 pb-8">
@@ -59,6 +108,37 @@ const ogImage = faqKey ? `/og/${faqKey}${locale === "en" ? "-en" : ""}.jpg` : un
         {t[methodTitleKey]}
       </h2>
       <p class="mt-5 text-dim" style="line-height: 1.7;">{t[methodBodyKey]}</p>
+
+      {Deep && (
+        <div class="legal-prose mt-12">
+          <Deep />
+        </div>
+      )}
+
+      {deep && deep.data.sources.length > 0 && (
+        <div class="mt-14 border-t border-white/10 pt-8">
+          <p class="eyebrow mb-5">{t["blog.sources"]}</p>
+          <ul class="space-y-3">
+            {deep.data.sources.map((src) => (
+              <li>
+                <a
+                  href={src.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-[14px] text-dim hover:text-accent transition-colors"
+                  style="line-height: 1.6;"
+                >
+                  {src.label} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {reviewedLabel && (
+        <p class="mt-10 eyebrow text-muted">{t["tools.reviewed"]} {reviewedLabel}</p>
+      )}
 
       <p
         class="mt-10 px-5 py-4 rounded-xl text-[15px] text-ink"

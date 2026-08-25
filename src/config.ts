@@ -11,6 +11,31 @@ export const launch = {
 };
 
 /**
+ * The human behind the financial content.
+ *
+ * Personal finance is a YMYL ("your money or your life") topic — Google
+ * weighs it against who is saying it, and content attributed to a faceless
+ * Organization is discounted against banks that name an author. This entity
+ * is emitted as schema.org `Person` and referenced as `author` from every
+ * Article / BlogPosting.
+ *
+ * TODO before this earns anything: fill `jobTitle`, `bio` and at least one
+ * `sameAs` profile (LinkedIn is the one Google actually resolves). An author
+ * with no verifiable footprint is a weaker signal than a good one — but it is
+ * still stronger than the Organization fallback we had. Leave `name` empty to
+ * fall back to the Organization entity entirely.
+ */
+export const author = {
+  name: "Rainers Lovkins",
+  /** e.g. "Taupi dibinātājs" — shown nowhere yet, emitted in JSON-LD. */
+  jobTitle: "",
+  /** One or two sentences of relevant background. */
+  bio: "",
+  /** Profile URLs Google can cross-reference — LinkedIn first. */
+  sameAs: [] as string[],
+};
+
+/**
  * Official social profiles. Emitted as `sameAs` in the Organization JSON-LD
  * (Seo.astro) so Google can connect the profiles to the brand, and rendered
  * as icon links in the footer (Footer.astro — icon per `label`).

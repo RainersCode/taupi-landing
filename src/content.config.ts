@@ -17,6 +17,23 @@ const blog = defineCollection({
     locale: z.enum(["lv", "en"]).default("lv"),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    /**
+     * Embed a live calculator under the article body. A post that answers
+     * "how should I split my income" beats a bank's prose answer by letting
+     * the reader do it on the page — and it is the one thing the bank blogs
+     * ranking for these queries do not have.
+     */
+    calculator: z.enum(["budget", "compound", "emergency", "debt"]).optional(),
+    /** Rendered as an accordion + FAQPage JSON-LD (see ToolFaq.astro). */
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    /**
+     * Where the figures came from. Financial claims without a citation are
+     * exactly what Google discounts in YMYL content — and what the bank
+     * pages ranking above us already do.
+     */
+    sources: z
+      .array(z.object({ label: z.string(), href: z.string().url() }))
+      .default([]),
   }),
 });
 
@@ -42,4 +59,24 @@ const gids = defineCollection({
   }),
 });
 
-export const collections = { blog, gids };
+/**
+ * Tools — long-form body copy for a calculator page, one file per tool per
+ * locale (e.g. emergency-lv.md). The calculator itself is the reason people
+ * land there, but a tool with 300 words around it loses to a bank article
+ * with 2 000; this is where that depth lives. A tool with no entry for a
+ * locale simply renders the short method section, so LV can go deep without
+ * forcing an EN translation.
+ */
+const tools = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/tools" }),
+  schema: z.object({
+    tool: z.enum(["budget", "compound", "emergency", "debt"]),
+    locale: z.enum(["lv", "en"]).default("lv"),
+    /** Citations rendered under the body — see the blog collection. */
+    sources: z
+      .array(z.object({ label: z.string(), href: z.string().url() }))
+      .default([]),
+  }),
+});
+
+export const collections = { blog, gids, tools };
