@@ -30,8 +30,14 @@ export const author = {
   /** Rendered in the author box and JSON-LD. */
   jobTitle: "Taupi dibinātājs un izstrādātājs",
   /** One or two sentences of relevant background. Empty hides the box's
-      body — a byline with no substance is not worth the space. */
-  bio: "",
+      body — a byline with no substance is not worth the space.
+
+      Leads with what it is NOT: on YMYL finance content an honest
+      disclaimer plus real lived experience reads as more trustworthy than
+      a vague authority claim, and Google's "Experience" criterion is
+      exactly this — the person had the problem and solved it. */
+  bio:
+    "Neesmu finanšu konsultants. Taupi sāku būvēt tāpēc, ka pirms hipotekārā kredīta mājas būvniecībai vajadzēja nomaksāt auto patēriņa kredītu — un gribēju precīzi zināt, cik dienā varu atļauties tērēt. Rīki un aprēķini šajā vietnē ir tie paši, ko izmantoju pats.",
   /** Profile URLs Google can cross-reference — LinkedIn first. Rendered as
       links in the author box and emitted as schema.org sameAs. */
   sameAs: [
