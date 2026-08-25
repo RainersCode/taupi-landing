@@ -59,9 +59,9 @@ Praksē tas nozīmē:
 | €1 831 (vidējā) | €192,26 | €1 088,74 | €277,63 | **€1 361** |
 | €2 500 | €262,50 | €1 687,50 | €430,31 | **€1 807** |
 
-*Aprēķins pieņem, ka darbavietā iesniegta algas nodokļa grāmatiņa un nav apgādājamo. Ar apgādājamiem neto summa būs lielāka.*
+*Aprēķins pieņem, ka darbavietā iesniegta algas nodokļa grāmatiņa un nav apgādājamo. Trīs lietas šo summu maina būtiski: bez iesniegtas grāmatiņas neapliekamo minimumu nepiemēro vispār un uz minimālās algas paliek ap €520, nevis €660; par katru apgādājamo apliekamā summa sarūk vēl par €250 mēnesī; nestrādājošam pensionāram neapliekamais minimums ir €1 000 mēnesī. Likme 25,5% attiecas uz ienākumu līdz €105 300 gadā — virs tā ir 33%, kas nevienu no šīs tabulas rindām neskar.*
 
-Šie skaitļi sakrīt ar oficiālo statistiku: CSP dati par 2026. gada 1. ceturksni rāda vidējo bruto algu **1 831 eiro** un vidējo neto algu **1 364 eiro** — tas ir 75,0% no bruto. Praktisks īkšķa likums: **no bruto algas paliek apmēram trīs ceturtdaļas.**
+Kontroles pēc: CSP dati par 2026. gada 1. ceturksni rāda vidējo bruto algu **1 831 eiro** un vidējo neto algu **1 364 eiro**. Tabulas aprēķins tai pašai bruto algai dod €1 361 — trīs eiro starpība rodas tāpēc, ka CSP vidējais ir summēts pār visiem darbiniekiem, ieskaitot tos, kuriem ir apgādājamie vai pensionāra neapliekamais minimums. Praktisks īkšķa likums abos gadījumos ir tas pats: **no bruto algas paliek apmēram trīs ceturtdaļas.**
 
 ## Trīs Latvijas algas, trīs sadalījumi
 
