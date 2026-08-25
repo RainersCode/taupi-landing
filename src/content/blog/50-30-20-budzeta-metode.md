@@ -1,6 +1,6 @@
 ---
 title: "50/30/20 metode — vienkāršākais veids, kā sadalīt budžetu"
-description: "Kā piemērot 50/30/20 budžeta metodi Latvijas algai: reāli aprēķini ar 2026. gada nodokļiem, trīs piemēri no minimālās līdz vidējai algai, un godīga atbilde, ko darīt, ja tavi skaitļi tajā neiekļaujas."
+description: "Kā piemērot 50/30/20 metodi Latvijas algai: aprēķini ar 2026. gada nodokļiem, trīs piemēri un ko darīt, ja skaitļi neiekļaujas."
 pubDate: 2026-08-13
 updatedDate: 2026-08-25
 locale: "lv"
