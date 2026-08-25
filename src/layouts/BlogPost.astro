@@ -3,6 +3,7 @@ import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import ToolFaq from "~/components/ToolFaq.astro";
+import AuthorBox from "~/components/AuthorBox.astro";
 import BudgetCalculator from "~/components/calculator/BudgetCalculator";
 import CompoundCalculator from "~/components/calculator/CompoundCalculator";
 import EmergencyFundCalculator from "~/components/calculator/EmergencyFundCalculator";
@@ -103,8 +104,12 @@ const jsonLd = {
       <slot />
     </article>
 
+    <div class="mt-16">
+      <AuthorBox locale={locale} />
+    </div>
+
     {sources.length > 0 && (
-      <section class="mt-16 border-t border-white/10 pt-8">
+      <section class="mt-12 border-t border-white/10 pt-8">
         <p class="eyebrow mb-5">{t["blog.sources"]}</p>
         <ul class="space-y-3">
           {sources.map((src) => (

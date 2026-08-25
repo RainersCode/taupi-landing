@@ -96,10 +96,10 @@ if (author.name) {
     "@type": "Person",
     "@id": authorId,
     name: author.name,
-    url: new URL("/par-taupi/", site).href,
+    url: new URL("/par-taupi/#autors", site).href,
     ...(author.jobTitle ? { jobTitle: author.jobTitle } : {}),
     ...(author.bio ? { description: author.bio } : {}),
-    ...(author.sameAs.length ? { sameAs: author.sameAs } : {}),
+    ...(author.sameAs.length ? { sameAs: author.sameAs.map((p) => p.href) } : {}),
     worksFor: { "@id": orgId },
   });
 }

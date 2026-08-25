@@ -127,6 +127,7 @@ export const strings: Record<Locale, Dict> = {
 
     "blog.eyebrow": "Padomi",
     "blog.sources": "Avoti",
+    "author.eyebrow": "Par autoru",
     "blog.calc.eyebrow": "Izmēģini pats",
     "blog.calc.title": "Ieliec savus skaitļus",
     "blog.calc.full": "Atvērt pilno kalkulatoru",
@@ -465,6 +466,7 @@ export const strings: Record<Locale, Dict> = {
 
     "blog.eyebrow": "Tips",
     "blog.sources": "Sources",
+    "author.eyebrow": "About the author",
     "blog.calc.eyebrow": "Try it yourself",
     "blog.calc.title": "Put your own numbers in",
     "blog.calc.full": "Open the full calculator",

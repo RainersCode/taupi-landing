@@ -3,6 +3,7 @@ layout: "~/layouts/Legal.astro"
 title: "About Taupi"
 description: "Taupi is a personal finance app made in Latvia — a daily budget, AI receipt scanning and insights. Learn who builds it and why."
 locale: "en"
+showAuthor: true
 ---
 
 Taupi is a personal finance app made in Latvia — a quiet everyday companion that helps you understand where your money goes and spend more deliberately.

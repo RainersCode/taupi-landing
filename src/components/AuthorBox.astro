@@ -1,0 +1,87 @@
+---
+/**
+ * Author box — the visible half of the E-E-A-T signal whose schema half
+ * lives in Seo.astro. Personal-finance content attributed to nobody is
+ * discounted against banks that name a person, and a JSON-LD Person that
+ * the page never shows is a claim with nothing behind it.
+ *
+ * Everything is driven by `author` in src/config.ts. The box renders only
+ * once there is something to say beyond the name — a card containing just
+ * a name adds nothing to the page and nothing to the trust signal, so it
+ * stays hidden until jobTitle, bio or a profile link exists.
+ */
+import { author } from "~/config";
+import { getDict } from "~/i18n/strings";
+import type { Locale } from "~/i18n/strings";
+
+interface Props {
+  locale: Locale;
+  /** Anchor id, so the Person's schema `url` can point straight at it. */
+  id?: string;
+}
+const { locale, id } = Astro.props;
+const t = getDict(locale);
+
+// Monogram beats a stock avatar when there is no real headshot.
+// Substance test: a bare name is not an author box.
+const hasSubstance = Boolean(author.jobTitle || author.bio || author.sameAs.length);
+
+const initials = author.name
+  .split(/\s+/)
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((w) => w[0]?.toUpperCase() ?? "")
+  .join("");
+---
+{author.name && hasSubstance && (
+  <aside id={id} class="rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-7">
+    <p class="eyebrow text-muted mb-5">{t["author.eyebrow"]}</p>
+
+    <div class="flex items-start gap-4 md:gap-5">
+      {author.photo ? (
+        <img
+          src={author.photo}
+          alt={author.name}
+          width="56"
+          height="56"
+          loading="lazy"
+          class="w-14 h-14 rounded-full object-cover shrink-0 border border-white/10"
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          class="w-14 h-14 rounded-full shrink-0 grid place-items-center font-display font-bold text-ink text-lg border border-white/10"
+          style="background: rgba(90, 107, 255, 0.16);"
+        >
+          {initials}
+        </span>
+      )}
+
+      <div class="min-w-0">
+        <p class="font-display font-bold text-ink text-[17px]" style="letter-spacing: -0.01em;">
+          {author.name}
+        </p>
+        {author.jobTitle && <p class="mt-1 text-[13px] text-muted">{author.jobTitle}</p>}
+        {author.bio && (
+          <p class="mt-3 text-[14px] text-dim max-w-[60ch]" style="line-height: 1.6;">
+            {author.bio}
+          </p>
+        )}
+        {author.sameAs.length > 0 && (
+          <p class="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+            {author.sameAs.map((profile) => (
+              <a
+                href={profile.href}
+                target="_blank"
+                rel="me noopener"
+                class="eyebrow text-accent hover:text-ink transition-colors"
+              >
+                {profile.label} ↗
+              </a>
+            ))}
+          </p>
+        )}
+      </div>
+    </div>
+  </aside>
+)}

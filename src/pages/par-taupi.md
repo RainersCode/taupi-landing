@@ -3,6 +3,7 @@ layout: "~/layouts/Legal.astro"
 title: "Par Taupi"
 description: "Taupi ir Latvijā radīta personīgo finanšu lietotne — dienas budžets, čeku skenēšana ar AI un ieskati. Uzzini, kas un kāpēc to veido."
 locale: "lv"
+showAuthor: true
 ---
 
 Taupi ir Latvijā radīta personīgo finanšu lietotne — kluss ikdienas pavadonis, kas palīdz saprast, kur aiziet tava nauda, un tērēt apzinātāk.
