@@ -9,7 +9,7 @@ import Footer from "~/components/Footer.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
 import ToolFaq from "~/components/ToolFaq.astro";
 import BudgetCalculator, { LINE_COLORS } from "~/components/calculator/BudgetCalculator";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { toolFaqs } from "~/i18n/toolFaqs";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
@@ -25,6 +25,11 @@ interface Props {
 }
 const { locale, title, description, reviewed } = Astro.props;
 const t = getDict(locale);
+
+// Long-form body for this tool in this locale, if written
+// (src/content/tools/budget-<locale>.md) — same mechanism as ToolPage.
+const deep = (await getCollection("tools", ({ data }) => data.tool === "budget" && data.locale === locale))[0];
+const Deep = deep ? (await render(deep)).Content : undefined;
 
 const breadcrumbs = [
   { name: t["tools.title"], href: path("tools", locale) },
@@ -168,8 +173,35 @@ const legend = [
         </tbody>
       </table>
 
+      {Deep && (
+        <div class="legal-prose mt-12">
+          <Deep />
+        </div>
+      )}
+
+      {deep && deep.data.sources.length > 0 && (
+        <div class="mt-14 border-t border-white/10 pt-8">
+          <p class="eyebrow mb-5">{t["blog.sources"]}</p>
+          <ul class="space-y-3">
+            {deep.data.sources.map((src) => (
+              <li>
+                <a
+                  href={src.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-[14px] text-dim hover:text-accent transition-colors"
+                  style="line-height: 1.6;"
+                >
+                  {src.label} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {reviewedLabel && (
-        <p class="mt-6 eyebrow text-muted">{t["tools.reviewed"]} {reviewedLabel}</p>
+        <p class="mt-10 eyebrow text-muted">{t["tools.reviewed"]} {reviewedLabel}</p>
       )}
 
       <!-- Bridge to the app: on web you type the numbers, in the app they come
