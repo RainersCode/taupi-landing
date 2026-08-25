@@ -10,7 +10,13 @@ Taupi is a personal finance app made in Latvia — a quiet everyday companion th
 
 ## Why Taupi exists
 
-Most budgeting apps are built for other markets: they can't read Latvian store receipts, they drown you in charts, and they demand more work than they give back. We wanted something else — an app that takes seconds a day, speaks plainly, and answers one simple question: **how much can I safely spend today?**
+I wanted a mortgage to build a house, but first I had to clear a car loan. What I needed was one answer, and quickly: **how much can I spend today without breaking the plan?**
+
+I couldn't find an app that would tell me. Most budgeting tools are built for other markets — they can't read Latvian store receipts, they drown you in charts, and they demand more work than they give back. So I started building my own.
+
+It began as a single calculation for myself. Bit by bit it grew into whatever turned out to be genuinely useful: AI receipt scanning, insights, and statistics that let you see your own shopping habits and then fix them. I also wanted Taupi to teach, so it has tips and short quizzes — information you can pick up quickly and learn by doing.
+
+When I posted about Taupi on Threads, I was hoping to recruit a handful of testers. The response was considerably larger: around 400 people joined the waitlist within a month. For an app still in development that is a lot — and reason enough to finish it as well as I can.
 
 ## What Taupi does
 
@@ -23,10 +29,8 @@ Most budgeting apps are built for other markets: they can't read Latvian store r
 
 Your data is stored in the European Union, encrypted in transit and at rest. There are no ads and no trackers, and you can export or delete your data at any time. More in the [privacy policy](/en/privacy-policy/).
 
-## Who builds Taupi
-
-Taupi is built in Latvia by Rainers Lovkins. A small team means one simple thing: we reply to every email, and every suggestion is read by the person building the app.
-
 ## Get in touch
 
-Questions, ideas, or want to help test? Write to [info@taupi.eu](mailto:info@taupi.eu) — or [join the waitlist](/en/#waitlist) and we'll email you the moment Taupi hits the App Store and Google Play.
+Taupi is built by a small team, and that means one simple thing: I answer every email myself, and every suggestion is read by the person writing the app.
+
+Questions, ideas, or want to help test? Write to [info@taupi.eu](mailto:info@taupi.eu) — or [join the waitlist](/en/#waitlist) and I'll email you the moment Taupi hits the App Store and Google Play.
