@@ -1,44 +1,72 @@
 ---
 /**
- * Shared SEO head block — canonical, lv↔en hreflang pair, Open Graph /
- * Twitter cards, and JSON-LD. Used by Base.astro and Legal.astro so every
- * page gets identical, correct head plumbing.
+ * Shared SEO head block — canonical, lv↔en hreflang pair, robots directive,
+ * Open Graph / Twitter cards, and JSON-LD. Used by Base.astro and Legal.astro
+ * so every page gets identical, correct head plumbing.
  *
- * URL scheme: lv is the unprefixed default locale, en lives under /en.
+ * URL scheme: lv is the unprefixed default locale, en lives under /en with
+ * real English slugs. The lv↔en pairing is looked up in ~/i18n/routes — it is
+ * NOT derived from the path, because the two locales no longer share slugs.
  */
 interface Props {
   title: string;
   description: string;
   locale: "lv" | "en";
-  /** Set false on pages that exist in one language only (e.g. blog posts)
-      so we never emit hreflang links to URLs that 404. */
+  /** Force-disable hreflang. Normally leave unset: pages absent from the
+      route map (blog posts, guides) suppress it automatically. */
   alternate?: boolean;
   ogType?: "website" | "article";
   /** Page-specific OG image path (e.g. "/og/budget.jpg"); defaults to the
       site-wide per-locale card. */
   ogImage?: string;
+  /** Keep the page out of the index but keep following its links. Used for
+      /gids/ while the app is pre-launch — see Guide.astro. */
+  noindex?: boolean;
+  /** Trail from home to this page, excluding home and excluding the page
+      itself when it is the only crumb. Emitted as BreadcrumbList. */
+  breadcrumbs?: { name: string; href: string }[];
+  /** Extra JSON-LD nodes merged into the @graph (Article, FAQPage, …). */
+  schema?: Record<string, unknown>[];
 }
 
-const { title, description, locale, alternate = true, ogType = "website", ogImage: ogImageProp } = Astro.props;
+const {
+  title,
+  description,
+  locale,
+  alternate,
+  ogType = "website",
+  ogImage: ogImageProp,
+  noindex = false,
+  breadcrumbs = [],
+  schema = [],
+} = Astro.props;
 
-import { launch, socials } from "~/config";
+import { launch, socials, author } from "~/config";
+import { pairForPath } from "~/i18n/routes";
 
 const site = Astro.site ?? new URL("https://taupi.eu");
 const path = Astro.url.pathname;
 
-const isEn = path === "/en" || path === "/en/" || path.startsWith("/en/");
-const lvPath = isEn ? path.replace(/^\/en\/?/, "/") : path;
-const enPath = isEn ? path : path === "/" ? "/en/" : `/en${path}`;
-
 const canonical = new URL(path, site).href;
-const lvUrl = new URL(lvPath, site).href;
-const enUrl = new URL(enPath, site).href;
+
+// hreflang only where a real counterpart exists. `pairForPath` returns
+// undefined for lv-only content (blog posts, guides), and `en: null` marks
+// mapped pages that were never translated — both suppress the links rather
+// than pointing Google at a 404.
+const pair = pairForPath(path);
+const showAlternate = alternate ?? Boolean(pair?.en);
+const lvUrl = pair ? new URL(pair.lv, site).href : canonical;
+const enUrl = pair?.en ? new URL(pair.en, site).href : canonical;
+
 const ogImage = new URL(ogImageProp ?? (locale === "en" ? "/og-en.jpg" : "/og.jpg"), site).href;
+
+const orgId = `${site.href}#org`;
+const authorId = `${site.href}#author`;
 
 const graph: Record<string, unknown>[] = [
   {
     "@type": "Organization",
-    "@id": `${site.href}#org`,
+    "@id": orgId,
     name: "Taupi",
     url: site.href,
     logo: new URL("/taupi-mark.png", site).href,
@@ -57,32 +85,77 @@ const graph: Record<string, unknown>[] = [
     name: "Taupi",
     url: site.href,
     inLanguage: ["lv", "en"],
-    publisher: { "@id": `${site.href}#org` },
+    publisher: { "@id": orgId },
   },
 ];
 
-// Once the app is live (src/config.ts), tell Google it's a downloadable
-// finance app with real store listings.
-if (launch.live) {
+// Named author for the YMYL finance content (src/config.ts). Skipped
+// entirely when unnamed, so Article nodes fall back to the Organization.
+if (author.name) {
   graph.push({
-    "@type": "SoftwareApplication",
-    "@id": `${site.href}#app`,
-    name: "Taupi",
-    operatingSystem: "iOS, Android",
-    applicationCategory: "FinanceApplication",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
-    downloadUrl: [launch.appStoreUrl, launch.playStoreUrl].filter(Boolean),
-    publisher: { "@id": `${site.href}#org` },
+    "@type": "Person",
+    "@id": authorId,
+    name: author.name,
+    url: new URL("/par-taupi/#autors", site).href,
+    ...(author.jobTitle ? { jobTitle: author.jobTitle } : {}),
+    ...(author.bio ? { description: author.bio } : {}),
+    ...(author.sameAs.length ? { sameAs: author.sameAs.map((p) => p.href) } : {}),
+    worksFor: { "@id": orgId },
   });
 }
+
+// The product itself. Emitted pre-launch too — Google can understand what
+// Taupi *is* long before there are store listings to link. `offers` and
+// `downloadUrl` only appear once the app is actually live (src/config.ts),
+// since advertising a price for something undownloadable is a rich-result
+// violation.
+graph.push({
+  "@type": "SoftwareApplication",
+  "@id": `${site.href}#app`,
+  name: "Taupi",
+  description,
+  operatingSystem: "iOS, Android",
+  applicationCategory: "FinanceApplication",
+  inLanguage: ["lv", "en"],
+  publisher: { "@id": orgId },
+  ...(launch.live
+    ? {
+        offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+        downloadUrl: [launch.appStoreUrl, launch.playStoreUrl].filter(Boolean),
+      }
+    : {}),
+});
+
+// Breadcrumbs — home is always position 1, so callers pass only the trail
+// below it. Skipped on the home page itself, where a one-item trail is noise.
+if (breadcrumbs.length) {
+  const homeHref = locale === "en" ? "/en/" : "/";
+  const trail = [{ name: "Taupi", href: homeHref }, ...breadcrumbs];
+  graph.push({
+    "@type": "BreadcrumbList",
+    "@id": `${canonical}#breadcrumbs`,
+    itemListElement: trail.map((crumb, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      // H1 copy carries a trailing period as a brand flourish
+      // ("Kalkulatori."); a breadcrumb label must not.
+      name: crumb.name.replace(/\.$/, ""),
+      item: new URL(crumb.href, site).href,
+    })),
+  });
+}
+
+graph.push(...schema);
 
 const jsonLd = { "@context": "https://schema.org", "@graph": graph };
 ---
 <title>{title}</title>
 <meta name="description" content={description} />
 
+{noindex && <meta name="robots" content="noindex, follow" />}
+
 <link rel="canonical" href={canonical} />
-{alternate && (
+{showAlternate && (
   <>
     <link rel="alternate" hreflang="lv" href={lvUrl} />
     <link rel="alternate" hreflang="en" href={enUrl} />

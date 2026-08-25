@@ -3,6 +3,7 @@ import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import { getDict } from "~/i18n/strings";
+import { author } from "~/config";
 import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
 
@@ -12,6 +13,13 @@ import type { MarkdownHeading } from "astro";
  * is anchor-linkable and the app can open /gids/<id>/#<sub-guide>
  * directly. Reading column + typography mirror BlogPost; images render
  * as phone-framed screenshots (see the style block below).
+ *
+ * NOINDEXED until launch. These document an app nobody can install yet, so
+ * they attract no searches while consuming ~30% of the crawl budget — which
+ * is why Google left 8 of the 10 in "discovered, not indexed". They stay
+ * fully reachable for humans and keep `follow`, so link equity still flows.
+ * Remove `noindex` here and in gids/index.astro on launch day, and drop the
+ * sitemap filter in astro.config.mjs.
  */
 interface Props {
   guide: CollectionEntry<"gids">;
@@ -43,11 +51,22 @@ const jsonLd = {
   dateModified: updatedDate.toISOString(),
   mainEntityOfPage: canonical,
   image: new URL("/og.jpg", site).href,
-  author: { "@id": `${site.href}#org` },
+  author: { "@id": `${site.href}#${author.name ? "author" : "org"}` },
   publisher: { "@id": `${site.href}#org` },
 };
 ---
-<Base title={`${title} — Taupi`} description={description} locale={locale} alternate={false} ogType="article">
+<Base
+  title={`${title} — Taupi`}
+  description={description}
+  locale={locale}
+  alternate={false}
+  ogType="article"
+  noindex
+  breadcrumbs={[
+    { name: t["nav.gids"], href: "/gids/" },
+    { name: title, href: Astro.url.pathname },
+  ]}
+>
   <Nav locale={locale} />
 
   <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">

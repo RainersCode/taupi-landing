@@ -10,6 +10,7 @@ import Footer from "~/components/Footer.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
+import { path } from "~/i18n/routes";
 
 interface Props {
   locale: Locale;
@@ -18,34 +19,33 @@ interface Props {
 }
 const { locale, title, description } = Astro.props;
 const t = getDict(locale);
-const prefix = locale === "lv" ? "" : "/en";
 
 // Accents are each tool's signature color (border beam + chip tint).
 const tools = [
   {
     key: "budget",
-    href: `${prefix}/budzeta-kalkulators/`,
+    href: path("budget", locale),
     img: "/tools/budget.jpg",
     imgH: 495,
     accent: "#7C8CFF",
   },
   {
     key: "compound",
-    href: `${prefix}/salikto-procentu-kalkulators/`,
+    href: path("compound", locale),
     img: "/tools/compound.jpg",
     imgH: 375,
     accent: "#2DD4A7",
   },
   {
     key: "emergency",
-    href: `${prefix}/drosibas-spilvena-kalkulators/`,
+    href: path("emergency", locale),
     img: "/tools/emergency.jpg",
     imgH: 375,
     accent: "#38BDF8",
   },
   {
     key: "debt",
-    href: `${prefix}/kreditu-atmaksas-kalkulators/`,
+    href: path("debt", locale),
     img: "/tools/debt.jpg",
     imgH: 399,
     accent: "#FF8A80",
@@ -57,6 +57,7 @@ const tools = [
   description={description}
   locale={locale}
   ogImage={`/og/tools${locale === "en" ? "-en" : ""}.jpg`}
+  breadcrumbs={[{ name: t["tools.title"], href: path("tools", locale) }]}
 >
   <Nav locale={locale} />
 

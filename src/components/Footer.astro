@@ -2,6 +2,7 @@
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { socials } from "~/config";
+import { path } from "~/i18n/routes";
 import WaitlistForm from "~/components/WaitlistForm";
 
 interface Props {
@@ -12,20 +13,29 @@ interface Props {
 }
 const { locale, newsletter = true } = Astro.props;
 const t = getDict(locale);
-const privacyHref = locale === "en" ? "/en/privacy-policy/" : "/privacy-policy/";
-const termsHref = locale === "en" ? "/en/terms-of-service/" : "/terms-of-service/";
-const aboutHref = locale === "en" ? "/en/par-taupi/" : "/par-taupi/";
-
-const toolsHref = locale === "en" ? "/en/kalkulatori/" : "/kalkulatori/";
-
+// Every calculator in the footer, on every page. Sitewide links are how
+// Google learns which pages matter — the four tools are the pages that can
+// actually rank, so they get the strongest internal signal we can give them.
 const pages = [
-  { href: aboutHref, label: t["footer.legal.about"] },
-  { href: toolsHref, label: t["nav.tools"] },
-  ...(locale === "lv" ? [{ href: "/padomi/", label: t["blog.eyebrow"] }] : []),
-  ...(locale === "lv" ? [{ href: "/gids/", label: t["nav.gids"] }] : []),
-  { href: privacyHref, label: t["footer.legal.privacy"] },
-  { href: termsHref, label: t["footer.legal.terms"] },
+  { href: path("about", locale), label: t["footer.legal.about"] },
+  ...(locale === "lv" ? [{ href: path("blog", locale), label: t["blog.eyebrow"] }] : []),
+  ...(locale === "lv" ? [{ href: path("gids", locale), label: t["nav.gids"] }] : []),
+  { href: path("privacy", locale), label: t["footer.legal.privacy"] },
+  { href: path("terms", locale), label: t["footer.legal.terms"] },
 ];
+
+const calculators = [
+  { href: path("budget", locale), label: t["tools.budget.title"] },
+  { href: path("compound", locale), label: t["tools.compound.title"] },
+  { href: path("emergency", locale), label: t["tools.emergency.title"] },
+  { href: path("debt", locale), label: t["tools.debt.title"] },
+  // The hub lives at the end of its own column rather than in "Pages", so
+  // "Rīki" doesn't appear as both a heading and a sibling link.
+  { href: path("tools", locale), label: t["tools.back"] },
+];
+
+// H1 copy ends in a period as a brand flourish; a column heading must not.
+const calculatorsHeading = t["tools.title"].replace(/\.$/, "");
 
 // Brand icons (24×24, fill=currentColor) keyed by the `label` in config.ts.
 const iconPaths: Record<string, string> = {
@@ -62,7 +72,7 @@ const iconPaths: Record<string, string> = {
 
   <div class="mx-auto max-w-content grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
     <!-- Brand + socials -->
-    <div class="md:col-span-6">
+    <div class="md:col-span-6 lg:col-span-3">
       <span class="flex items-center gap-3">
         <img src="/gredzens.svg" alt="" width="40" height="40" />
         <span class="font-display font-extrabold text-5xl text-ink" style="letter-spacing: -0.04em;">
@@ -90,8 +100,23 @@ const iconPaths: Record<string, string> = {
       </div>
     </div>
 
+    <!-- Calculators — descriptive anchor text, sitewide. These are the pages
+         that can rank; the footer is what tells Google so. -->
+    <nav class="md:col-span-3 lg:col-span-3" aria-label={calculatorsHeading}>
+      <p class="eyebrow text-muted mb-6">{calculatorsHeading}</p>
+      <ul class="space-y-4">
+        {calculators.map((c) => (
+          <li>
+            <a href={c.href} class="eyebrow hover:text-ink transition-colors">
+              {c.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
     <!-- Pages -->
-    <nav class="md:col-span-3" aria-label={t["footer.pages"]}>
+    <nav class="md:col-span-3 lg:col-span-3" aria-label={t["footer.pages"]}>
       <p class="eyebrow text-muted mb-6">{t["footer.pages"]}</p>
       <ul class="space-y-4">
         {pages.map((p) => (
@@ -105,7 +130,7 @@ const iconPaths: Record<string, string> = {
     </nav>
 
     <!-- Contact -->
-    <div class="md:col-span-3">
+    <div class="md:col-span-6 lg:col-span-3">
       <p class="eyebrow text-muted mb-6">{t["footer.contact"]}</p>
       <ul class="space-y-4 font-mono text-[13px]" style="letter-spacing: 0.04em;">
         <li>

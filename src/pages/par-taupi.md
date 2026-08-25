@@ -3,13 +3,20 @@ layout: "~/layouts/Legal.astro"
 title: "Par Taupi"
 description: "Taupi ir Latvijā radīta personīgo finanšu lietotne — dienas budžets, čeku skenēšana ar AI un ieskati. Uzzini, kas un kāpēc to veido."
 locale: "lv"
+showAuthor: true
 ---
 
 Taupi ir Latvijā radīta personīgo finanšu lietotne — kluss ikdienas pavadonis, kas palīdz saprast, kur aiziet tava nauda, un tērēt apzinātāk.
 
 ## Kāpēc Taupi radās
 
-Lielākā daļa budžeta lietotņu ir veidotas citiem tirgiem: tās nesaprot Latvijas veikalu čekus, rāda uzpūstus grafikus un prasa vairāk darba, nekā dod vērtības. Mēs gribējām ko citu — lietotni, kas ikdienā prasa dažas sekundes, runā latviski un atbild uz vienu vienkāršu jautājumu: **cik šodien vari droši tērēt?**
+Gribēju paņemt hipotekāro kredītu mājas būvniecībai, bet vispirms vajadzēja nomaksāt auto patēriņa kredītu. Man bija vajadzīga viena atbilde, un pēc iespējas ātrāk: **cik šodien varu atļauties iztērēt, lai plāns turētos?**
+
+Tādu lietotni, kas to pateiktu, es neatradu. Lielākā daļa budžeta rīku ir veidoti citiem tirgiem — tie nesaprot Latvijas veikalu čekus, rāda uzpūstus grafikus un prasa vairāk darba, nekā dod vērtības. Tāpēc sāku būvēt pats.
+
+Sākumā tas bija viens vienkāršs aprēķins sev. Pamazām lietotne apauga ar to, kas noderēja man pašam: AI čeku skeneris, ieskati un statistika, kurā ieraudzīt un pēc tam labot savus iepirkšanās ieradumus. Gribēju arī, lai Taupi būtu izglītojoša, tāpēc iestrādāju padomus un īsas viktorīnas — lai informāciju var iegūt ātri un mācīties, tajā piedaloties.
+
+Kad par Taupi ierakstīju platformā Threads, cerēju pieaicināt tikai dažus testētājus. Atsaucība bija krietni lielāka: mēneša laikā gaidīšanas sarakstam pieteicās ap 400 cilvēku. Lietotnei, kas vēl ir izstrādes procesā, tas ir daudz — un pietiekams iemesls projektu pabeigt, cik labi vien protu.
 
 ## Ko Taupi dara
 
@@ -22,10 +29,8 @@ Lielākā daļa budžeta lietotņu ir veidotas citiem tirgiem: tās nesaprot Lat
 
 Tavi dati glabājas Eiropas Savienībā, šifrēti gan pārsūtot, gan glabājot. Lietotnē nav ne reklāmu, ne sekotāju, un datus vari eksportēt vai dzēst jebkurā brīdī. Vairāk — [privātuma politikā](/privacy-policy/).
 
-## Kas veido Taupi
-
-Taupi top Latvijā — to veido Rainers Lovkins. Maza komanda nozīmē vienu vienkāršu lietu: mēs atbildam uz katru e-pastu un katru ieteikumu izlasa cilvēks, kas lietotni būvē.
-
 ## Sazinies ar mums
 
-Jautājumi, idejas vai vēlies palīdzēt testēt? Raksti uz [info@taupi.eu](mailto:info@taupi.eu) — vai [piesakies gaidīšanas sarakstam](/#waitlist), un dosim ziņu, tiklīdz Taupi būs pieejams App Store un Google Play.
+Taupi top mazā komandā, un tas nozīmē vienu vienkāršu lietu: uz katru e-pastu atbildu es pats, un katru ieteikumu izlasa cilvēks, kas lietotni būvē.
+
+Jautājumi, idejas vai vēlies palīdzēt testēt? Raksti uz [info@taupi.eu](mailto:info@taupi.eu) — vai [piesakies gaidīšanas sarakstam](/#waitlist), un došu ziņu, tiklīdz Taupi būs pieejams App Store un Google Play.

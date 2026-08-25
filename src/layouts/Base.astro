@@ -9,20 +9,29 @@ interface Props {
   title: string;
   description?: string;
   locale: Locale;
-  /** Pass false on single-language pages (blog) — see Seo.astro. */
+  /** Force-disable hreflang. Usually unnecessary — see Seo.astro. */
   alternate?: boolean;
   ogType?: "website" | "article";
   /** Page-specific OG image path — see Seo.astro. */
   ogImage?: string;
+  /** Keep out of the index, keep following links — see Seo.astro. */
+  noindex?: boolean;
+  /** Trail below home, e.g. [{ name: "Kalkulatori", href: "/kalkulatori/" }]. */
+  breadcrumbs?: { name: string; href: string }[];
+  /** Extra JSON-LD nodes merged into the @graph. */
+  schema?: Record<string, unknown>[];
 }
 
 const {
   title,
   description = "Taupi — zini, kur aiziet tava nauda.",
   locale,
-  alternate = true,
+  alternate,
   ogType = "website",
   ogImage,
+  noindex = false,
+  breadcrumbs,
+  schema,
 } = Astro.props;
 
 // Fonts (Sora / DM Sans / JetBrains Mono, matching the RN app's type stack)
@@ -36,7 +45,17 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0D1128" />
 
-    <Seo title={title} description={description} locale={locale} alternate={alternate} ogType={ogType} ogImage={ogImage} />
+    <Seo
+      title={title}
+      description={description}
+      locale={locale}
+      alternate={alternate}
+      ogType={ogType}
+      ogImage={ogImage}
+      noindex={noindex}
+      breadcrumbs={breadcrumbs}
+      schema={schema}
+    />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 

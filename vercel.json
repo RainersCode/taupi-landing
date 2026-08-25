@@ -1,35 +1,124 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/privacy", "destination": "/privacy-policy/", "permanent": true },
-    { "source": "/terms", "destination": "/terms-of-service/", "permanent": true }
+    {
+      "source": "/privacy",
+      "destination": "/privacy-policy/",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms-of-service/",
+      "permanent": true
+    },
+    {
+      "source": "/en/kalkulatori",
+      "destination": "/en/calculators/",
+      "permanent": true
+    },
+    {
+      "source": "/en/kalkulatori/",
+      "destination": "/en/calculators/",
+      "permanent": true
+    },
+    {
+      "source": "/en/budzeta-kalkulators",
+      "destination": "/en/budget-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/budzeta-kalkulators/",
+      "destination": "/en/budget-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/salikto-procentu-kalkulators",
+      "destination": "/en/compound-interest-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/salikto-procentu-kalkulators/",
+      "destination": "/en/compound-interest-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/drosibas-spilvena-kalkulators",
+      "destination": "/en/emergency-fund-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/drosibas-spilvena-kalkulators/",
+      "destination": "/en/emergency-fund-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/kreditu-atmaksas-kalkulators",
+      "destination": "/en/debt-payoff-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/kreditu-atmaksas-kalkulators/",
+      "destination": "/en/debt-payoff-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/en/par-taupi",
+      "destination": "/en/about/",
+      "permanent": true
+    },
+    {
+      "source": "/en/par-taupi/",
+      "destination": "/en/about/",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/:path*",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
       ]
     },
     {
       "source": "/_astro/:path*",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/images/:path*",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=604800" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
       ]
     },
     {
       "source": "/fonts/:path*",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     }
   ]
