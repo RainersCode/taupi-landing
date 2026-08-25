@@ -27,14 +27,16 @@ export const launch = {
  */
 export const author = {
   name: "Rainers Lovkins",
-  /** e.g. "Taupi dibinātājs". Rendered in the author box and JSON-LD. */
-  jobTitle: "",
+  /** Rendered in the author box and JSON-LD. */
+  jobTitle: "Taupi dibinātājs un izstrādātājs",
   /** One or two sentences of relevant background. Empty hides the box's
       body — a byline with no substance is not worth the space. */
   bio: "",
   /** Profile URLs Google can cross-reference — LinkedIn first. Rendered as
       links in the author box and emitted as schema.org sameAs. */
-  sameAs: [] as { label: string; href: string }[],
+  sameAs: [
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/rainers-lovkins-2a3b531a7/" },
+  ] as { label: string; href: string }[],
   /** Optional headshot in /public (e.g. "/author.jpg"). Falls back to a
       monogram rather than a stock avatar. */
   photo: "",
