@@ -281,8 +281,19 @@ input:-webkit-autofill:active {
 .legal-prose ul > li {
   list-style: disc;
 }
-.legal-prose ul > li::marker {
+/* Tailwind's preflight clears list-style on both ul and ol; only ul got it
+   back, so every ordered list rendered without its numbers. A numbered list
+   whose numbers are invisible is just an indented paragraph — and the steps
+   in the blog posts depend on the order being visible. */
+.legal-prose ol > li {
+  list-style: decimal;
+}
+.legal-prose ul > li::marker,
+.legal-prose ol > li::marker {
   color: rgba(56, 189, 248, 0.55);
+}
+.legal-prose ol > li::marker {
+  font-variant-numeric: tabular-nums;
 }
 
 .legal-prose blockquote {
