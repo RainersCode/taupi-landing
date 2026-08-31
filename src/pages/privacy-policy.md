@@ -2,8 +2,8 @@
 layout: "~/layouts/Legal.astro"
 title: "Privātuma politika"
 description: "Kā Taupi vāc, izmanto un aizsargā tavus datus — glabāšana Eiropas Savienībā, šifrēšana, tavas GDPR tiesības un kontakti jautājumiem."
-updated: "2026-05-08"
-version: "2.1"
+updated: "2026-08-31"
+version: "2.2"
 locale: "lv"
 ---
 
@@ -22,11 +22,15 @@ Mēs apzināti turam datu vākšanu minimālu.
 ### Dati, ko sniedz, izveidojot kontu
 - **E-pasta adrese** — pierakstam un paroles atjaunošanai.
 - **Parole** — glabājas tikai kā sālīts hash mūsu autentifikācijas pakalpojumā (Supabase Auth). Mēs nekad neredzam tavu paroli atvērtā formā.
-- **OAuth identifikators** (pēc izvēles) — ja pierakstīsies ar Google, Apple vai Facebook, no šī pakalpojuma saņemam stabilu lietotāja ID un tavu e-pastu. Mēs **nepieprasām** piekļuvi taviem kontaktiem, kalendāram, ierakstiem vai citiem datiem no šiem pakalpojumiem.
+- **OAuth identifikators** (pēc izvēles) — ja pierakstīsies ar Google vai Apple, no šī pakalpojuma saņemam stabilu lietotāja ID un tavu e-pastu. Mēs **nepieprasām** piekļuvi taviem kontaktiem, kalendāram, ierakstiem vai citiem datiem no šiem pakalpojumiem.
 
 ### Dati, ko ievadi, lietojot lietotni
 - Mēneša ienākumi, fiksētās izmaksas, izdevumi, ieguldījumi, ilgtermiņa mērķi un piezīmes, ko pievieno ierakstiem.
 - Profila signāli AI ieskatu pielāgošanai: vecuma diapazons, mājsaimniecības lielums, pilsēta un tavs galvenais finanšu mērķis. Šie ir neobligāti.
+- **Attēlojamais vārds viktorīnas rezultātu tabulai** (pēc izvēles) — ja piedalies dienas viktorīnā, tavs izvēlētais vārds, punkti un sērija ir **redzami citiem Taupi lietotājiem** rezultātu tabulā. Ja vārdu neiestati, tu parādies kā anonīms "Spēlētājs #…" ieraksts. Vārdu jebkurā brīdī vari mainīt viktorīnas ekrānā. Tavi finanšu dati citiem lietotājiem nekad netiek rādīti.
+
+### Lietošanas notikumi
+- Mēs reģistrējam vienkāršus pirmās puses lietošanas notikumus — kad lietotne tiek atvērta un kuri ekrāni tiek apskatīti (piem., "atvērta Statistika"), kopā ar tava konta ID un laika zīmogu. To izmantojam, lai saprastu, kuras funkcijas tiek lietotas, un izveidotu iekšēju dienas aktivitātes kopsavilkumu izstrādātājam. Šie notikumi nekad nesatur tavu ierakstu summas, piezīmes vai saturu, nekad netiek nodoti trešajām pusēm un netiek izmantoti reklāmai.
 
 ### Dati no čeku skenēšanas (tikai ja izmanto)
 - **Čeku attēli**, ko nofotografē vai augšupielādē OCR atpazīšanai.
@@ -41,12 +45,15 @@ Mēs apzināti turam datu vākšanu minimālu.
 ### Anonīmi kopienas cenu dati (tikai ja piekrīti)
 Ja iestatījumos iespējosi "Dalīties ar cenām anonīmi", skenēto čeku preces — **veikals, preces nosaukums, cena, datums** — tiek pievienotas koplietotam katalogam, lai citi lietotāji varētu redzēt cenas dažādos veikalos. **Netiek pievienots lietotāja ID, e-pasts, ierīces ID vai atrašanās vieta.** Tu jebkurā brīdī vari šo izslēgt; jau ieguldītās rindas paliek katalogā, jo vairs nav piesaistāmas tev.
 
+### Abonementa dati (tikai ja pērc Premium)
+- Ja iegādājies Premium abonementu, pašu pirkumu apstrādā Apple (App Store) vai Google (Google Play) — **mēs nekad neredzam tavas kartes numuru vai maksājuma datus**. Mūsu abonementu pārvaldības pakalpojums RevenueCat saņem pseidonīmu lietotnes lietotāja ID un tava pirkuma/tiesību statusu, lai lietotne zinātu, ka Premium ir aktīvs.
+
 ### Ko mēs NEvācam
 - Bankas konta datus vai darījumus. Mēs nekad nepieslēdzamies tavai bankai.
 - Atrašanās vietas (GPS) datus.
 - Kontaktus, kalendāru, SMS vai foto bibliotēku ārpus konkrētajiem attēliem, ko nodod čeku skenerim.
 - Reklāmu identifikatorus (IDFA / GAID).
-- Analītiku par to, kā lieto atsevišķus ekrānus.
+- Trešo pušu analītikas, reklāmas vai izsekošanas rīkus — vienīgie lietošanas dati ir augstāk aprakstītie pirmās puses notikumi, kas paliek mūsu pašu datubāzē.
 
 ## 3. Kāpēc apstrādājam tavus datus (mērķi un juridiskais pamats)
 
@@ -58,6 +65,9 @@ Ja iestatījumos iespējosi "Dalīties ar cenām anonīmi", skenēto čeku prece
 | Čeku attēlu apstrāde | attēls, kas nosūtīts AI pakalpojumam | Līgums (6.(1)(b)) — tu uzsāki skenēšanu |
 | Push paziņojumu sūtīšana (dienas atgādinājums, nedēļas kopsavilkums) | push žetons + ierakstu dati | Piekrišana (6.(1)(a)) — iespējo iestatījumos |
 | Iemaksa anonīmajā cenu katalogā | prece / veikals / cena (bez lietotāja ID) | Piekrišana (6.(1)(a)) |
+| Funkciju lietojuma izpratne (pirmās puses notikumi) | lietotnes atvēršanas, ekrānu skatījumi + konta ID | Leģitīmas intereses (6.(1)(f)) — produkta uzlabošana; jebkurā brīdī vari iebilst (skat. 8. sadaļu) |
+| Premium abonementa pārvaldība | pseidonīms lietotāja ID + tiesību statuss | Līgums (6.(1)(b)) |
+| Viktorīnas rezultātu tabulas rādīšana | attēlojamais vārds, punkti, sērija | Līgums (6.(1)(b)) — viktorīnai pievienojies brīvprātīgi |
 | Ļaunprātīgas izmantošanas novēršana un drošība | IP + pieprasījuma metadati | Leģitīmas intereses (6.(1)(f)) |
 | Atbildēšana uz juridiskiem pieprasījumiem | kas vajadzīgs | Juridisks pienākums (6.(1)(c)) |
 
@@ -74,8 +84,9 @@ Mēs izmantojam šādus pakalpojumu sniedzējus ("apstrādātājus"). Viņi apst
 | **Vercel** (Vercel Inc.) | Mitina mūsu API galapunktus (čeku OCR proxy, ieskatu proxy) | ASV / ES | Standarta līguma noteikumi |
 | **Apple Inc.** | "Sign in with Apple" identitātes pakalpojums | Īrija / ASV | Apple paša pārziņa/apstrādātāja noteikumi |
 | **Google LLC** | "Sign in with Google" identitātes pakalpojums | Īrija / ASV | Google paša pārziņa/apstrādātāja noteikumi |
-| **Meta Platforms Ireland Ltd.** | "Sign in with Facebook" identitātes pakalpojums | Īrija / ASV | Meta noteikumi |
 | **Expo, Inc.** | Push paziņojumu žetonu maršrutēšana (uz APNs / FCM) | ASV | Standarta līguma noteikumi |
+| **RevenueCat, Inc.** | Abonementu pārvaldība (Premium tiesību statuss; bez maksājumu karšu datiem) | ASV | Standarta līguma noteikumi; datu apstrādes līgums |
+| **Zoho Corporation** (Zoho Mail) | Mūsu atbalsta un pakalpojuma e-pastu sūtīšana un saņemšana (info@taupi.eu) | Eiropas Savienība | Izvietots ES (mail.zoho.eu); datu apstrādes līgums |
 
 Ja pievienosim vai mainīsim apakšapstrādātāju, kas būtiski ietekmē tavus datus, atjaunināsim šo lapu un mainīsim versijas numuru augšā.
 
@@ -91,6 +102,7 @@ Tavi galvenie dati (konts, ieraksti, čeki apstrādes laikā) glabājas **Eiropa
 | Supabase datubāzes dublējumkopijas | Rotētas ārā **90 dienu** laikā pēc dzēšanas. |
 | Čeku attēli, kas nosūtīti AI | **Netiek saglabāti** — atmesti uzreiz pēc apstrādes. |
 | API / ļaunprātīgas izmantošanas žurnāli | **14 dienas** rotējoši. |
+| Pirmās puses lietošanas notikumi (lietotnes atvēršanas, ekrānu skatījumi) | Glabājas, kamēr tavs konts pastāv; automātiski dzēsti kopā ar kontu. |
 | Anonīmā cenu kataloga rindas | Glabājas neierobežoti depersonalizētā formā (nav piesaistāmas tev). |
 | Klientu atbalsta e-pasti | **24 mēneši** no pēdējās sarakstes. |
 
@@ -135,7 +147,7 @@ Taupi nav paredzēta bērniem, kas jaunāki par 16 gadiem (ES) vai 13 gadiem (AS
 
 ## 11. Sīkdatnes, izsekošana, analītika
 
-Mēs **nelietojam** nekādu analītiku, reklāmas tīklus, izsekošanas pikseļus vai starpaplikāciju identifikatorus. Lietotne neizmanto sīkdatnes. iOS App Tracking Transparency neattiecas, jo mēs neizsekojam tevi citu uzņēmumu lietotnēs vai vietnēs.
+Mēs **nelietojam** nekādus trešo pušu analītikas pakalpojumus, reklāmas tīklus, izsekošanas pikseļus vai starpaplikāciju identifikatorus. Vienīgie lietošanas dati, ko apstrādājam, ir 2. sadaļā aprakstītie pirmās puses notikumi (lietotnes atvēršanas un ekrānu skatījumi), kas paliek mūsu pašu datubāzē un nekad netiek nodoti vai pārdoti. Lietotne neizmanto sīkdatnes. iOS App Tracking Transparency neattiecas, jo mēs neizsekojam tevi citu uzņēmumu lietotnēs vai vietnēs.
 
 ## 12. Šīs politikas izmaiņas
 

@@ -2,8 +2,8 @@
 layout: "~/layouts/Legal.astro"
 title: "Privacy Policy"
 description: "How Taupi collects, uses and protects your data — EU data storage, encryption, your GDPR rights and how to reach us with questions."
-updated: "2026-05-08"
-version: "2.1"
+updated: "2026-08-31"
+version: "2.2"
 locale: "en"
 ---
 
@@ -22,11 +22,15 @@ We keep the collection deliberately small.
 ### Data you provide when you create an account
 - **Email address** — used for sign-in and password reset.
 - **Password** — stored only as a salted hash by our authentication provider (Supabase Auth). We never see your plaintext password.
-- **OAuth identifier** (optional) — if you sign in with Google, Apple, or Facebook, we receive a stable user ID and your email from that provider. We do **not** request access to your contacts, calendar, posts, or any other data from those providers.
+- **OAuth identifier** (optional) — if you sign in with Google or Apple, we receive a stable user ID and your email from that provider. We do **not** request access to your contacts, calendar, posts, or any other data from those providers.
 
 ### Data you enter while using the app
 - Monthly income, fixed costs, expenses, investments, long-term goals, and notes you attach to entries.
 - Profile signals used to tailor AI insights: age range, household size, city, and your primary financial goal. These are optional.
+- **Display name for the quiz leaderboard** (optional) — if you take part in the daily quiz, your chosen display name, points, and streak are **visible to other Taupi users** on the leaderboard. If you don't set a name, you appear as an anonymous "Player #…" entry. You can change the name at any time in the quiz screen. Your financial data is never shown to other users.
+
+### Usage events
+- We record basic first-party usage events — when the app is opened and which screens are viewed (e.g. "Statistics opened"), together with your account ID and a timestamp. We use this to understand which features are used and to compile an internal daily activity summary for the developer. These events never include the amounts, notes, or contents of your entries, are never shared with third parties, and are not used for advertising.
 
 ### Data from receipt scanning (only if you use it)
 - **Receipt images** you photograph or upload for OCR.
@@ -41,12 +45,15 @@ We keep the collection deliberately small.
 ### Anonymous community price data (only if you opt in)
 If you enable "Share prices anonymously" in Settings, scanned receipt line items — **store, item name, price, date** — are added to a shared catalogue so other users can see prices at different stores. **No user ID, email, device ID, or location is attached.** You can turn this off at any time; already-contributed rows stay in the catalogue because they are no longer linkable to you.
 
+### Subscription data (only if you buy Premium)
+- If you purchase a Premium subscription, the purchase itself is handled by Apple (App Store) or Google (Google Play) — **we never see your card number or payment details**. Our subscription-management provider, RevenueCat, receives a pseudonymous app user ID and your purchase/entitlement status so the app knows Premium is active.
+
 ### What we do NOT collect
 - Bank account credentials or transactions. We never connect to your bank.
 - Location (GPS) data.
 - Contacts, calendar, SMS, or photo library beyond the specific images you hand to the receipt scanner.
 - Advertising IDs (IDFA / GAID).
-- Analytics about how you use individual screens.
+- Third-party analytics, advertising, or tracking SDKs — the only usage data is the first-party events described above, which stay in our own database.
 
 ## 3. Why we process your data (purposes and legal basis)
 
@@ -58,6 +65,9 @@ If you enable "Share prices anonymously" in Settings, scanned receipt line items
 | Parse receipt images | image sent to AI provider | Contract (Art. 6(1)(b)) — you initiated the scan |
 | Send you push notifications (daily reminder, weekly summary) | push token + entry data | Consent (Art. 6(1)(a)) — you enable this in Settings |
 | Contribute to the anonymous price catalogue | item / store / price (no user ID) | Consent (Art. 6(1)(a)) |
+| Understand feature usage (first-party events) | app opens, screen views + account ID | Legitimate interest (Art. 6(1)(f)) — improving the product; you may object at any time (see §8) |
+| Manage your Premium subscription | pseudonymous app user ID + entitlement status | Contract (Art. 6(1)(b)) |
+| Show the quiz leaderboard | display name, points, streak | Contract (Art. 6(1)(b)) — you join the quiz voluntarily |
 | Abuse prevention and security | IP + request metadata | Legitimate interest (Art. 6(1)(f)) |
 | Respond to legal requests | whatever is necessary | Legal obligation (Art. 6(1)(c)) |
 
@@ -74,8 +84,9 @@ We use the following service providers ("processors"). They process data only on
 | **Vercel** (Vercel Inc.) | Hosts our API endpoints (receipt OCR proxy, insights proxy) | United States / EU | Standard Contractual Clauses |
 | **Apple Inc.** | "Sign in with Apple" identity service | Ireland / United States | Apple's own controller/processor terms |
 | **Google LLC** | "Sign in with Google" identity service | Ireland / United States | Google's own controller/processor terms |
-| **Meta Platforms Ireland Ltd.** | "Sign in with Facebook" identity service | Ireland / United States | Meta's own terms |
 | **Expo, Inc.** | Push notification token routing (to APNs / FCM) | United States | Standard Contractual Clauses |
+| **RevenueCat, Inc.** | Subscription management (Premium entitlement status; no payment card data) | United States | Standard Contractual Clauses; Data Processing Agreement |
+| **Zoho Corporation** (Zoho Mail) | Sending and receiving our support and service emails (info@taupi.eu) | European Union | EU-hosted (mail.zoho.eu); Data Processing Agreement |
 
 If we add or change a subprocessor that meaningfully affects your data, we will update this page and bump the version number at the top.
 
@@ -91,6 +102,7 @@ Your primary data (account, entries, receipts-in-flight) is stored in the **Euro
 | Supabase database backups | Rotated out within **90 days** of deletion. |
 | Receipt images sent to AI | **Not retained** — discarded immediately after parsing. |
 | API / abuse-prevention logs | **14 days** rolling. |
+| First-party usage events (app opens, screen views) | Kept while your account exists; deleted automatically together with your account. |
 | Anonymous price-catalogue rows | Retained indefinitely in de-identified form (not linkable to you). |
 | Customer-support emails | **24 months** from last correspondence. |
 
@@ -135,7 +147,7 @@ Taupi is not directed at children under 16 (EU) or 13 (United States). We do not
 
 ## 11. Cookies, tracking, analytics
 
-We do **not** run any analytics, ad network, tracking pixel, or cross-app identifier. The app does not use cookies. iOS App Tracking Transparency is not applicable because we do not track you across other companies' apps or sites.
+We do **not** use any third-party analytics service, ad network, tracking pixel, or cross-app identifier. The only usage data we process is the first-party events described in §2 (app opens and screen views), which stay in our own database and are never shared or sold. The app does not use cookies. iOS App Tracking Transparency is not applicable because we do not track you across other companies' apps or sites.
 
 ## 12. Changes to this policy
 
