@@ -32,6 +32,7 @@ export const strings: Record<Locale, Dict> = {
     "hero.eyebrow.tester": "Testētājiem 6 mēneši bez maksas",
     "hero.eyebrow.live": "Pieejams App Store un Google Play",
     "nav.join": "Pieteikties",
+    "nav.download": "Lejupielādēt",
 
     "store.on.apple": "Lejupielādē no",
     "store.on.play": "Iegūsti no",
@@ -373,6 +374,7 @@ export const strings: Record<Locale, Dict> = {
     "hero.eyebrow.tester": "Testers get 6 months free",
     "hero.eyebrow.live": "Now on the App Store and Google Play",
     "nav.join": "Join waitlist",
+    "nav.download": "Download",
 
     "store.on.apple": "Download on the",
     "store.on.play": "Get it on",
