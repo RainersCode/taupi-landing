@@ -5,9 +5,9 @@
  * SoftwareApplication schema goes live for Google.
  */
 export const launch = {
-  live: false,
-  appStoreUrl: "",
-  playStoreUrl: "",
+  live: true,
+  appStoreUrl: "https://apps.apple.com/app/id6763491623",
+  playStoreUrl: "https://play.google.com/store/apps/details?id=com.rainerslovkins.taupi",
 };
 
 /**

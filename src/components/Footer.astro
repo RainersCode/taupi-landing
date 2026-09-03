@@ -4,6 +4,8 @@ import { getDict } from "~/i18n/strings";
 import { socials } from "~/config";
 import { path } from "~/i18n/routes";
 import WaitlistForm from "~/components/WaitlistForm";
+import StoreBadges from "~/components/StoreBadges";
+import { launch } from "~/config";
 
 interface Props {
   locale: Locale;
@@ -56,16 +58,16 @@ const iconPaths: Record<string, string> = {
       class="mx-auto max-w-content mb-14 md:mb-16 pb-12 md:pb-16 border-b border-white/5 grid grid-cols-1 md:grid-cols-12 gap-8 md:items-center"
     >
       <div class="md:col-span-6">
-        <p class="eyebrow mb-5">{t["footer.news"]}</p>
+        <p class="eyebrow mb-5">{launch.live ? t["footer.dl"] : t["footer.news"]}</p>
         <p
           class="font-display font-bold text-ink"
           style="font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -0.025em; line-height: 1.15; max-width: 18ch;"
         >
-          {t["footer.news.title"]}
+          {launch.live ? t["footer.dl.title"] : t["footer.news.title"]}
         </p>
       </div>
       <div class="md:col-span-6 w-full md:max-w-[440px] md:justify-self-end">
-        <WaitlistForm client:visible locale={locale} />
+        {launch.live ? <StoreBadges locale={locale} /> : <WaitlistForm client:visible locale={locale} />}
       </div>
     </div>
   )}

@@ -33,4 +33,4 @@ Tavi dati glabājas Eiropas Savienībā, šifrēti gan pārsūtot, gan glabājot
 
 Taupi top mazā komandā, un tas nozīmē vienu vienkāršu lietu: uz katru e-pastu atbildu es pats, un katru ieteikumu izlasa cilvēks, kas lietotni būvē.
 
-Jautājumi, idejas vai vēlies palīdzēt testēt? Raksti uz [info@taupi.eu](mailto:info@taupi.eu) — vai [piesakies gaidīšanas sarakstam](/#waitlist), un došu ziņu, tiklīdz Taupi būs pieejams App Store un Google Play.
+Jautājumi vai idejas? Raksti uz [info@taupi.eu](mailto:info@taupi.eu). Taupi ir pieejams [App Store](https://apps.apple.com/app/id6763491623) un [Google Play](https://play.google.com/store/apps/details?id=com.rainerslovkins.taupi).

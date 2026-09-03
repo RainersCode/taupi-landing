@@ -33,4 +33,4 @@ Your data is stored in the European Union, encrypted in transit and at rest. The
 
 Taupi is built by a small team, and that means one simple thing: I answer every email myself, and every suggestion is read by the person writing the app.
 
-Questions, ideas, or want to help test? Write to [info@taupi.eu](mailto:info@taupi.eu) — or [join the waitlist](/en/#waitlist) and I'll email you the moment Taupi hits the App Store and Google Play.
+Questions or ideas? Write to [info@taupi.eu](mailto:info@taupi.eu). Taupi is out on the [App Store](https://apps.apple.com/app/id6763491623) and [Google Play](https://play.google.com/store/apps/details?id=com.rainerslovkins.taupi).
