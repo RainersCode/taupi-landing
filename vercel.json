@@ -2,6 +2,64 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/get",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*Android.*"
+        }
+      ],
+      "destination": "https://play.google.com/store/apps/details?id=com.rainerslovkins.taupi",
+      "permanent": false
+    },
+    {
+      "source": "/get/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*Android.*"
+        }
+      ],
+      "destination": "https://play.google.com/store/apps/details?id=com.rainerslovkins.taupi",
+      "permanent": false
+    },
+    {
+      "source": "/get",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(iPhone|iPad|iPod).*"
+        }
+      ],
+      "destination": "https://apps.apple.com/lv/app/taupi-budget/id6763491623",
+      "permanent": false
+    },
+    {
+      "source": "/get/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(iPhone|iPad|iPod).*"
+        }
+      ],
+      "destination": "https://apps.apple.com/lv/app/taupi-budget/id6763491623",
+      "permanent": false
+    },
+    {
+      "source": "/get",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/get/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy-policy/",
       "permanent": true
