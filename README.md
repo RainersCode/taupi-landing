@@ -1,4 +1,24 @@
-# taupi-landing
+# Taupi — mājaslapa
+
+**[taupi.eu](https://taupi.eu)** · Latviešu budžeta lietotne iPhone un Android telefoniem.
+
+Taupi parāda vienu skaitli — cik šodien drīksti iztērēt, lai mēnesis izietu bez
+pārsteigumiem. Izdevumu uzskaite, čeku skenēšana, mērķi, parādi, kopīgs budžets
+pārim un dienas jautājums ar mēneša tabulu.
+
+**Lejupielādēt:** [taupi.eu/get](https://taupi.eu/get) — saite pati aizved uz
+pareizo veikalu ([App Store](https://apps.apple.com/lv/app/taupi-budget/id6763491623) ·
+[Google Play](https://play.google.com/store/apps/details?id=com.rainerslovkins.taupi)).
+
+Šajā repozitorijā dzīvo **mājaslapa**, nevis pati lietotne: sākumlapa, pieci
+finanšu kalkulatori, [lietošanas gidi](https://taupi.eu/gids/) un
+[padomu raksti](https://taupi.eu/padomi/) — latviski un angliski.
+
+Sadarbībai un jautājumiem: **info@taupi.eu**
+
+---
+
+## Par kodu
 
 Marketing site for Taupi — deployed at `taupi.eu`.
 
