@@ -14,12 +14,12 @@ import type { MarkdownHeading } from "astro";
  * directly. Reading column + typography mirror BlogPost; images render
  * as phone-framed screenshots (see the style block below).
  *
- * NOINDEXED until launch. These document an app nobody can install yet, so
- * they attract no searches while consuming ~30% of the crawl budget — which
- * is why Google left 8 of the 10 in "discovered, not indexed". They stay
- * fully reachable for humans and keep `follow`, so link equity still flows.
- * Remove `noindex` here and in gids/index.astro on launch day, and drop the
- * sitemap filter in astro.config.mjs.
+ * Indexable since 2026-09-08. Until the stores went live these were
+ * noindexed on purpose — they documented an app nobody could install, so they
+ * drew no searches while eating ~30% of the crawl budget (Google parked 8 of
+ * the 10 in "discovered, not indexed"). Taupi is now in both stores, so the
+ * guides are the site's strongest Latvian search surface and go back into the
+ * index together with the sitemap entry (see astro.config.mjs).
  */
 interface Props {
   guide: CollectionEntry<"gids">;
@@ -61,7 +61,6 @@ const jsonLd = {
   locale={locale}
   alternate={false}
   ogType="article"
-  noindex
   breadcrumbs={[
     { name: t["nav.gids"], href: "/gids/" },
     { name: title, href: Astro.url.pathname },

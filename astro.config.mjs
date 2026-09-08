@@ -11,10 +11,6 @@ export default defineConfig({
     react(),
     tailwind({ applyBaseStyles: false }),
     sitemap({
-      // /gids/ is noindexed until the app launches (see Guide.astro), and a
-      // sitemap that submits noindexed URLs is a contradictory signal — it
-      // spends crawl budget asking Google to fetch pages we tell it to drop.
-      filter: (page) => !new URL(page).pathname.startsWith("/gids"),
       // `i18n` stays on only to make @astrojs/sitemap declare the xhtml
       // namespace. Its own pairing matches locales by identical path, which
       // no longer holds now that EN has real English slugs — so `serialize`
