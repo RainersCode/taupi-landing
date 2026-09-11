@@ -1,0 +1,84 @@
+---
+import Base from "~/layouts/Base.astro";
+import Nav from "~/components/Nav.astro";
+import Footer from "~/components/Footer.astro";
+import { getCollection, render } from "astro:content";
+
+/**
+ * Jaunumi — /jaunumi/. Viena lapa ar visiem produkta atjauninājumiem
+ * jaunākie-augšā; ieraksti ir īsi (changelog cilvēku valodā), tāpēc
+ * atsevišķu lapu uz ierakstu nav — viss ķermenis renderējas šeit.
+ * Lietotne uz šo lapu linkē no Iestatījumiem.
+ */
+const locale = "lv" as const;
+
+const entries = (
+  await getCollection("jaunumi", ({ data }) => !data.draft && data.locale === "lv")
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("lv-LV", { year: "numeric", month: "long", day: "numeric" });
+---
+<Base
+  title="Jaunumi — Taupi"
+  description="Ko jaunu esam uzbūvējuši Taupi lietotnē: jaunās funkcijas, uzlabojumi un labojumi — īsi un cilvēku valodā."
+  locale={locale}
+  alternate={false}
+  breadcrumbs={[{ name: "Jaunumi", href: "/jaunumi/" }]}
+>
+  <Nav locale={locale} />
+
+  <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
+    <header class="mb-16 border-b border-white/10 pb-10">
+      <p class="eyebrow mb-6">Jaunumi</p>
+      <h1
+        class="font-display font-extrabold text-ink"
+        style="font-size: clamp(36px, 5vw, 72px); letter-spacing: -0.035em; line-height: 1.02;"
+      >
+        Ko jaunu esam uzbūvējuši
+      </h1>
+      <p class="mt-8 text-dim max-w-[52ch] text-lg" style="line-height: 1.65;">
+        Taupi aug katru nedēļu — lielā daļa no šī saraksta ir lietotāju
+        ieteikumi. Ja tev ir sava ideja, uzraksti mums no lietotnes
+        atsauksmju sadaļas.
+      </p>
+    </header>
+
+    <div>
+      {rendered.map(({ entry, Content }) => (
+        <article class="border-b border-white/10 py-12 first:pt-0">
+          <p class="eyebrow text-muted mb-5">{fmt(entry.data.pubDate)}</p>
+          <h2
+            class="font-display font-bold text-ink"
+            style="font-size: clamp(22px, 2.6vw, 32px); letter-spacing: -0.02em; line-height: 1.2;"
+          >
+            {entry.data.title}
+          </h2>
+          <div class="prose-news mt-5 text-dim max-w-[62ch]" style="line-height: 1.7;">
+            <Content />
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+
+  <Footer locale={locale} />
+</Base>
+
+<style>
+  /* Markdown ķermenis manto lapas toņus; treknraksts paceļas uz ink. */
+  .prose-news :global(p) {
+    margin-top: 0.9em;
+  }
+  .prose-news :global(p:first-child) {
+    margin-top: 0;
+  }
+  .prose-news :global(strong) {
+    color: var(--color-ink, #fff);
+    font-weight: 600;
+  }
+</style>

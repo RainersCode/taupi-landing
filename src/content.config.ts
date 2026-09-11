@@ -79,4 +79,20 @@ const tools = defineCollection({
   }),
 });
 
-export const collections = { blog, gids, tools };
+/**
+ * Jaunumi — īsi produkta atjauninājumu ieraksti (changelog cilvēku valodā).
+ * Viena lapa /jaunumi/ ar visiem ierakstiem jaunākie-augšā; atsevišķu lapu
+ * uz ierakstu nav — ieraksts ir rindkopa, ne raksts. Lietotne uz šo lapu
+ * linkē no Iestatījumiem.
+ */
+const jaunumi = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/jaunumi" }),
+  schema: z.object({
+    title: z.string(),
+    pubDate: z.coerce.date(),
+    locale: z.enum(["lv", "en"]).default("lv"),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, gids, tools, jaunumi };
