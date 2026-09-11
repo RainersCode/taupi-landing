@@ -143,7 +143,12 @@ const legend = [
         ))}
       </div>
 
-      <table class="w-full mt-6 border-collapse text-[14px]">
+      {/* overflow-x-auto: rezultātu tabula ir vienīgā ārpus .legal-prose,
+          tāpēc globālais mobilā ritinājuma sargs uz to neattiecas — šeit
+          to dara wrapper-div (komponentē to varam atļauties, Markdown
+          tabulās nevaram). */}
+      <div class="mt-6 overflow-x-auto">
+      <table class="w-full border-collapse text-[14px]">
         <thead>
           <tr>
             <th class="text-left font-mono font-medium text-[10px] tracking-[0.16em] uppercase text-muted py-2.5 pr-3 border-b border-white/10">
@@ -172,6 +177,7 @@ const legend = [
           ))}
         </tbody>
       </table>
+      </div>
 
       {Deep && (
         <div class="legal-prose mt-12">

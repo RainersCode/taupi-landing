@@ -343,6 +343,20 @@ input:-webkit-autofill:active {
     -webkit-overflow-scrolling: touch;
   }
 }
+/* ── STANDARTS jaunam saturam: nekas prozā nedrīkst stiept lapu platumā ──
+   Katrs platais elements ritinās PATS savā kastē, lapa ne. Tabulām tas ir
+   mobilais bloks augstāk; šie divi sedz pārējos zināmos pārkāpējus, lai
+   nākamie raksti strādā bez pārtaisīšanas:
+   - pre (kodu bloki — saturā vēl nav, bet būs)
+   - gari nepārtraukti vārdi/URL rindkopās */
+.legal-prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.legal-prose {
+  overflow-wrap: break-word;
+}
 .legal-prose thead th {
   text-align: left;
   font-family: "JetBrains Mono", monospace;
