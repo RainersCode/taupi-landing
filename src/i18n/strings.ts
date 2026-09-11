@@ -49,6 +49,8 @@ export const strings: Record<Locale, Dict> = {
     "reveal.screens.goals.desc": "Neto vērtība, konti un investīcijas vienuviet.",
 
     "features.eyebrow": "Iespējas",
+    "features.title": "Viss, kas budžetam vajadzīgs — vienā lietotnē",
+    "features.sub": "Nevis tabulas un diagrammas par pagātni, bet viens skaidrs skaitlis šodienai — un rīki, kas to uztur precīzu.",
     "features.budget.title": "Dienas budžets",
     "features.budget.body": "Katru rītu Taupi pārrēķina, cik šodien vari droši tērēt — ņemot vērā algu, fiksētos maksājumus, mērķus un jau iztērēto.",
     "features.budget.p1": "Pārrēķinās automātiski pēc katra pirkuma",
@@ -391,6 +393,8 @@ export const strings: Record<Locale, Dict> = {
     "reveal.screens.goals.desc": "Net worth, accounts and investments in one place.",
 
     "features.eyebrow": "Features",
+    "features.title": "Everything a budget needs — in one app",
+    "features.sub": "Not tables and charts about the past, but one clear number for today — and the tools that keep it accurate.",
     "features.budget.title": "Daily budget",
     "features.budget.body": "Every morning Taupi recalculates what you can safely spend today — salary, fixed costs, goals and what you've already spent, all counted in.",
     "features.budget.p1": "Recalculates automatically after every purchase",
