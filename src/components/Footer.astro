@@ -22,6 +22,7 @@ const pages = [
   { href: path("about", locale), label: t["footer.legal.about"] },
   ...(locale === "lv" ? [{ href: path("blog", locale), label: t["blog.eyebrow"] }] : []),
   ...(locale === "lv" ? [{ href: path("gids", locale), label: t["nav.gids"] }] : []),
+  ...(locale === "lv" ? [{ href: path("jaunumi", locale), label: "Jaunumi" }] : []),
   { href: path("privacy", locale), label: t["footer.legal.privacy"] },
   { href: path("terms", locale), label: t["footer.legal.terms"] },
 ];

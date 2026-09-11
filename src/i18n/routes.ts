@@ -26,7 +26,8 @@ export type RouteKey =
   | "privacy"
   | "terms"
   | "blog"
-  | "gids";
+  | "gids"
+  | "jaunumi";
 
 export interface RoutePair {
   lv: string;
@@ -45,6 +46,7 @@ export const routes: Record<RouteKey, RoutePair> = {
   privacy: { lv: "/privacy-policy/", en: "/en/privacy-policy/" },
   terms: { lv: "/terms-of-service/", en: "/en/terms-of-service/" },
   blog: { lv: "/padomi/", en: null },
+  jaunumi: { lv: "/jaunumi/", en: null },
   gids: { lv: "/gids/", en: null },
 };
 

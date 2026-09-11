@@ -39,6 +39,9 @@ const aboutHref = path("about", locale);
         {t["nav.privacy"]}
       </a>
       {locale === "lv" && (
+        <a href="/jaunumi/" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+          Jaunumi
+        </a>
         <a href="/padomi/" class="hidden md:inline eyebrow hover:text-ink transition-colors">
           {t["nav.blog"]}
         </a>
@@ -94,6 +97,7 @@ const aboutHref = path("about", locale);
                 {t["nav.tools"]}
               </a>
               {locale === "lv" && <a href="/padomi/">{t["nav.blog"]}</a>}
+              {locale === "lv" && <a href="/jaunumi/">Jaunumi</a>}
               {locale === "lv" && <a href="/gids/">{t["nav.gids"]}</a>}
               <a href={aboutHref}>
                 {t["footer.legal.about"]}
