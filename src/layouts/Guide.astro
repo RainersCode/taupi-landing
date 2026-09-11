@@ -143,6 +143,14 @@ const jsonLd = {
     padding-left: 0;
     margin: 1.25rem 0;
   }
+  /* Dubultā specifika ar nolūku: global.css atdod ol>li markerus atpakaļ
+     (.legal-prose ol > li { list-style: decimal } — Tailwind preflight
+     labojums juridiskajām lapām), un tas uzvarēja pār mūsu list-style uz
+     ol. Gida raksts nes ABAS klases, tāpēc šeit vajag abu klašu ķēdi —
+     citādi mobilajā blakus indigo aplītim rādās arī pārlūka "1.". */
+  .legal-prose.guide-prose ol > li {
+    list-style: none;
+  }
   .guide-prose ol > li {
     counter-increment: step;
     position: relative;

@@ -85,7 +85,8 @@ const groups: Array<{ key: "pamati" | "ikdiena"; label: string }> = [
               return (
                 <a
                   href={`/gids/${guide.id}/`}
-                  class="group flex items-start gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-6 hover:border-accent/40 hover:bg-white/[0.05] transition-colors"
+                  class="group flex items-start gap-5 rounded-2xl border border-white/10 p-6 hover:border-accent/40 transition-colors"
+                  style="background: linear-gradient(145deg, rgba(30,38,80,0.75) 0%, rgba(16,21,48,0.9) 100%);"
                 >
                   <span class="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 border border-accent/25 text-accent">
                     {Icon && <Icon size={22} stroke-width={1.8} />}

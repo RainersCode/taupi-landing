@@ -170,9 +170,11 @@ const aboutHref = path("about", locale);
   }
   .panel-links a {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(30px, 8.5vw, 40px);
-    letter-spacing: -0.035em;
+    /* 800/40px lasījās kā kliegšana pilnekrāna panelī — 600 un mazliet
+       mazāks izmērs tur pašu hierarhiju, bet bez plakāta smaguma. */
+    font-weight: 600;
+    font-size: clamp(24px, 6.5vw, 34px);
+    letter-spacing: -0.02em;
     line-height: 1.1;
     color: var(--ink);
     text-decoration: none;

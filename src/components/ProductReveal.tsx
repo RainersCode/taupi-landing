@@ -290,8 +290,10 @@ function SectionLayer({
               transition={{ duration: 0.8, delay: 0.1, ease: [0.2, 0.8, 0.2, 1] }}
               className="md:col-span-6"
             >
+              {/* Tikai desktopā: mobilajā augšjoslas "03 / 04" un šis "/ 03"
+                  saskrien vienā ekrānā un lasās kā dublēts skaitītājs. */}
               <p
-                className="eyebrow text-accent mb-6"
+                className="eyebrow text-accent mb-6 hidden md:block"
                 style={{ fontVariantNumeric: "tabular-nums" }}
               >
                 / {String(index + 1).padStart(2, "0")}
