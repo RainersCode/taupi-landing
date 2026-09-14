@@ -1,0 +1,17 @@
+---
+import ToolPage from "~/components/ToolPage.astro";
+import PercentCalculator from "~/components/calculator/PercentCalculator";
+---
+<ToolPage
+  locale="lv"
+  title="Procentu kalkulators — procenti no summas, izmaiņa un PVN | Taupi"
+  description="Bezmaksas procentu kalkulators latviski: cik ir 15% no summas, cik procentu ir daļa no kopsummas, procentuālā izmaiņa un PVN. Aprēķins uzreiz, bez reģistrācijas."
+  reviewed="2026-09-14"
+  h1Key="pc.title"
+  subKey="pc.sub"
+  methodTitleKey="pc.method.title"
+  methodBodyKey="pc.method.body"
+  faqKey="percent"
+>
+  <PercentCalculator client:load locale="lv" />
+</ToolPage>

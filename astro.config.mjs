@@ -2,7 +2,7 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
-import { pairForPath } from "./src/i18n/routes.ts";
+import { pairForPath, isDemotedPath } from "./src/i18n/routes.ts";
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,12 +19,17 @@ export default defineConfig({
         defaultLocale: "lv",
         locales: { lv: "lv", en: "en" },
       },
+      // The de-indexed EN pages (routes.<key>.enNoindex) must not appear here
+      // at all — a sitemap entry for a noindex URL is a self-contradiction,
+      // and it is what keeps Google re-crawling the very pages we demoted.
+      filter: (url) => !isDemotedPath(new URL(url).pathname),
       serialize(item) {
         const pair = pairForPath(new URL(item.url).pathname);
-        // Only pages with a real counterpart get alternates. lv-only pages
-        // (blog posts) must carry none rather than point at a 404.
+        // Only pages with a real, indexable counterpart get alternates.
+        // lv-only pages (blog posts) and demoted EN pages must carry none
+        // rather than point at a 404 or at a noindexed page.
         item.links =
-          pair && pair.en
+          pair && pair.en && !pair.enNoindex
             ? [
                 { lang: "lv", url: new URL(pair.lv, "https://taupi.eu").href },
                 { lang: "en", url: new URL(pair.en, "https://taupi.eu").href },

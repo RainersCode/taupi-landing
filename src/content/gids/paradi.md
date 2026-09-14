@@ -4,9 +4,12 @@ description: "Aizdevumi, kredīti un līzingi: izveide, maksājumi un izvēle, v
 order: 4
 group: "pamati"
 updatedDate: 2026-08-15
+tools:
+  - "debt"
+  - "percent"
 ---
 
-Parādu sadaļa tur kopā visu, ko esi aizdevis, aizņēmies vai maksā pa daļām — ar tempu, kas rāda, vai atmaksa iet pēc plāna.
+Parādu sadaļa tur kopā visu, ko esi aizdevis, aizņēmies vai maksā pa daļām — ar tempu, kas rāda, vai atmaksa iet pēc plāna. Kurā secībā vairākus kredītus dzēst izdevīgāk, salīdzina [kredītu atmaksas kalkulators](/kreditu-atmaksas-kalkulators/).
 
 ## Kā izveidot parādu
 

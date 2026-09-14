@@ -4,9 +4,12 @@ description: "Krāšanas mērķi un limiti: izveide, sasaiste ar krājkontu, iem
 order: 3
 group: "pamati"
 updatedDate: 2026-08-15
+tools:
+  - "emergency"
+  - "compound"
 ---
 
-Mērķis ir veids, kā Taupi tavā vietā atliek naudu — ceļojumam, drošības spilvenam vai izaicinājumam.
+Mērķis ir veids, kā Taupi tavā vietā atliek naudu — ceļojumam, drošības spilvenam vai izaicinājumam. Ja vēl neesi izlēmis, cik liela summa jāuzkrāj, to parāda [drošības spilvena kalkulators](/drosibas-spilvena-kalkulators/).
 
 ## Kā izveidot mērķi
 

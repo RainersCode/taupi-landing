@@ -4,6 +4,9 @@ description: "Konti rāda, KUR nauda atrodas; budžets — cik no tās vari tēr
 order: 6
 group: "pamati"
 updatedDate: 2026-08-15
+tools:
+  - "compound"
+  - "emergency"
 ---
 
 Konti Taupi atspoguļo, **kur** tava nauda atrodas — ikdienas konts, krājkonts, skaidra nauda. Budžets savukārt rāda, **cik** no tās vari tērēt.

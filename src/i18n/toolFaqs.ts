@@ -128,6 +128,38 @@ export const toolFaqs: Record<string, Record<Locale, FaqItem[]>> = {
     ],
   },
 
+  // LV-only tool (routes.percent.en === null): the EN array stays empty so
+  // ToolFaq renders nothing rather than an untranslated block.
+  percent: {
+    lv: [
+      {
+        q: "Kā aprēķināt procentus no summas?",
+        a: "Summu reizina ar procentu skaitli un dala ar 100. Piemēram, 15% no €200 ir 200 × 15 ÷ 100 = €30. Ātrs prāta paņēmiens: 10% ir summa, kurai komats pārbīdīts par vienu vietu pa kreisi (€20), un 5% ir puse no tā (€10) — kopā €30.",
+      },
+      {
+        q: "Kā uzzināt, cik procentu viena summa ir no otras?",
+        a: "Daļu dala ar kopsummu un reizina ar 100. Piemēram, €30 no €200 ir 30 ÷ 200 × 100 = 15%. Tieši šo rēķinu vajag, lai saprastu, cik lielu daļu no algas aizņem īre vai pārtika.",
+      },
+      {
+        q: "Kā pareizi atrēķināt PVN no cenas, kurā tas jau ir iekļauts?",
+        a: "No summas ar PVN nevar vienkārši atņemt 21% — tā ir visbiežāk pieļautā kļūda. Summu dala ar 1,21. No €121 paliek €100 bez PVN, un PVN daļa ir €21. Ja atņemtu 21%, sanāktu €95,59, un tas būtu nepareizi.",
+      },
+      {
+        q: "Kāpēc +50% un pēc tam −50% neatgriež sākotnējo skaitli?",
+        a: "Tāpēc, ka procentus vienmēr rēķina no tā brīža vērtības. €100 plus 50% ir €150; €150 mīnus 50% ir €75, nevis €100. Tas pats attiecas uz atlaidēm un ieguldījumu kritumiem — pēc 50% krituma vajag 100% pieaugumu, lai atgrieztos sākumpunktā.",
+      },
+      {
+        q: "Kādas PVN likmes Latvijā ir spēkā?",
+        a: "Standartlikme ir 21%. Samazinātā 12% likme attiecas uz medikamentiem un medicīniskajām ierīcēm, zīdaiņu pārtiku, siltumenerģiju mājsaimniecībām, sabiedrisko transportu iekšzemē, izmitināšanu tūristu mītnēs, kā arī uz svaigiem augļiem, ogām un dārzeņiem un uz maizi, pienu, olām un mājputnu gaļu. Samazinātā 5% likme attiecas uz grāmatām, mācību literatūru un presi valsts valodā. Pilns uzskaitījums ir Pievienotās vērtības nodokļa likuma 41. un 42. pantā.",
+      },
+      {
+        q: "Vai kalkulators saglabā manus skaitļus?",
+        a: "Skaitļi paliek tikai tavā pārlūkā — nekas netiek sūtīts uz serveri. Atgriežoties lapā, pēdējais aprēķins būs uz vietas.",
+      },
+    ],
+    en: [],
+  },
+
   debt: {
     lv: [
       {

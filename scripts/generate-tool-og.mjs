@@ -4,13 +4,21 @@
 //   node scripts/generate-tool-og.mjs
 // Headless Chrome renders an HTML card at 2x, sharp downscales to 1200x630.
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import sharp from "sharp";
 
-const CHROME = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+// Chrome sits in Program Files on some machines and Program Files (x86) on
+// others; CHROME=<path to chrome.exe> overrides both.
+const CHROME =
+  process.env.CHROME ??
+  [
+    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  ].find((p) => existsSync(p));
+if (!CHROME) throw new Error("Chrome not found — set CHROME=<path to chrome.exe>");
 const OUT_DIR = "public/og";
 
 const font = (p) => pathToFileURL(resolve("node_modules/@fontsource", p)).href;
@@ -44,6 +52,14 @@ const CARDS = [
     accent: "#FF8A80",
     lv: { eyebrow: "Bezmaksas rīks", title: "Kredītu atmaksas kalkulators", desc: "Sniega bumba vai lavīna — kura stratēģija ātrāk atbrīvo no parādiem." },
     en: { eyebrow: "Free tool", title: "Debt payoff calculator", desc: "Snowball or avalanche — which strategy frees you from debt sooner." },
+  },
+  {
+    // LV-only tool (routes.percent.en === null) — no EN card is generated.
+    out: "percent",
+    img: "percent",
+    accent: "#FFB547",
+    locales: ["lv"],
+    lv: { eyebrow: "Bezmaksas rīks", title: "Procentu kalkulators", desc: "Procenti no summas, procentuālā izmaiņa un PVN — viens rīks, četras atbildes." },
   },
   {
     out: "tools",
@@ -113,7 +129,7 @@ mkdirSync(OUT_DIR, { recursive: true });
 const work = mkdtempSync(join(tmpdir(), "taupi-og-"));
 
 for (const card of CARDS) {
-  for (const locale of ["lv", "en"]) {
+  for (const locale of card.locales ?? ["lv", "en"]) {
     const page = join(work, `${card.out}-${locale}.html`);
     writeFileSync(page, html(card, card[locale]), "utf8");
     const raw = join(work, `${card.out}-${locale}.png`);

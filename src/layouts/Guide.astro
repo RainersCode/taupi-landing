@@ -4,6 +4,7 @@ import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import { getDict } from "~/i18n/strings";
 import { author } from "~/config";
+import { path } from "~/i18n/routes";
 import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
 
@@ -27,8 +28,19 @@ interface Props {
 }
 
 const { guide, headings } = Astro.props;
-const { title, description, updatedDate, locale } = guide.data;
+const { title, description, updatedDate, locale, tools } = guide.data;
 const t = getDict(locale);
+
+// "Noderīgi rīki" — the calculators this guide's frontmatter points at. The
+// guides were the site's only pages with no path down to /kalkulatori/, which
+// is how ten indexed pages ended up passing nothing to the tools they
+// describe. Anchor text is each tool's real title, never "šeit".
+const relatedTools = tools.map((key) => ({
+  key,
+  href: path(key, locale),
+  title: t[`tools.${key}.title`],
+  desc: t[`tools.${key}.desc`],
+}));
 
 const site = Astro.site ?? new URL("https://taupi.eu");
 const canonical = new URL(Astro.url.pathname, site).href;
@@ -103,6 +115,32 @@ const jsonLd = {
     <article class="legal-prose guide-prose">
       <slot />
     </article>
+
+    {relatedTools.length > 0 && (
+      <aside class="mt-16 border-t border-white/10 pt-10" aria-labelledby="gids-tools">
+        <p class="eyebrow mb-5" id="gids-tools">{t["gids.tools"]}</p>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {relatedTools.map((tool) => (
+            <li>
+              <a
+                href={tool.href}
+                class="group block h-full rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-accent/40 transition-colors"
+              >
+                <span
+                  class="block font-display font-bold text-ink text-[16px] group-hover:text-accent transition-colors"
+                  style="letter-spacing: -0.01em; line-height: 1.3;"
+                >
+                  {tool.title}
+                </span>
+                <span class="mt-2 block text-[13.5px] text-dim" style="line-height: 1.5;">
+                  {tool.desc}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
 
     <p class="mt-16 border-t border-white/10 pt-8">
       <a href="/gids/" class="eyebrow text-dim hover:text-ink transition-colors">← {t["gids.back"]}</a>

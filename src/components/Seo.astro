@@ -54,9 +54,17 @@ const canonical = new URL(path, site).href;
 // mapped pages that were never translated — both suppress the links rather
 // than pointing Google at a 404.
 const pair = pairForPath(path);
-const showAlternate = alternate ?? Boolean(pair?.en);
+// Demoted EN pages (routes.<key>.enNoindex) drop out of the index AND out of
+// the hreflang pair — on both sides. An alternate that points at a noindexed
+// page is a contradictory signal, and the LV page is the one we want ranking
+// for every locale anyway.
+const showAlternate = alternate ?? Boolean(pair?.en && !pair.enNoindex);
 const lvUrl = pair ? new URL(pair.lv, site).href : canonical;
 const enUrl = pair?.en ? new URL(pair.en, site).href : canonical;
+
+// `noindex` prop = per-page opt-in (e.g. Guide.astro pre-launch). The route
+// map adds the standing EN demotions, so a page never has to know it is one.
+const robotsNoindex = noindex || Boolean(pair?.enNoindex && locale === "en");
 
 const ogImage = new URL(ogImageProp ?? (locale === "en" ? "/og-en.jpg" : "/og.jpg"), site).href;
 
@@ -152,7 +160,7 @@ const jsonLd = { "@context": "https://schema.org", "@graph": graph };
 <title>{title}</title>
 <meta name="description" content={description} />
 
-{noindex && <meta name="robots" content="noindex, follow" />}
+{robotsNoindex && <meta name="robots" content="noindex, follow" />}
 
 <link rel="canonical" href={canonical} />
 {showAlternate && (

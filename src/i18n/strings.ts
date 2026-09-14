@@ -156,6 +156,7 @@ export const strings: Record<Locale, Dict> = {
     "gids.group.ikdiena": "Ikdiena",
     "gids.open": "Atvērt pamācību",
     "gids.toc": "Šajā pamācībā",
+    "gids.tools": "Noderīgi rīki",
     "gids.updated": "Atjaunots:",
     "gids.cta.title": "Gatavs izmēģināt pašam?",
     "gids.cta.body": "Atver Taupi un izdari to savā budžetā — pamācība paliks šeit, ja vajadzēs atgriezties.",
@@ -237,7 +238,7 @@ export const strings: Record<Locale, Dict> = {
     "tools.eyebrow": "Bezmaksas rīki",
     "tools.title": "Kalkulatori.",
     "tools.sub":
-      "Praktiski rīki naudas lēmumiem — budžetam, uzkrājumiem un kredītiem. Bez reģistrācijas, dati paliek tavā ierīcē.",
+      "Praktiski rīki naudas lēmumiem — procentiem, budžetam, uzkrājumiem un kredītiem. Bez reģistrācijas, dati paliek tavā ierīcē.",
     "tools.open": "Atvērt",
     "tools.back": "Visi kalkulatori",
     "tools.reviewed": "Pēdējoreiz pārbaudīts:",
@@ -253,6 +254,67 @@ export const strings: Record<Locale, Dict> = {
     "tools.debt.tag": "Kredīti",
     "tools.debt.title": "Kredītu atmaksas kalkulators",
     "tools.debt.desc": "Sniega bumba vai lavīna — kura stratēģija tevi ātrāk atbrīvo no parādiem.",
+    "tools.percent.tag": "Rēķini",
+    "tools.percent.title": "Procentu kalkulators",
+    "tools.percent.desc": "Procenti no summas, procentuālā izmaiņa un PVN — viens rīks, četras atbildes.",
+
+    // Procentu kalkulators. Atslēgas ir tikai latviski — lapa pastāv tikai
+    // LV (routes.percent.en === null), tāpēc angļu tulkojums būtu miruši
+    // teksti, ko neviens neredz.
+    "pc.title": "Procentu kalkulators.",
+    "pc.sub":
+      "Cik ir 15% no €200? Par cik procentiem cena pieauga? Cik no summas ir PVN? Ievadi skaitļus un saņem atbildi uzreiz — bez reģistrācijas.",
+    "pc.modes": "Aprēķina veids",
+    "pc.mode.part": "Procenti no summas",
+    "pc.mode.share": "Daļa procentos",
+    "pc.mode.change": "Procentuālā izmaiņa",
+    "pc.mode.vat": "PVN",
+
+    "pc.f.rate": "Procenti",
+    "pc.f.base": "No summas",
+    "pc.f.part": "Daļa",
+    "pc.f.whole": "Kopsumma",
+    "pc.f.from": "Sākuma vērtība",
+    "pc.f.to": "Beigu vērtība",
+    "pc.f.to.hint": "Ja vērtība samazinājusies, ievadi mazāku skaitli — rezultāts būs negatīvs.",
+    "pc.f.amount.net": "Summa bez PVN",
+    "pc.f.amount.gross": "Summa ar PVN",
+    "pc.f.vatrate": "PVN likme",
+
+    "pc.breakdown": "Sadalījums",
+    "pc.part.answer": "Rezultāts",
+    "pc.part.sentence": "{rate}% no {base} ir {result}.",
+    "pc.part.bar": "{rate}% = {result}",
+    "pc.part.over": "virs 100%",
+
+    "pc.share.answer": "Daļa procentos",
+    "pc.share.sentence": "{part} ir {pct}% no {whole}.",
+    "pc.share.bar": "{part} no {whole}",
+    "pc.share.invalid": "Kopsummai jābūt lielākai par nulli — citādi daļu procentos aprēķināt nevar.",
+
+    "pc.change.answer": "Izmaiņa",
+    "pc.change.sentence.up": "No {from} uz {to} — pieaugums par {diff} jeb {pct}%.",
+    "pc.change.sentence.down": "No {from} uz {to} — samazinājums par {diff} jeb {pct}%.",
+    "pc.change.from": "Bija",
+    "pc.change.to": "Kļuva",
+    "pc.change.invalid": "Sākuma vērtībai jābūt lielākai par nulli — no nulles procentuālu izmaiņu izrēķināt nevar.",
+
+    "pc.vat.answer.gross": "Summa ar PVN",
+    "pc.vat.answer.net": "Summa bez PVN",
+    "pc.vat.sentence.in": "{amount} + {rate}% PVN = {gross}. PVN daļa ir {tax}.",
+    "pc.vat.sentence.out": "{amount} jau satur {rate}% PVN: bez nodokļa paliek {net}, PVN daļa ir {tax}.",
+    "pc.vat.net": "Bez PVN",
+    "pc.vat.tax": "PVN",
+    "pc.vat.dir.add": "Pievienot PVN",
+    "pc.vat.dir.remove": "Atrēķināt PVN no summas",
+    "pc.vat.rate.21": "Standartlikme — attiecas uz lielāko daļu preču un pakalpojumu.",
+    "pc.vat.rate.12":
+      "Samazinātā likme — medikamenti, zīdaiņu pārtika, siltumenerģija mājsaimniecībām, sabiedriskais transports iekšzemē, kā arī svaigi augļi, ogas, dārzeņi, maize, piens, olas un mājputnu gaļa.",
+    "pc.vat.rate.5": "Samazinātā likme grāmatām, mācību literatūrai un presei valsts valodā.",
+
+    "pc.method.title": "Kā rēķina procentus?",
+    "pc.method.body":
+      "Procents ir simtā daļa: 15% no summas nozīmē summu, kas reizināta ar 15 un dalīta ar 100. Pretējais jautājums — “cik procentu viena summa ir no otras” — ir dalīšana: daļu dala ar kopsummu un reizina ar 100. Procentuālo izmaiņu rēķina no sākuma vērtības, nevis no beigu vērtības, tāpēc pieaugums par 50% un pēc tam samazinājums par 50% neatgriež sākotnējo skaitli. PVN ir procents, ko pieskaita summai bez nodokļa; lai to atrēķinātu no gala cenas, jādala ar 1,21 — nevis jāatņem 21%.",
 
     "cc.title": "Salikto procentu kalkulators.",
     "cc.sub":
@@ -500,6 +562,7 @@ export const strings: Record<Locale, Dict> = {
     "gids.group.ikdiena": "Everyday",
     "gids.open": "Open guide",
     "gids.toc": "In this guide",
+    "gids.tools": "Useful tools",
     "gids.updated": "Updated:",
     "gids.cta.title": "Ready to try it yourself?",
     "gids.cta.body": "Open Taupi and do it in your own budget — this guide will be here if you need to come back.",

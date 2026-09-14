@@ -4,6 +4,8 @@ description: "Budžeta pārskats tieši uz sākuma ekrāna — iPhone un Android
 order: 9
 group: "ikdiena"
 updatedDate: 2026-08-15
+tools:
+  - "budget"
 ---
 
 Logrīks rāda dienas budžetu un perioda kopainu bez lietotnes atvēršanas.

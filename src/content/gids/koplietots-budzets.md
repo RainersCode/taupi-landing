@@ -4,6 +4,8 @@ description: "Uzaicini otru cilvēku ar kodu un skatiet viens otra budžeta kopa
 order: 8
 group: "ikdiena"
 updatedDate: 2026-08-15
+tools:
+  - "budget"
 ---
 
 Koplietotais budžets ļauj diviem cilvēkiem redzēt viens otra budžeta kopainu — noderīgi pāriem un ģimenēm.

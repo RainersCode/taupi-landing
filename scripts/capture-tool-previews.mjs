@@ -5,12 +5,20 @@
 // values, nobody's real data), sharp crops the tool stage and writes
 // public/tools/*.jpg. Re-run whenever a calculator's look changes.
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import sharp from "sharp";
 
-const CHROME = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+// Chrome sits in Program Files on some machines and Program Files (x86) on
+// others; CHROME=<path to chrome.exe> overrides both.
+const CHROME =
+  process.env.CHROME ??
+  [
+    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  ].find((p) => existsSync(p));
+if (!CHROME) throw new Error("Chrome not found — set CHROME=<path to chrome.exe>");
 const BASE = "http://localhost:4321";
 const OUT_DIR = "public/tools";
 
@@ -24,6 +32,7 @@ const SHOTS = [
   { slug: "salikto-procentu-kalkulators", out: "compound", crop: { left: 144, top: 535, width: 1152, height: 470 } },
   { slug: "drosibas-spilvena-kalkulators", out: "emergency", crop: { left: 144, top: 505, width: 1152, height: 470 } },
   { slug: "kreditu-atmaksas-kalkulators", out: "debt", crop: { left: 144, top: 535, width: 1152, height: 500 } },
+  { slug: "procentu-kalkulators", out: "percent", crop: { left: 144, top: 415, width: 1152, height: 470 } },
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });

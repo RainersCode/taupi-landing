@@ -4,9 +4,12 @@ description: "Viens foto — un visas čeka pozīcijas ar cenām un kategorijām
 order: 5
 group: "pamati"
 updatedDate: 2026-08-15
+tools:
+  - "percent"
+  - "budget"
 ---
 
-Čeku skenēšana ir ātrākais veids, kā ievadīt lielu pirkumu: AI izlasa veikalu, datumu un katru pozīciju.
+Čeku skenēšana ir ātrākais veids, kā ievadīt lielu pirkumu: AI izlasa veikalu, datumu un katru pozīciju. Ja gribi pārbaudīt, cik no čeka summas ir PVN, to izrēķina [procentu kalkulators](/procentu-kalkulators/).
 
 ## Kā ieskenēt čeku
 

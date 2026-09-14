@@ -4,6 +4,9 @@ description: "Dienas budžeta aplis, Mērķa temps, Atlikums, Iztērēts, 'atlik
 order: 7
 group: "ikdiena"
 updatedDate: 2026-08-15
+tools:
+  - "budget"
+  - "emergency"
 ---
 
 Sākuma ekrāns vienā skatā parāda visu budžeta stāvokli. Šeit — ko nozīmē katrs skaitlis.

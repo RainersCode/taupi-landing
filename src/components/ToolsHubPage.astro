@@ -21,6 +21,9 @@ const { locale, title, description } = Astro.props;
 const t = getDict(locale);
 
 // Accents are each tool's signature color (border beam + chip tint).
+// `lvOnly` tools are dropped from the EN hub — routes.percent.en is null, so
+// `path()` would silently fall back to the Latvian page and hand an English
+// reader a Latvian one.
 const tools = [
   {
     key: "budget",
@@ -28,6 +31,14 @@ const tools = [
     img: "/tools/budget.jpg",
     imgH: 495,
     accent: "#7C8CFF",
+  },
+  {
+    key: "percent",
+    href: path("percent", locale),
+    img: "/tools/percent.jpg",
+    imgH: 420,
+    accent: "#FFB547",
+    lvOnly: true,
   },
   {
     key: "compound",
@@ -50,7 +61,7 @@ const tools = [
     imgH: 399,
     accent: "#FF8A80",
   },
-];
+].filter((tool) => locale === "lv" || !tool.lvOnly);
 ---
 <Base
   title={title}
@@ -153,6 +164,7 @@ const tools = [
   .tool-card:nth-child(2) .card-beam { animation-delay: -2s; }
   .tool-card:nth-child(3) .card-beam { animation-delay: -4s; }
   .tool-card:nth-child(4) .card-beam { animation-delay: -6s; }
+  .tool-card:nth-child(5) .card-beam { animation-delay: -1s; }
 
   @keyframes card-beam-orbit {
     to { offset-distance: 100%; }

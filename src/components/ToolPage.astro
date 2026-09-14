@@ -27,7 +27,7 @@ interface Props {
   methodBodyKey: string;
   /** Which tool this is. Keys toolFaqs, the OG card, the route map and the
       breadcrumb trail — they all use the same four names. */
-  faqKey?: Extract<RouteKey, "budget" | "compound" | "emergency" | "debt">;
+  faqKey?: Extract<RouteKey, "budget" | "compound" | "percent" | "emergency" | "debt">;
   /** ISO date this page's figures and copy were last checked, e.g.
       "2026-08-25". Rendered as a visible line and as schema dateModified —
       the freshness signal bank pages use. Bump it when you edit the page. */

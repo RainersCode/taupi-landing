@@ -4,9 +4,12 @@ description: "Ienākumi, algas diena, fiksētās izmaksas un sākuma atlikums �
 order: 1
 group: "pamati"
 updatedDate: 2026-08-15
+tools:
+  - "budget"
+  - "percent"
 ---
 
-Budžeta iestatījumi ir Taupi pamats: no tiem lietotne izrēķina, cik vari droši iztērēt šodien. Pirmajā palaišanā Taupi tevi izved cauri vednim; vēlāk visu vari mainīt šeit.
+Budžeta iestatījumi ir Taupi pamats: no tiem lietotne izrēķina, cik vari droši iztērēt šodien. Pirmajā palaišanā Taupi tevi izved cauri vednim; vēlāk visu vari mainīt šeit. Ja gribi vispirms izmēģināt sadalījumu bez lietotnes, to ļauj [budžeta kalkulators](/budzeta-kalkulators/).
 
 ## Kā atvērt budžeta iestatījumus
 

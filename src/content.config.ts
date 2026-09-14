@@ -56,6 +56,14 @@ const gids = defineCollection({
     updatedDate: z.coerce.date(),
     locale: z.enum(["lv", "en"]).default("lv"),
     draft: z.boolean().default(false),
+    /**
+     * Calculators worth opening after this guide, rendered as a "Noderīgi
+     * rīki" block (Guide.astro). These guides are terse, numbered app
+     * instructions — dropping three prose links into a step list would read
+     * as filler, so the related tools get their own labelled block instead
+     * and the body keeps only links that genuinely belong in a sentence.
+     */
+    tools: z.array(z.enum(["budget", "compound", "percent", "emergency", "debt"])).default([]),
   }),
 });
 
@@ -70,7 +78,7 @@ const gids = defineCollection({
 const tools = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/tools" }),
   schema: z.object({
-    tool: z.enum(["budget", "compound", "emergency", "debt"]),
+    tool: z.enum(["budget", "compound", "percent", "emergency", "debt"]),
     locale: z.enum(["lv", "en"]).default("lv"),
     /** Citations rendered under the body — see the blog collection. */
     sources: z

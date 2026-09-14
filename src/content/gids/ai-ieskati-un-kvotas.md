@@ -4,6 +4,9 @@ description: "Ko dara AI ieskati, ko nozīmē atlikušo reižu skaits un ko main
 order: 10
 group: "ikdiena"
 updatedDate: 2026-08-15
+tools:
+  - "budget"
+  - "compound"
 ---
 
 AI ieskati izlasa tavus skaitļus un pasaka cilvēku valodā, kas notiek ar tavu naudu un ko darīt tālāk.

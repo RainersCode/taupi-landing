@@ -29,6 +29,11 @@ const pages = [
 
 const calculators = [
   { href: path("budget", locale), label: t["tools.budget.title"] },
+  // LV-only (routes.percent.en is null): without the guard the EN footer
+  // would link an English reader to a Latvian page.
+  ...(locale === "lv"
+    ? [{ href: path("percent", locale), label: t["tools.percent.title"] }]
+    : []),
   { href: path("compound", locale), label: t["tools.compound.title"] },
   { href: path("emergency", locale), label: t["tools.emergency.title"] },
   { href: path("debt", locale), label: t["tools.debt.title"] },

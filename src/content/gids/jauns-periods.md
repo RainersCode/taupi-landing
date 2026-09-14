@@ -4,6 +4,8 @@ description: "Kas ir budžeta periods, kā to sākt algas dienā un kas notiek a
 order: 2
 group: "pamati"
 updatedDate: 2026-08-15
+tools:
+  - "budget"
 ---
 
 Taupi budžets dzīvo **periodos** — no vienas algas dienas līdz nākamajai. Pienāk alga → noslēdz veco periodu un sāc jaunu.
