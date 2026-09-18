@@ -98,7 +98,7 @@ function Field({
       <p className="font-mono text-[10.5px] font-medium tracking-[0.18em] uppercase text-muted mb-2">
         {label}
       </p>
-      <div className="flex items-baseline gap-1.5 border-b border-white/15 focus-within:border-[#FFB547] transition-colors pb-1">
+      <div className="flex items-baseline gap-1.5 border-b border-frost/15 focus-within:border-[#FFB547] transition-colors pb-1">
         {unit && <span className="text-dim text-[17px] shrink-0">{unit}</span>}
         <input
           value={text}
@@ -144,7 +144,7 @@ function ProportionBar({
     <div>
       <div
         className="relative h-4 w-full rounded-full overflow-hidden"
-        style={{ background: "rgba(255,255,255,0.07)" }}
+        style={{ background: "rgb(var(--frost-rgb) / 0.07)" }}
         aria-hidden
       >
         <div
@@ -362,7 +362,7 @@ export default function PercentCalculator({ locale }: { locale: Locale }) {
   const tabStyle = (active: boolean): CSSProperties =>
     active
       ? { background: "rgba(255,181,71,0.14)", borderColor: "rgba(255,181,71,0.45)", color: GOLD }
-      : { background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.10)" };
+      : { background: "rgb(var(--frost-rgb) / 0.04)", borderColor: "rgb(var(--frost-rgb) / 0.10)" };
 
   return (
     <div>
@@ -474,7 +474,7 @@ export default function PercentCalculator({ locale }: { locale: Locale }) {
                 {t[`pc.vat.rate.${vatRate}`]}
               </p>
             </div>
-            <div className="sm:col-span-2 flex flex-wrap gap-2 border-t border-white/10 pt-6">
+            <div className="sm:col-span-2 flex flex-wrap gap-2 border-t border-frost/10 pt-6">
               <button
                 type="button"
                 aria-pressed={!vatIncludes}

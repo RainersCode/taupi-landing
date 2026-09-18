@@ -20,7 +20,7 @@ const aboutHref = path("about", locale);
 <!-- Mobile: tight (px-4, py-3, hide Download button — CTA is below the fold).
      Desktop: unchanged (px-10, py-5). Removed backdrop-blur to avoid scroll
      compositor jank during the pinned reveal section. -->
-<header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-10 py-3 md:py-5" style="background: rgba(13, 17, 40, 0.72);">
+<header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-10 py-3 md:py-5" style="background: rgb(var(--bg-rgb) / 0.72);">
   <div class="mx-auto max-w-content flex items-center justify-between">
     <!-- Gredzens mark + wordmark -->
     <a href={locale === "lv" ? "/" : "/en/"} class="group flex items-center gap-2.5">
@@ -32,41 +32,56 @@ const aboutHref = path("about", locale);
 
     <!-- Right cluster -->
     <nav class="flex items-center gap-4 md:gap-10">
-      <a href={`${home}#features`} class="hidden md:inline eyebrow hover:text-ink transition-colors">
+      <a href={`${home}#features`} class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
         {t["nav.features"]}
       </a>
-      <a href={`${home}#privacy`} class="hidden md:inline eyebrow hover:text-ink transition-colors">
+      <a href={`${home}#privacy`} class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
         {t["nav.privacy"]}
       </a>
       {locale === "lv" && (
-        <a href="/jaunumi/" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+        <a href="/jaunumi/" class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
           Jaunumi
         </a>
-        <a href="/padomi/" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+        <a href="/padomi/" class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
           {t["nav.blog"]}
         </a>
       )}
       {locale === "lv" && (
-        <a href="/gids/" class="hidden md:inline eyebrow hover:text-ink transition-colors">
+        <a href="/gids/" class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
           {t["nav.gids"]}
         </a>
       )}
       <a
         href={toolsHref}
-        class="hidden md:inline eyebrow hover:text-ink transition-colors"
+        class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]"
       >
         {t["nav.tools"]}
       </a>
       <a
         href={altHref}
-        class="eyebrow text-ink/60 hover:text-accent transition-colors"
+        class="nav-link text-ink/60 hover:text-accent"
         aria-label={`Switch to ${altLabel}`}
       >
         {altLabel}
       </a>
+      <!-- Tēmas slēdzis: rāda PRETĒJO tēmu (saule tumšajā → klikšķis uz gaišo). -->
+      <button
+        id="theme-toggle"
+        type="button"
+        class="flex items-center justify-center w-9 h-9 rounded-full border border-frost/15 text-dim hover:text-ink hover:border-frost/25 transition-colors"
+        aria-label={locale === "lv" ? "Pārslēgt gaišo/tumšo tēmu" : "Toggle light/dark theme"}
+      >
+        <svg class="theme-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M4.8 4.8l1.6 1.6M17.6 17.6l1.6 1.6M19.2 4.8l-1.6 1.6M6.4 17.6l-1.6 1.6" />
+        </svg>
+        <svg class="theme-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" />
+        </svg>
+      </button>
       <a
         href={`${home}#waitlist`}
-        class="hidden md:inline-flex items-center rounded-full bg-ink text-bg px-5 py-2.5 text-sm font-medium hover:bg-accent hover:text-bg transition-colors"
+        class="hidden md:inline-flex items-center rounded-full bg-brand px-5 py-2.5 text-sm font-medium hover:bg-brand-deep transition-colors" style="color: #fff;"
       >
         {launch.live ? t["nav.download"] : t["nav.join"]}
       </a>
@@ -123,6 +138,17 @@ const aboutHref = path("about", locale);
 </header>
 
 <style>
+  /* Tēmas slēdža ikonas: saule tumšajā (aicina uz gaišo), mēness gaišajā. */
+  .theme-moon {
+    display: none;
+  }
+  :global([data-theme="light"]) .theme-sun {
+    display: none;
+  }
+  :global([data-theme="light"]) .theme-moon {
+    display: block;
+  }
+
   /* Hide the default disclosure triangle across browsers */
   #mobile-nav summary::-webkit-details-marker {
     display: none;
@@ -146,9 +172,9 @@ const aboutHref = path("about", locale);
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(55% 40% at 85% 8%, rgba(90, 107, 255, 0.16), transparent 65%),
-      radial-gradient(45% 35% at 8% 96%, rgba(56, 189, 248, 0.08), transparent 65%),
-      #0d1128;
+      radial-gradient(55% 40% at 85% 8%, rgb(var(--brand-rgb) / 0.16), transparent 65%),
+      radial-gradient(45% 35% at 8% 96%, rgb(var(--accent-rgb) / 0.08), transparent 65%),
+      var(--bg);
   }
   #mobile-nav[open] .nav-panel {
     display: flex;
@@ -179,7 +205,7 @@ const aboutHref = path("about", locale);
     color: var(--ink);
     text-decoration: none;
     padding: 16px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgb(var(--frost-rgb) / 0.06);
   }
   .panel-links a:active {
     color: var(--accent);
@@ -284,4 +310,16 @@ const aboutHref = path("about", locale);
       a.addEventListener("click", () => nav.removeAttribute("open"));
     });
   })();
+
+  // Tēmas slēdzis — pārslēdz data-theme uz <html>, iegaumē localStorage un
+  // notur pārlūka chrome krāsu (theme-color) sinhronā ar lapu.
+  document.getElementById("theme-toggle")?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const light = root.dataset.theme !== "light";
+    if (light) root.dataset.theme = "light";
+    else delete root.dataset.theme;
+    try { localStorage.setItem("theme", light ? "light" : "dark"); } catch {}
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", light ? "#F5F1FD" : "#0D1128");
+  });
 </script>

@@ -6,18 +6,34 @@ import { launch } from "~/config";
  * App Store / Google Play download buttons — rendered only when
  * `launch.live` is true (see src/config.ts). Stateless, so Astro can render
  * it statically inside .astro files; in Hero it ships with the island.
+ *
+ * `onBrand`: poga stāv uz brand krāsu joslas (DownloadCTA) — tur frost tokeni
+ * neder (gaišajā tēmā frost ir tumša tinte uz violeta), tāpēc literāli balts.
  */
-export default function StoreBadges({ locale }: { locale: Locale }) {
+export default function StoreBadges({ locale, onBrand = false }: { locale: Locale; onBrand?: boolean }) {
   const t = getDict(locale);
 
   const badge =
     "flex items-center gap-3 rounded-2xl pl-4 pr-5 py-3 transition-colors " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
-  const badgeStyle = {
-    background: "rgba(255,255,255,0.06)",
-    border: "1px solid rgba(255,255,255,0.14)",
-    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
-  };
+  // frost-bāzēts: tumšajā balts sarms, gaišajā tintes kontūra — poga redzama
+  // uz abiem foniem (gaišajā agrāk pazuda, jo baltais rāmis saplūda ar lapu).
+  const badgeStyle = onBrand
+    ? {
+        background: "rgba(255,255,255,0.12)",
+        border: "1px solid rgba(255,255,255,0.3)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
+      }
+    : {
+        background: "rgb(var(--frost-rgb) / 0.06)",
+        border: "1px solid rgb(var(--frost-rgb) / 0.18)",
+        boxShadow: "inset 0 1px 0 rgb(var(--frost-rgb) / 0.06)",
+      };
+  const topLabelStyle = onBrand ? { color: "rgba(255,255,255,0.72)" } : undefined;
+  const nameStyle = onBrand
+    ? { letterSpacing: "-0.01em", color: "#fff" }
+    : { letterSpacing: "-0.01em" };
+  const appleFill = onBrand ? "#fff" : "rgb(var(--frost-rgb))";
 
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -32,12 +48,14 @@ export default function StoreBadges({ locale }: { locale: Locale }) {
         <svg width="22" height="26" viewBox="0 0 22 26" fill="none" aria-hidden="true">
           <path
             d="M18.3 13.8c0-3 2.5-4.5 2.6-4.6-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.6 1.1-1 0-2.4-1.1-4-1-2 0-3.9 1.2-5 3-2.1 3.7-.5 9.1 1.5 12.1 1 1.4 2.2 3.1 3.8 3 1.5-.1 2.1-1 4-1s2.4 1 4 1c1.7 0 2.7-1.5 3.7-2.9 1.2-1.7 1.7-3.3 1.7-3.4-.1 0-3.3-1.3-3.3-4.9zM15.2 4.8c.8-1 1.4-2.4 1.2-3.8-1.2 0-2.7.8-3.5 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.6-1.7z"
-            fill="#F5F5F7"
+            fill={appleFill}
           />
         </svg>
         <span className="text-left leading-tight">
-          <span className="block text-[10.5px] text-dim">{t["store.on.apple"]}</span>
-          <span className="block text-[16px] font-bold text-ink" style={{ letterSpacing: "-0.01em" }}>
+          <span className={`block text-[10.5px] ${onBrand ? "" : "text-dim"}`} style={topLabelStyle}>
+            {t["store.on.apple"]}
+          </span>
+          <span className={`block text-[16px] font-bold ${onBrand ? "" : "text-ink"}`} style={nameStyle}>
             App Store
           </span>
         </span>
@@ -58,8 +76,10 @@ export default function StoreBadges({ locale }: { locale: Locale }) {
           <path d="M15.7 8.6l-12.4-7c-.8-.5-1.4-.4-1.8 0l10.6 10.6 3.6-3.6z" fill="#2DD4A7" />
         </svg>
         <span className="text-left leading-tight">
-          <span className="block text-[10.5px] text-dim">{t["store.on.play"]}</span>
-          <span className="block text-[16px] font-bold text-ink" style={{ letterSpacing: "-0.01em" }}>
+          <span className={`block text-[10.5px] ${onBrand ? "" : "text-dim"}`} style={topLabelStyle}>
+            {t["store.on.play"]}
+          </span>
+          <span className={`block text-[16px] font-bold ${onBrand ? "" : "text-ink"}`} style={nameStyle}>
             Google Play
           </span>
         </span>

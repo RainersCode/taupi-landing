@@ -1,329 +1,279 @@
-import { useId } from "react";
-import { motion } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 
 /**
- * Produkta vitrīna — foto aizkaru vietā (2026-09-11). Sešas bento kartes,
- * katrā CSS/SVG būvēts mini-skats no paša produkta: skaitļi, čipi, līknes.
- * Finanšu platformai uzticību rada produkts, ne stock foto ar maizi —
- * vitrīna rāda to, ko lietotājs reāli redzēs lietotnē.
+ * Iespēju karuselis — Wise atsauksmju sekcijas izkārtojums (2026-09-18):
+ * galvene un navigācijas bultiņas pa kreisi, horizontāli ritināmas kartes
+ * pa labi, kas apzināti iziet pāri labajai malai (rāda, ka ir vēl).
  *
- * Bez klienta stāvokļa: vienīgais JS ir motion ieplūšana. Vinjetes ir
- * statisks HTML/SVG — ātras, asas uz katra ekrāna, bez attēlu ielādes.
+ * Kartes mijas divos toņos — brand pildījums un klusā virsma — tāpat kā
+ * Wise mija gaišo un tumšo zaļo. Katrā kartē: ikonas aplis, nosaukums,
+ * viens teikums un trīs fakti.
+ *
+ * Ritināšana ir native scroll-snap (darbojas ar pirkstu un trackpad); pogas
+ * tikai pagrūž to par vienu karti, tāpēc bez JS karuselis paliek lietojams.
  */
 
-/* Check ikona punktiem — navy čips ar ciāna→indigo gredzenu (mantots no
-   iepriekšējās versijas; vienīgais koplietotais gabals). */
-function CheckChip({ size = 17 }: { size?: number }) {
-  const grad = useId();
-  return (
-    <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden="true" className="mt-0.5 shrink-0">
-      <defs>
-        <linearGradient id={grad} x1="2" y1="2" x2="16" y2="16" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#38BDF8" />
-          <stop offset="1" stopColor="#5A6BFF" />
-        </linearGradient>
-      </defs>
-      <rect x="0.75" y="0.75" width="16.5" height="16.5" rx="5.5" fill="rgba(13,17,40,0.85)" stroke={`url(#${grad})`} strokeWidth="1.2" strokeOpacity="0.75" />
-      <path d="M5.4 9.4l2.3 2.3 4.9-5.2" stroke={`url(#${grad})`} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-/* ── Vinješu palīgi ────────────────────────────────────────────────── */
-
-/** "Lietotnes kartes" virsma vinjetes iekšpusē. */
-function AppCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div
-      className={`rounded-xl border border-white/10 ${className}`}
-      style={{ background: "linear-gradient(145deg, rgba(30,38,80,0.75) 0%, rgba(16,21,48,0.9) 100%)" }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function Pill({ children, tone = "dim" }: { children: React.ReactNode; tone?: "dim" | "accent" | "up" }) {
-  const styles =
-    tone === "accent"
-      ? "text-[#38BDF8] border-[#38BDF8]/30 bg-[#38BDF8]/10"
-      : tone === "up"
-        ? "text-[#4ADE80] border-[#4ADE80]/30 bg-[#4ADE80]/10"
-        : "text-dim border-white/10 bg-white/5";
-  return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold tracking-wide ${styles}`}>
-      {children}
-    </span>
-  );
-}
-
-const num = "font-display font-bold text-ink tabular-nums";
-
-/* 01 — Dienas budžets: lielais skaitlis + progress + divas mini kolonnas. */
-function VignetteBudget() {
-  return (
-    <AppCard className="p-5 w-full max-w-[300px]">
-      <div className="flex items-center justify-between">
-        <span className="eyebrow text-dim" style={{ fontSize: 10 }}>Šodien vari tērēt</span>
-        <Pill>Vēl 18 dienas</Pill>
-      </div>
-      <div className={num} style={{ fontSize: 42, letterSpacing: "-0.03em", lineHeight: 1.1, marginTop: 8 }}>
-        €12.46
-      </div>
-      <div className="mt-3 h-1.5 rounded-full bg-white/8 overflow-hidden">
-        <div className="h-full rounded-full" style={{ width: "62%", background: "linear-gradient(90deg,#38BDF8,#5A6BFF)" }} />
-      </div>
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted">Atlikums</div>
-          <div className={num} style={{ fontSize: 16 }}>€231</div>
-        </div>
-        <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted">Iztērēts</div>
-          <div className={num} style={{ fontSize: 16 }}>€89</div>
-        </div>
-      </div>
-    </AppCard>
-  );
-}
-
-/* 02 — Čeku skenēšana: čeka rindas ar kategoriju punktiem + kopsumma. */
-function VignetteScan() {
-  const rows = [
-    { name: "Piens 2,5% 1L", price: "1,09", dot: "#38BDF8" },
-    { name: "Rudzu maize", price: "1,45", dot: "#F59E0B" },
-    { name: "Siers Gouda 300g", price: "3,20", dot: "#38BDF8" },
-    { name: "Zobu pasta", price: "2,15", dot: "#A78BFA" },
-  ];
-  return (
-    <AppCard className="p-5 w-full max-w-[300px]">
-      <div className="flex items-center justify-between">
-        <span className="eyebrow text-dim" style={{ fontSize: 10 }}>Maxima · skenēts</span>
-        <Pill tone="accent">AI ✓</Pill>
-      </div>
-      <div className="mt-3 space-y-2">
-        {rows.map((r) => (
-          <div key={r.name} className="flex items-center gap-2.5">
-            <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: r.dot }} />
-            <span className="text-[13px] text-dim flex-1 truncate">{r.name}</span>
-            <span className={num} style={{ fontSize: 13 }}>€{r.price}</span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-3 pt-3 border-t border-dashed border-white/15 flex items-center justify-between">
-        <span className="text-[11px] uppercase tracking-widest text-muted">Kopā</span>
-        <span className={num} style={{ fontSize: 16 }}>€7.89</span>
-      </div>
-    </AppCard>
-  );
-}
-
-/* 03 — AI ieskati: ieskatu burbulis ar dzirksti. */
-function VignetteInsights() {
-  return (
-    <div className="w-full max-w-[280px] space-y-2.5">
-      <AppCard className="p-4">
-        <div className="flex items-start gap-2.5">
-          <span
-            className="mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-lg shrink-0 text-[13px]"
-            style={{ background: "linear-gradient(135deg,#38BDF8,#5A6BFF)" }}
-          >
-            ✦
-          </span>
-          <p className="text-[13px] text-dim" style={{ lineHeight: 1.55 }}>
-            Kafejnīcām šomēnes <span className="text-ink font-semibold">−23%</span> pret augustu — temps ļauj mērķim
-            pielikt <span className="text-ink font-semibold">€15</span>.
-          </p>
-        </div>
-      </AppCard>
-      <AppCard className="p-3.5 opacity-70">
-        <p className="text-[12px] text-dim truncate">Piektdienās tērē vidēji €49 — divreiz vairāk nekā svētdienās.</p>
-      </AppCard>
-    </div>
-  );
-}
-
-/* 04 — Mērķi: mērķa rinda ar progresu. */
-function VignetteGoals() {
-  return (
-    <AppCard className="p-5 w-full max-w-[280px]">
-      <div className="flex items-center justify-between">
-        <span className="text-[13px] font-semibold text-ink">Drošības spilvens</span>
-        <Pill tone="accent">64%</Pill>
-      </div>
-      <div className="mt-3 h-2 rounded-full bg-white/8 overflow-hidden">
-        <div className="h-full rounded-full" style={{ width: "64%", background: "linear-gradient(90deg,#38BDF8,#5A6BFF)" }} />
-      </div>
-      <div className="mt-2.5 flex items-baseline justify-between">
-        <span className={num} style={{ fontSize: 15 }}>€1 280</span>
-        <span className="text-[12px] text-muted">no €2 000</span>
-      </div>
-      <div className="mt-3 pt-3 border-t border-white/8 text-[12px] text-dim flex items-center gap-1.5">
-        <span>
-          Šomēnes atlikts <span className="text-ink font-semibold">€120</span>
-        </span>
-        <Pill tone="up">+€40</Pill>
-      </div>
-    </AppCard>
-  );
-}
-
-/* 05 — Neto vērtība: SVG līkne augšup + vērtība. */
-function VignetteInvest() {
-  return (
-    <AppCard className="p-5 w-full max-w-[280px]">
-      <div className="flex items-center justify-between">
-        <span className="eyebrow text-dim" style={{ fontSize: 10 }}>Neto vērtība</span>
-        <Pill tone="up">+3,2%</Pill>
-      </div>
-      <div className={num} style={{ fontSize: 26, marginTop: 6 }}>€4 520</div>
-      <svg viewBox="0 0 220 64" className="mt-2 w-full" aria-hidden="true">
-        <defs>
-          <linearGradient id="nwfill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#38BDF8" stopOpacity="0.35" />
-            <stop offset="1" stopColor="#38BDF8" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <path d="M0 50 C 30 46, 45 52, 70 42 S 120 30, 145 26 S 195 16, 220 10 L 220 64 L 0 64 Z" fill="url(#nwfill)" />
-        <path d="M0 50 C 30 46, 45 52, 70 42 S 120 30, 145 26 S 195 16, 220 10" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="220" cy="10" r="3" fill="#38BDF8" />
-      </svg>
-    </AppCard>
-  );
-}
-
-/* 06 — Izaicinājumi: sērija + šodienas izaicinājums (platā kartei). */
-function VignetteChallenges() {
-  return (
-    <div className="flex flex-col sm:flex-row gap-3 w-full max-w-[460px]">
-      <AppCard className="p-4 flex items-center gap-3 flex-1">
-        <span className="text-[22px]" aria-hidden="true">🔥</span>
-        <div>
-          <div className={num} style={{ fontSize: 18 }}>12 dienas</div>
-          <div className="text-[11px] uppercase tracking-widest text-muted">pēc kārtas budžetā</div>
-        </div>
-      </AppCard>
-      <AppCard className="p-4 flex-1">
-        <div className="text-[11px] uppercase tracking-widest text-muted">Šodienas izaicinājums</div>
-        <div className="text-[13px] text-dim mt-1.5" style={{ lineHeight: 1.5 }}>
-          Šodien bez pirkumiem zem €3 — <span className="text-ink font-semibold">+1 sērijai</span>
-        </div>
-      </AppCard>
-    </div>
-  );
-}
-
-/* ── Sekcija ───────────────────────────────────────────────────────── */
-
-const VIGNETTES: Record<string, () => JSX.Element> = {
-  budget: VignetteBudget,
-  scan: VignetteScan,
-  insights: VignetteInsights,
-  goals: VignetteGoals,
-  invest: VignetteInvest,
-  challenges: VignetteChallenges,
+/* Ikonas — 24px kontūras, viena katrai iespējai. */
+const ICONS: Record<string, JSX.Element> = {
+  budget: (
+    <>
+      <path d="M3.5 12a8.5 8.5 0 1 1 8.5 8.5" />
+      <path d="M12 12l3.5-3.5" />
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
+    </>
+  ),
+  scan: (
+    <>
+      <path d="M6 3.5h12v15.2l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z" />
+      <path d="M9 8h6M9 11.5h6" />
+    </>
+  ),
+  insights: (
+    <path d="M12 3.5c.7 3.9 2.6 5.8 6.5 6.5-3.9.7-5.8 2.6-6.5 6.5-.7-3.9-2.6-5.8-6.5-6.5 3.9-.7 5.8-2.6 6.5-6.5zM18.5 16.5c.3 1.6 1 2.3 2.5 2.5-1.5.2-2.2.9-2.5 2.5-.3-1.6-1-2.3-2.5-2.5 1.5-.2 2.2-.9 2.5-2.5z" />
+  ),
+  goals: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+    </>
+  ),
+  invest: (
+    <>
+      <path d="M3.5 17.5l5-5 3.5 3 8-8.5" />
+      <path d="M15.5 7h4.5v4.5" />
+    </>
+  ),
+  challenges: (
+    <path d="M12 4c.4 2.8-.9 4.3-2.3 5.7C8.2 11.2 7 12.7 7 14.7a5 5 0 0 0 10 0c0-1.5-.5-2.7-1.4-3.8-.4 1-1 1.7-1.9 2.1.5-2.6-.3-5.3-1.7-9z" />
+  ),
 };
+
+const KEYS = ["budget", "scan", "insights", "goals", "invest", "challenges"];
 
 export default function FeatureGrid({ locale }: { locale: Locale }) {
   const t = getDict(locale);
+  const scroller = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
-  const items = ["budget", "scan", "insights", "goals", "invest", "challenges"].map((key, i) => ({
+  const items = KEYS.map((key) => ({
     key,
-    idx: String(i + 1).padStart(2, "0"),
     title: t[`features.${key}.title`],
     body: t[`features.${key}.body`],
     points: [1, 2, 3].map((n) => t[`features.${key}.p${n}`]),
   }));
 
-  // Bento: divas platās augšā, trīs standarta vidū, izaicinājumi kā
-  // horizontāls noslēgums pa visu platumu.
-  const span = (key: string) =>
-    key === "budget" || key === "scan"
-      ? "md:col-span-3"
-      : key === "challenges"
-        ? "md:col-span-6"
-        : "md:col-span-2";
+  const syncEdges = useCallback(() => {
+    const el = scroller.current;
+    if (!el) return;
+    setAtStart(el.scrollLeft < 8);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 8);
+  }, []);
+
+  useEffect(() => {
+    syncEdges();
+    window.addEventListener("resize", syncEdges);
+    return () => window.removeEventListener("resize", syncEdges);
+  }, [syncEdges]);
+
+  // Solis = vienas kartes platums + atstarpe, nolasīts no DOM, lai
+  // responsīvie izmēri nav jādublē JS pusē.
+  //
+  // Animācija ir pašu rakstīta (rAF + ease-out-cubic), nevis native
+  // `behavior: "smooth"`: ar scroll-snap-mandatory pārlūks native gadījumā
+  // pārtver kustību un pārlec uz snap punktu bez pārejas. Snap uz laiku
+  // izslēdzam un atliekam atpakaļ, kad animācija beigusies.
+  const animating = useRef(false);
+
+  const page = (dir: 1 | -1) => {
+    const el = scroller.current;
+    if (!el || animating.current) return;
+    const card = el.firstElementChild as HTMLElement | null;
+    const step = card ? card.offsetWidth + 16 : el.clientWidth * 0.8;
+
+    const from = el.scrollLeft;
+    const max = el.scrollWidth - el.clientWidth;
+    const to = Math.max(0, Math.min(max, from + dir * step));
+    if (Math.abs(to - from) < 1) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.scrollLeft = to;
+      syncEdges();
+      return;
+    }
+
+    animating.current = true;
+    el.style.scrollSnapType = "none";
+    const start = performance.now();
+    const dur = 520;
+
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.scrollLeft = from + (to - from) * eased;
+      syncEdges();
+      if (p < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.style.scrollSnapType = "";
+        animating.current = false;
+      }
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const arrow =
+    "flex h-14 w-14 items-center justify-center rounded-full transition-colors disabled:opacity-35 disabled:cursor-default";
 
   return (
-    <section id="features" className="relative border-t border-white/5 py-24 md:py-32">
-      <div className="mx-auto max-w-content w-full px-6 md:px-10">
-        {/* Galvene */}
-        <div className="flex items-baseline gap-6">
-          <span className="eyebrow">{t["features.eyebrow"]}</span>
-          <span className="h-px flex-1 bg-white/10" />
-        </div>
-        <h2
-          className="mt-8 font-display font-extrabold text-ink max-w-[24ch]"
-          style={{ fontSize: "clamp(30px, 4vw, 52px)", letterSpacing: "-0.03em", lineHeight: 1.08 }}
-        >
-          {t["features.title"]}
-        </h2>
-        <p className="mt-5 text-dim max-w-[52ch] text-lg" style={{ lineHeight: 1.65 }}>
-          {t["features.sub"]}
-        </p>
+    // z-20: ProductReveal sticky slāņi virs šīs sekcijas nes z-index 10..13,
+    // un pārejas brīdī pēdējais no tiem uzkrāsojās pāri karšu virsrakstam
+    // (mobilajā "Dienas" izskatījās tumšs). Sekcija tagad vienmēr virsū.
+    <section id="features" className="relative z-20 border-t border-frost/5 py-24 md:py-32 overflow-hidden">
+      {/* Full-bleed: kartes turpinās līdz paša ekrāna malai (Wise raksts),
+          tāpēc sekcija NAV max-w-content konteinerā. Kreisā mala tā vietā
+          rēķināta tā, lai galvene stāv precīzi zem pārējās lapas satura:
+          konteinera nobīde + tā paša 40px paddinga; mobilajā fiksēti 24px. */}
+      <div
+        className="grid grid-cols-1 lg:grid-cols-[minmax(0,500px)_minmax(0,1fr)] gap-12 lg:gap-14 items-center"
+        style={{ paddingLeft: "max(1.5rem, calc((100vw - 1440px) / 2 + 2.5rem))" }}
+      >
+          {/* Kreisā puse — galvene un navigācija */}
+          <div className="pr-6 md:pr-10 lg:pr-0">
+            <p className="eyebrow mb-6">{t["features.eyebrow"]}</p>
+            <h2
+              className="font-display font-extrabold text-ink"
+              style={{ fontSize: "clamp(32px, 4.2vw, 60px)", letterSpacing: "-0.035em", lineHeight: 1.04 }}
+            >
+              {t["features.title"]}
+            </h2>
+            <p className="mt-6 text-dim max-w-[44ch]" style={{ lineHeight: 1.65 }}>
+              {t["features.sub"]}
+            </p>
 
-        {/* Bento režģis */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-6 gap-4">
-          {items.map((item, i) => {
-            const Vignette = VIGNETTES[item.key];
-            const wide = item.key === "challenges";
-            return (
-              <motion.article
-                key={item.key}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 0.7, delay: (i % 3) * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
-                className={`${span(item.key)} rounded-2xl border border-white/8 bg-white/[0.025] overflow-hidden flex flex-col ${wide ? "md:flex-row md:items-center" : ""}`}
+            <div className="mt-10 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => page(-1)}
+                disabled={atStart}
+                aria-label={locale === "lv" ? "Iepriekšējā" : "Previous"}
+                className={`${arrow} bg-frost/[0.07] text-ink hover:bg-frost/[0.12]`}
               >
-                {/* Vinjete — produkta mini-skats uz klusa rastra */}
-                <div
-                  className={`relative flex items-center justify-center p-6 md:p-8 ${wide ? "md:order-2 md:flex-1" : ""}`}
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 0%, rgba(90,107,255,0.10) 0%, rgba(13,17,40,0) 60%)",
-                  }}
-                >
-                  {/* smalks punktu rasteris */}
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 opacity-[0.35]"
-                    style={{
-                      backgroundImage: "radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px)",
-                      backgroundSize: "18px 18px",
-                    }}
-                  />
-                  <div className="relative">
-                    <Vignette />
-                  </div>
-                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M19 12H5M11 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={() => page(1)}
+                disabled={atEnd}
+                aria-label={locale === "lv" ? "Nākamā" : "Next"}
+                className={`${arrow} bg-brand hover:bg-brand-deep`}
+                style={{ color: "#fff" }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
 
-                {/* Teksts */}
-                <div className={`px-6 pb-7 md:px-8 md:pb-8 ${wide ? "md:order-1 md:flex-1 md:py-8" : ""}`}>
-                  <div className="flex items-baseline gap-3">
-                    <span className="font-mono text-[12px] text-muted">/ {item.idx}</span>
-                    <h3 className="font-display font-bold text-ink" style={{ fontSize: 21, letterSpacing: "-0.02em" }}>
-                      {item.title}
-                    </h3>
-                  </div>
-                  <p className="mt-3 text-dim text-[15px]" style={{ lineHeight: 1.6 }}>
+          {/* Labā puse — ritināmās kartes; skrien līdz ekrāna labajai malai.
+              Kreisā atstarpe nāk no vecāka paddinga, tāpēc te tās nav (un
+              līdz ar to arī nav scroll-snap/padding konflikta). */}
+          <div
+            ref={scroller}
+            onScroll={syncEdges}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-2 pr-6"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {items.map((item, i) => {
+              // Mija kā Wise gaišajam/tumšajam zaļajam: brand pildījums pret
+              // kluso virsmu. Tekstu krāsas attiecīgi uz brand vai uz lapas.
+              const filled = i % 2 === 0;
+              return (
+                <article
+                  key={item.key}
+                  className={`snap-start shrink-0 w-[290px] sm:w-[320px] min-h-[430px] rounded-3xl p-7 flex flex-col ${
+                    filled ? "" : "border border-frost/[0.08]"
+                  }`}
+                  style={
+                    filled
+                      ? { background: "rgb(var(--brand-rgb))" }
+                      : { background: "rgb(var(--surface-rgb))" }
+                  }
+                >
+                  <span
+                    className="flex h-14 w-14 items-center justify-center rounded-full"
+                    style={
+                      filled
+                        ? { background: "rgba(255,255,255,0.16)", color: "#fff" }
+                        : { background: "rgb(var(--brand-rgb) / 0.12)", color: "rgb(var(--brand-rgb))" }
+                    }
+                  >
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      {ICONS[item.key]}
+                    </svg>
+                  </span>
+
+                  <h3
+                    className="mt-7 font-display font-bold"
+                    style={{
+                      fontSize: 22,
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.2,
+                      color: filled ? "#fff" : "rgb(var(--ink-rgb))",
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    className="mt-3 text-[14.5px]"
+                    style={{
+                      lineHeight: 1.6,
+                      color: filled ? "rgba(255,255,255,0.82)" : "rgb(var(--dim-rgb))",
+                    }}
+                  >
                     {item.body}
                   </p>
-                  <ul className="mt-4 space-y-2">
+
+                  <ul
+                    className="mt-auto pt-6 space-y-2.5 text-[13px]"
+                    style={{
+                      borderTop: filled
+                        ? "1px solid rgba(255,255,255,0.18)"
+                        : "1px solid rgb(var(--frost-rgb) / 0.09)",
+                      color: filled ? "rgba(255,255,255,0.88)" : "rgb(var(--dim-rgb))",
+                    }}
+                  >
                     {item.points.map((p) => (
-                      <li key={p} className="flex items-start gap-2.5 text-[13.5px] text-dim">
-                        <CheckChip />
+                      <li key={p} className="flex items-start gap-2.5">
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                          className="mt-[3px] shrink-0"
+                          style={{ color: filled ? "#fff" : "rgb(var(--brand-rgb))" }}
+                        >
+                          <path d="M4 12.5l5 5L20 6.5" />
+                        </svg>
                         <span>{p}</span>
                       </li>
                     ))}
                   </ul>
-                </div>
-              </motion.article>
-            );
-          })}
-        </div>
+                </article>
+              );
+            })}
+          </div>
       </div>
     </section>
   );

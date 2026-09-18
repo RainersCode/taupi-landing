@@ -60,9 +60,9 @@ export default function WaitlistForm({
       <div
         className={`flex items-center rounded-full pl-5 pr-1.5 ${tall ? "py-1.5" : "py-1"}`}
         style={{
-          background: "rgba(255,255,255,0.05)",
-          border: "1px solid rgba(255,255,255,0.12)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
+          background: "rgb(var(--frost-rgb) / 0.05)",
+          border: "1px solid rgb(var(--frost-rgb) / 0.12)",
+          boxShadow: "inset 0 1px 0 rgb(var(--frost-rgb) / 0.06)",
         }}
       >
         <input
@@ -105,8 +105,8 @@ export default function WaitlistForm({
           aria-hidden
           className="w-[18px] h-[18px] rounded-[5px] flex items-center justify-center shrink-0 transition-colors"
           style={{
-            border: `1px solid ${tester ? "#5A6BFF" : "rgba(255,255,255,0.25)"}`,
-            background: tester ? "#5A6BFF" : "rgba(255,255,255,0.04)",
+            border: `1px solid ${tester ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.25)"}`,
+            background: tester ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.04)",
           }}
         >
           {tester && (
@@ -123,7 +123,7 @@ export default function WaitlistForm({
         </span>
         <span className="text-[13px] text-dim">
           {t["waitlist.tester"]}
-          <span aria-hidden className="mx-1.5" style={{ color: "rgba(255,255,255,0.18)" }}>
+          <span aria-hidden className="mx-1.5" style={{ color: "rgb(var(--frost-rgb) / 0.18)" }}>
             —
           </span>
           <span style={{ color: "#38BDF8" }}>{t["waitlist.tester.perk"]}</span>

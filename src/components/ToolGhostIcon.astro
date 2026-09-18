@@ -1,0 +1,58 @@
+---
+/**
+ * Rīka ghost ikona — lielā baltā kontūra karšu fonam (vienotais karšu
+ * raksts: opacity ~6%, pārkare pāri stūrim). Viena ikona uz kalkulatoru,
+ * koplietota starp /kalkulatori/ hub un gidu "Noderīgi rīki" kartēm.
+ */
+interface Props {
+  tool: "budget" | "percent" | "compound" | "emergency" | "debt";
+  size?: number;
+  class?: string;
+}
+const { tool, size = 220, class: className = "" } = Astro.props;
+---
+<svg
+  aria-hidden="true"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="rgb(var(--frost-rgb))"
+  stroke-width="0.9"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={`pointer-events-none absolute ${className}`}
+  style="opacity: 0.06;"
+>
+  {tool === "budget" && (
+    <>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+      <circle cx="9" cy="7" r="1.7" fill="rgb(var(--frost-rgb))" stroke="none" />
+      <circle cx="15" cy="12" r="1.7" fill="rgb(var(--frost-rgb))" stroke="none" />
+      <circle cx="7" cy="17" r="1.7" fill="rgb(var(--frost-rgb))" stroke="none" />
+    </>
+  )}
+  {tool === "percent" && (
+    <>
+      <path d="M18.5 5.5l-13 13" />
+      <circle cx="7.5" cy="7.5" r="2.6" />
+      <circle cx="16.5" cy="16.5" r="2.6" />
+    </>
+  )}
+  {tool === "compound" && (
+    <>
+      <path d="M3.5 17.5l5-5 3.5 3 8-8.5" />
+      <path d="M15.5 7h4.5v4.5" />
+    </>
+  )}
+  {tool === "emergency" && (
+    <path d="M12 3.5l7.5 3v5c0 4.6-3 8-7.5 9.5C7.5 19.5 4.5 16.1 4.5 11.5v-5z" />
+  )}
+  {tool === "debt" && (
+    <>
+      <ellipse cx="12" cy="6.5" rx="7" ry="3" />
+      <path d="M5 6.5v5c0 1.65 3.13 3 7 3s7-1.35 7-3v-5" />
+      <path d="M5 11.5v5c0 1.65 3.13 3 7 3s7-1.35 7-3v-5" />
+    </>
+  )}
+</svg>

@@ -25,6 +25,8 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       label: t["reveal.screens.dashboard.label"],
       desc: t["reveal.screens.dashboard.desc"],
       screenshot: "/images/screens/darijumi.webp",
+      cardColor: "rgb(var(--brand-rgb))",
+      pattern: "zigzag" as const,
       tint: "rgba(90, 107, 255, 0.18)",
       bg: "#0D1128",
       // Background wordmark — echoes Hero's "t." treatment
@@ -45,6 +47,8 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       label: t["reveal.screens.budget.label"],
       desc: t["reveal.screens.budget.desc"],
       screenshot: "/images/screens/budzets.webp",
+      cardColor: "rgb(var(--brand-rgb))",
+      pattern: "arcs" as const,
       tint: "rgba(45, 212, 167, 0.16)",
       bg: "#0B1428",
       displayWord: t["reveal.screens.budget.label"],
@@ -67,6 +71,8 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       label: t["reveal.screens.insights.label"],
       desc: t["reveal.screens.insights.desc"],
       screenshot: "/images/screens/ieskati.webp",
+      cardColor: "rgb(var(--brand-rgb))",
+      pattern: "dots" as const,
       tint: "rgba(117, 128, 224, 0.18)",
       bg: "#10132A",
       // Shorter word for section 3 so the decorative treatment reads
@@ -89,6 +95,8 @@ export default function ProductReveal({ locale }: { locale: Locale }) {
       label: t["reveal.screens.goals.label"],
       desc: t["reveal.screens.goals.desc"],
       screenshot: "/images/screens/kopskats.webp",
+      cardColor: "rgb(var(--brand-rgb))",
+      pattern: "stripes" as const,
       tint: "rgba(56, 189, 248, 0.18)",
       bg: "#0D1530",
       displayWord: t["reveal.screens.goals.label"],
@@ -157,6 +165,10 @@ type SectionData = {
   label: string;
   desc: string;
   screenshot: string;
+  /** Kartes vienlaidu akcenta krāsa (tēmas tokens). */
+  cardColor: string;
+  /** Grafiskais raksts uz kartes — katrai sekcijai savs. */
+  pattern: PatternKind;
   tint: string;
   bg: string;
   badges: PlacedBadge[];
@@ -188,19 +200,20 @@ function SectionLayer({
 
   return (
     <div
-      className="relative w-full h-screen sticky top-0 overflow-hidden border-t border-white/5"
+      className="relative w-full h-screen sticky top-0 overflow-hidden border-t border-frost/5"
       style={{
         zIndex: 10 + index,
-        background: section.bg,
+        background: "var(--reveal-bg, " + section.bg + ")",
       }}
     >
-      {/* Per-section tint glow */}
+      {/* Per-section tint glow — puse no agrākās intensitātes un garāka
+          izdzišana (75%+), lai ovāliem nav redzamu malu (2026-09-18). */}
       <div
         aria-hidden
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none opacity-30"
         style={{
-          background: `radial-gradient(60% 50% at 80% 20%, ${section.tint}, transparent 60%),
-                       radial-gradient(50% 40% at 10% 90%, ${section.tint}, transparent 65%)`,
+          background: `radial-gradient(60% 50% at 80% 20%, ${section.tint}, transparent 78%),
+                       radial-gradient(50% 40% at 10% 90%, ${section.tint}, transparent 80%)`,
         }}
       />
 
@@ -214,7 +227,7 @@ function SectionLayer({
           fontSize: "clamp(60px, 19vw, 120px)",
           lineHeight: 0.82,
           letterSpacing: "-0.05em",
-          color: "rgba(255, 255, 255, 0.05)",
+          color: "rgb(var(--frost-rgb) / 0.05)",
           zIndex: 0,
         }}
       >
@@ -231,7 +244,7 @@ function SectionLayer({
           fontSize: "clamp(220px, 32vw, 480px)",
           lineHeight: 0.82,
           letterSpacing: "-0.06em",
-          color: "rgba(255, 255, 255, 0.028)",
+          color: "rgb(var(--frost-rgb) / 0.028)",
           zIndex: 0,
         }}
       >
@@ -249,7 +262,7 @@ function SectionLayer({
             <div className="mx-auto max-w-content">
               <div className="flex items-baseline gap-4 md:gap-6">
                 <span className="eyebrow">{eyebrow}</span>
-                <span className="h-px flex-1 bg-white/10" />
+                <span className="h-px flex-1 bg-frost/10" />
                 <span className="eyebrow text-muted" style={{ fontVariantNumeric: "tabular-nums" }}>
                   {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
                 </span>
@@ -288,16 +301,11 @@ function SectionLayer({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.2, 0.8, 0.2, 1] }}
-              className="md:col-span-6"
+              className={`md:col-span-6 ${index % 2 === 1 ? "md:order-2" : ""}`}
             >
-              {/* Tikai desktopā: mobilajā augšjoslas "03 / 04" un šis "/ 03"
-                  saskrien vienā ekrānā un lasās kā dublēts skaitītājs. */}
-              <p
-                className="eyebrow text-accent mb-6 hidden md:block"
-                style={{ fontVariantNumeric: "tabular-nums" }}
-              >
-                / {String(index + 1).padStart(2, "0")}
-              </p>
+              {/* "/ 03" skaitītājs izmests pavisam (2026-09-18): augšjoslas
+                  "03 / 04" jau pasaka pozīciju, divi skaitītāji vienā ekrānā
+                  lasījās kā dublēšanās arī desktopā. */}
               <h3
                 className="font-display font-extrabold text-ink"
                 style={{
@@ -323,18 +331,25 @@ function SectionLayer({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ duration: 1, delay: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
-              className="md:col-span-6 flex justify-center md:justify-end relative"
+              className={`md:col-span-6 flex justify-center relative ${
+                index % 2 === 1 ? "md:order-1 md:justify-start" : "md:justify-end"
+              }`}
             >
+              {/* Telefons Wise-stila kartē: vienlaidu akcenta krāsa + grafisks
+                  raksts lapas fona krāsā (izgriezuma efekts, Wise gliemežnīcu
+                  analogs). Katrai sekcijai savs raksts. Badges peld pāri malām. */}
               <div className="relative reveal-phone">
                 <div
-                  aria-hidden
-                  className="absolute -inset-8 -z-10 opacity-70 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(55% 45% at 50% 50%, ${section.tint}, transparent 65%)`,
-                  }}
-                />
-                <PhoneFrame h={600} screenshot={section.screenshot} alt={section.desc} />
+                  className="overflow-hidden rounded-[36px] border border-frost/10 relative px-10 py-10 md:px-20 md:py-12"
+                  style={{ background: section.cardColor }}
+                >
+                  <CardPattern kind={section.pattern} />
+                  <div className="relative">
+                    <PhoneFrame h={600} screenshot={section.screenshot} alt={section.desc} />
+                  </div>
+                </div>
 
+                {/* Badges ĀRPUS overflow-hidden — tiem jāpeld pāri kartes malām. */}
                 {section.badges.map((badge, bi) => (
                   <FloatingBadge
                     key={`${section.key}-badge-${bi}`}
@@ -371,6 +386,117 @@ function SectionLayer({
   );
 }
 
+// ─── Kartes raksts ──────────────────────────────────────────────────
+
+/**
+ * Kartes grafika — ATVASINĀTA NO ZĪMOLA ZĪMES, nevis izdomātas formas.
+ *
+ * public/gredzens.svg ir atvērts gredzens ar noapaļotiem galiem (dasharray
+ * atstāj ~23% pārrāvumu) un punkts pašā pārrāvumā. Tā pati ģeometrija
+ * mērogota līdz plakāta izmēram ir šo karšu viss vizuālais vārdu krājums:
+ * viens milzīgs gredzens, kas iziet pāri divām malām, viens vidējs un
+ * pāris punktu. Tieši tā, kā Wise atvasina savus rakstus no zīmola —
+ * izdomātas zigzaga/svītru formas izskatījās pēc klipārta (2026-09-18).
+ *
+ * Kompozīcijas likumi (vienādi visām četrām, tāpēc tās ir viena ģimene):
+ *  - dramatiska mēroga starpība: milzīgais ~3x lielāks par vidējo;
+ *  - lielākā forma vienmēr nogriezta vismaz divās malās (rada spriedzi);
+ *  - asimetrija: masa vienā stūrī, pretējais stūris tukšs telpai;
+ *  - divi caurspīdīguma līmeņi dod dziļumu vienā krāsā.
+ */
+type PatternKind = "zigzag" | "arcs" | "dots" | "stripes";
+
+/** Gredzens ar zīmola proporcijām: 77% loks, 23% pārrāvums, apaļi gali. */
+function Ring({
+  cx,
+  cy,
+  r,
+  w,
+  rotate = 0,
+  opacity = 1,
+}: {
+  cx: number;
+  cy: number;
+  r: number;
+  w: number;
+  rotate?: number;
+  opacity?: number;
+}) {
+  const c = 2 * Math.PI * r;
+  return (
+    <circle
+      cx={cx}
+      cy={cy}
+      r={r}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={w}
+      strokeLinecap="round"
+      strokeDasharray={`${(c * 0.772).toFixed(1)} ${(c * 0.228).toFixed(1)}`}
+      transform={`rotate(${rotate} ${cx} ${cy})`}
+      opacity={opacity}
+    />
+  );
+}
+
+/**
+ * Kompozīcijas likumi (vienādi visām četrām, tāpēc tās ir viena ģimene):
+ *  - dramatiska mēroga starpība: milzīgais ~3x lielāks par vidējo;
+ *  - lielākā forma vienmēr nogriezta vismaz divās malās (rada spriedzi);
+ *  - asimetrija: masa vienā stūrī, pretējais stūris tukšs telpai;
+ *  - divi caurspīdīguma līmeņi dod dziļumu vienā krāsā.
+ */
+const SHAPES: Record<PatternKind, JSX.Element> = {
+  // Darījumi — masa augšējā kreisajā, punkts gredzena pārrāvumā (kā zīmē).
+  zigzag: (
+    <g>
+      <Ring cx={-30} cy={-10} r={310} w={54} rotate={-18} opacity={0.9} />
+      <Ring cx={368} cy={598} r={104} w={30} rotate={128} opacity={0.6} />
+      <circle cx="286" cy="214" r="26" fill="currentColor" opacity="0.75" />
+    </g>
+  ),
+  // Budžets — masa apakšējā kreisajā, otrs gredzens augšā pa labi.
+  arcs: (
+    <g>
+      <Ring cx={-50} cy={742} r={330} w={58} rotate={52} opacity={0.9} />
+      <Ring cx={392} cy={96} r={118} w={32} rotate={-64} opacity={0.6} />
+      <circle cx="322" cy="300" r="19" fill="currentColor" opacity="0.7" />
+      <circle cx="86" cy="196" r="34" fill="currentColor" opacity="0.5" />
+    </g>
+  ),
+  // Ieskati — gredzens ienāk no labās, mazāks augšējā kreisajā stūrī.
+  dots: (
+    <g>
+      <Ring cx={470} cy={356} r={322} w={56} rotate={96} opacity={0.88} />
+      <Ring cx={34} cy={82} r={126} w={34} rotate={16} opacity={0.62} />
+      <circle cx="122" cy="646" r="40" fill="currentColor" opacity="0.6" />
+      <circle cx="246" cy="560" r="15" fill="currentColor" opacity="0.8" />
+    </g>
+  ),
+  // Kopskats — masa augšējā labajā, vidējais gredzens apakšā pa kreisi.
+  stripes: (
+    <g>
+      <Ring cx={452} cy={-44} r={300} w={52} rotate={140} opacity={0.9} />
+      <Ring cx={16} cy={604} r={132} w={36} rotate={-30} opacity={0.6} />
+      <circle cx="330" cy="470" r="23" fill="currentColor" opacity="0.72" />
+    </g>
+  ),
+};
+
+function CardPattern({ kind }: { kind: PatternKind }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 420 720"
+      preserveAspectRatio="xMidYMid slice"
+      className="absolute inset-0 h-full w-full pointer-events-none"
+      style={{ color: "var(--bg)", opacity: 0.2 }}
+    >
+      {SHAPES[kind]}
+    </svg>
+  );
+}
+
 // ─── Floating badge ─────────────────────────────────────────────────
 
 const positionClass: Record<BadgePosition, string> = {
@@ -404,7 +530,7 @@ function FloatingBadge({
   delay: number;
 }) {
   const accents: Record<BadgeAccent, { border: string; eyebrow: string }> = {
-    default: { border: "rgba(255,255,255,0.08)", eyebrow: "#64646F" },
+    default: { border: "rgb(var(--frost-rgb) / 0.08)", eyebrow: "#64646F" },
     success: { border: "rgba(45,212,167,0.25)", eyebrow: "#2DD4A7" },
     brand: { border: "rgba(128,147,255,0.3)", eyebrow: "#8093FF" },
     warning: { border: "rgba(255,181,71,0.25)", eyebrow: "#FFB547" },
@@ -439,7 +565,7 @@ function FloatingBadge({
       {badge.icon && (
         <span
           className={`${compact ? "w-7 h-7 text-[12px]" : "w-8 h-8 text-[13px]"} rounded-xl flex items-center justify-center shrink-0`}
-          style={{ background: "rgba(255,255,255,0.05)" }}
+          style={{ background: "rgb(var(--frost-rgb) / 0.05)" }}
         >
           {badge.icon}
         </span>

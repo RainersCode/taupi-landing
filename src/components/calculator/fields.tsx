@@ -10,9 +10,9 @@ import type { Locale } from "~/i18n/strings";
  */
 
 export const glass = {
-  background: "rgba(255,255,255,0.04)",
-  border: "1px solid rgba(255,255,255,0.10)",
-  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+  background: "rgb(var(--frost-rgb) / 0.04)",
+  border: "1px solid rgb(var(--frost-rgb) / 0.10)",
+  boxShadow: "inset 0 1px 0 rgb(var(--frost-rgb) / 0.05)",
 };
 
 export function useMoney(locale: Locale) {
@@ -112,7 +112,7 @@ export function MoneyField({
   return (
     <div className="mb-5">
       <p className="text-[12.5px] text-dim mb-1">{label}</p>
-      <div className="flex items-baseline gap-1 border-b border-white/15 focus-within:border-accent transition-colors pb-1">
+      <div className="flex items-baseline gap-1 border-b border-frost/15 focus-within:border-accent transition-colors pb-1">
         <span className="text-dim text-[15px]">{unit}</span>
         <input
           value={text}

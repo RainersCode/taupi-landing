@@ -34,7 +34,7 @@ const initials = author.name
   .join("");
 ---
 {author.name && hasSubstance && (
-  <aside id={id} class="rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-7">
+  <aside id={id} class="rounded-2xl border border-frost/10 bg-frost/[0.03] p-6 md:p-7">
     <p class="eyebrow text-muted mb-5">{t["author.eyebrow"]}</p>
 
     <div class="flex items-start gap-4 md:gap-5">
@@ -45,13 +45,13 @@ const initials = author.name
           width="56"
           height="56"
           loading="lazy"
-          class="w-14 h-14 rounded-full object-cover shrink-0 border border-white/10"
+          class="w-14 h-14 rounded-full object-cover shrink-0 border border-frost/10"
         />
       ) : (
         <span
           aria-hidden="true"
-          class="w-14 h-14 rounded-full shrink-0 grid place-items-center font-display font-bold text-ink text-lg border border-white/10"
-          style="background: rgba(90, 107, 255, 0.16);"
+          class="w-14 h-14 rounded-full shrink-0 grid place-items-center font-display font-bold text-ink text-lg border border-frost/10"
+          style="background: rgb(var(--brand-rgb) / 0.16);"
         >
           {initials}
         </span>

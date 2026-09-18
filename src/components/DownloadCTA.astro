@@ -9,12 +9,19 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = getDict(locale);
 ---
-<section id="waitlist" class="relative py-24 md:py-48 px-4 md:px-10 border-t border-white/5 overflow-hidden">
-  <!-- Subtle backdrop halo behind the CTA -->
+{/* Brand krāsu josla (Wise zaļās sekcijas analogs): pilna platuma violets/
+    indigo gradients ar baltu tipogrāfiju — vienīgā pilnkrāsas sekcija lapā,
+    tāpēc CTA nolasās kā galvenais akcents abās tēmās. */}
+<section
+  id="waitlist"
+  class="relative py-24 md:py-40 px-4 md:px-10 overflow-hidden"
+  style="background: linear-gradient(165deg, rgb(var(--brand-rgb)) 0%, rgb(var(--brand-deep-rgb)) 100%);"
+>
+  <!-- Kluss baltas gaismas plankums aiz CTA -->
   <div
     aria-hidden
     class="absolute inset-0 pointer-events-none"
-    style="background: radial-gradient(50% 45% at 50% 45%, rgba(90, 107, 255, 0.14), transparent 60%);"
+    style="background: radial-gradient(50% 45% at 50% 40%, rgba(255,255,255,0.10), transparent 60%);"
   />
 
   <!-- Mobile decorative — positioned below the buttons so it sits at the
@@ -22,31 +29,31 @@ const t = getDict(locale);
   <div
     aria-hidden
     class="md:hidden pointer-events-none absolute left-1/2 bottom-8 -translate-x-1/2 font-display font-black select-none whitespace-nowrap"
-    style="font-size: clamp(96px, 24vw, 180px); line-height: 0.85; color: rgba(255,255,255,0.04); letter-spacing: -0.06em;"
+    style="font-size: clamp(96px, 24vw, 180px); line-height: 0.85; color: rgba(255,255,255,0.05); letter-spacing: -0.06em;"
   >
-    taupi<span style="color: rgba(56, 189, 248, 0.08)">.</span>
+    taupi<span style="color: rgba(255,255,255,0.10)">.</span>
   </div>
 
   <!-- Desktop decorative — gigantic signature wordmark behind the CTA -->
   <div
     aria-hidden
     class="hidden md:block pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display font-black select-none whitespace-nowrap"
-    style="font-size: clamp(240px, 36vw, 560px); line-height: 0.85; color: rgba(255,255,255,0.02); letter-spacing: -0.06em;"
+    style="font-size: clamp(240px, 36vw, 560px); line-height: 0.85; color: rgba(255,255,255,0.04); letter-spacing: -0.06em;"
   >
-    taupi<span style="color: rgba(56, 189, 248, 0.06)">.</span>
+    taupi<span style="color: rgba(255,255,255,0.08)">.</span>
   </div>
 
   <div class="mx-auto max-w-content relative text-center">
     <h2
-      class="font-display font-extrabold text-ink mx-auto"
-      style="font-size: clamp(48px, 9vw, 128px); letter-spacing: -0.05em; line-height: 0.95; max-width: 12ch;"
+      class="font-display font-extrabold mx-auto"
+      style="font-size: clamp(48px, 9vw, 128px); letter-spacing: -0.05em; line-height: 0.95; max-width: 12ch; color: #fff;"
     >
       {t["cta.title"]}
     </h2>
 
     <p
-      class="mt-8 text-dim mx-auto"
-      style="font-size: clamp(16px, 1.4vw, 20px); line-height: 1.5; max-width: 48ch;"
+      class="mt-8 mx-auto"
+      style="font-size: clamp(16px, 1.4vw, 20px); line-height: 1.5; max-width: 48ch; color: rgba(255,255,255,0.8);"
     >
       {launch.live ? t["cta.sub.live"] : t["cta.sub"]}
     </p>
@@ -54,11 +61,11 @@ const t = getDict(locale);
     <!-- Pre-launch: waitlist form. Post-launch (src/config.ts): store badges. -->
     <div class="mt-12 flex justify-center">
       {launch.live
-        ? <StoreBadges locale={locale} />
+        ? <StoreBadges locale={locale} onBrand />
         : <WaitlistForm client:visible locale={locale} size="lg" />}
     </div>
 
-    <p class="mt-16 eyebrow text-muted">
+    <p class="mt-16 eyebrow" style="color: rgba(255,255,255,0.55);">
       taupi.eu
     </p>
   </div>

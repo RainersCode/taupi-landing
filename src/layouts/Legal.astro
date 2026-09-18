@@ -41,6 +41,20 @@ const breadcrumbs = [{ name: frontmatter.title, href: Astro.url.pathname }];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0D1128" />
 
+    <!-- Tēmas izšķiršana pirms pirmā renderējuma — tas pats, kas Base.astro. -->
+    <script is:inline>
+      (() => {
+        let stored = null;
+        try { stored = localStorage.getItem("theme"); } catch {}
+        const light = stored
+          ? stored === "light"
+          : matchMedia("(prefers-color-scheme: light)").matches;
+        if (light) document.documentElement.dataset.theme = "light";
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta && light) meta.setAttribute("content", "#F5F1FD");
+      })();
+    </script>
+
     <Seo
       title={`${frontmatter.title} — Taupi`}
       description={description}
@@ -57,7 +71,7 @@ const breadcrumbs = [{ name: frontmatter.title, href: Astro.url.pathname }];
 
     <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
       <!-- Title + metadata header -->
-      <header class="mb-16 border-b border-white/10 pb-10">
+      <header class="mb-16 border-b border-frost/10 pb-10">
         <p class="eyebrow mb-6">
           <a href={locale === "lv" ? "/" : "/en/"} class="hover:text-ink transition-colors">
             ← {locale === "lv" ? "Sākums" : "Home"}

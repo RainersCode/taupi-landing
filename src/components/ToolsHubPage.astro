@@ -1,13 +1,15 @@
 ---
 /**
- * The /kalkulatori/ hub — every tool as a card with a REAL screenshot of
- * that tool's stage (public/tools/*.jpg, regenerated with
- * scripts/capture-tool-previews.mjs) plus title, description and CTA.
+ * The /kalkulatori/ hub — bento režģis vienotajā karšu stilā: klusa virsma
+ * un liela balta ghost ikona fonā (tas pats raksts, kas sākumlapas Iespēju
+ * sekcijai un gids kartēm). Ekrānuzņēmumu foni izmesti (2026-09-18) — tie
+ * neko neizteica un konfliktēja ar pārējo karšu valodu.
  */
 import Base from "~/layouts/Base.astro";
 import Nav from "~/components/Nav.astro";
 import Footer from "~/components/Footer.astro";
 import DownloadCTA from "~/components/DownloadCTA.astro";
+import ToolGhostIcon from "~/components/ToolGhostIcon.astro";
 import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
 import { path } from "~/i18n/routes";
@@ -20,48 +22,20 @@ interface Props {
 const { locale, title, description } = Astro.props;
 const t = getDict(locale);
 
-// Accents are each tool's signature color (border beam + chip tint).
 // `lvOnly` tools are dropped from the EN hub — routes.percent.en is null, so
 // `path()` would silently fall back to the Latvian page and hand an English
 // reader a Latvian one.
 const tools = [
-  {
-    key: "budget",
-    href: path("budget", locale),
-    img: "/tools/budget.jpg",
-    imgH: 495,
-    accent: "#7C8CFF",
-  },
-  {
-    key: "percent",
-    href: path("percent", locale),
-    img: "/tools/percent.jpg",
-    imgH: 420,
-    accent: "#FFB547",
-    lvOnly: true,
-  },
-  {
-    key: "compound",
-    href: path("compound", locale),
-    img: "/tools/compound.jpg",
-    imgH: 375,
-    accent: "#2DD4A7",
-  },
-  {
-    key: "emergency",
-    href: path("emergency", locale),
-    img: "/tools/emergency.jpg",
-    imgH: 375,
-    accent: "#38BDF8",
-  },
-  {
-    key: "debt",
-    href: path("debt", locale),
-    img: "/tools/debt.jpg",
-    imgH: 399,
-    accent: "#FF8A80",
-  },
-].filter((tool) => locale === "lv" || !tool.lvOnly);
+  { key: "budget", href: path("budget", locale), span: "md:col-span-3" },
+  { key: "percent", href: path("percent", locale), span: "md:col-span-3", lvOnly: true },
+  { key: "compound", href: path("compound", locale), span: "md:col-span-2" },
+  { key: "emergency", href: path("emergency", locale), span: "md:col-span-2" },
+  { key: "debt", href: path("debt", locale), span: "md:col-span-2" },
+]
+  .filter((tool) => locale === "lv" || !tool.lvOnly)
+  // EN hub ir 4 rīki (percent ir lv-only) — bento 3+2+2+2 tur atstātu robu,
+  // tāpēc bez piektā visi stājas 2×2 režģī.
+  .map((tool, _i, arr) => (arr.length === 4 ? { ...tool, span: "md:col-span-3" } : tool));
 ---
 <Base
   title={title}
@@ -72,8 +46,15 @@ const tools = [
 >
   <Nav locale={locale} />
 
-  <main class="pt-32 md:pt-40 pb-8">
-    <header class="mx-auto max-w-5xl px-6 md:px-10 mb-12 md:mb-16">
+  <main class="relative pt-32 md:pt-40 pb-8">
+    {/* Kluss brand mirdzums aiz galvenes — kā pārējās satura lapās. */}
+    <div
+      aria-hidden
+      class="pointer-events-none absolute top-16 left-1/2 h-[480px] w-full max-w-[1100px] -translate-x-1/2"
+      style="background: radial-gradient(closest-side, rgba(90,107,255,0.12) 0%, rgb(var(--bg-rgb) / 0) 100%);"
+    >
+    </div>
+    <header class="relative mx-auto max-w-content px-6 md:px-10 mb-12 md:mb-16">
       <p class="eyebrow mb-6">{t["tools.eyebrow"]}</p>
       <h1 class="display-xl text-ink">{t["tools.title"]}</h1>
       <p class="mt-6 text-dim max-w-[56ch] text-lg" style="line-height: 1.65;">
@@ -81,44 +62,15 @@ const tools = [
       </p>
     </header>
 
-    <section class="mx-auto max-w-5xl px-6 md:px-10">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <section class="mx-auto max-w-content px-6 md:px-10">
+      <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
         {tools.map((tool) => (
           <a
             href={tool.href}
-            class="tool-card group relative block rounded-3xl p-7 bg-white/[0.04] border border-white/10 hover:border-accent/40 transition-colors overflow-hidden"
+            class={`${tool.span} group relative overflow-hidden rounded-2xl border border-frost/10 bg-frost/[0.03] p-7 hover:border-accent/15 hover:bg-frost/[0.05] transition-colors min-h-[210px] flex flex-col justify-end`}
           >
-            {/* Border beam — a light segment orbiting the card edge
-                (Magic UI's border-beam technique: offset-path animation). */}
-            <span class="card-beam" aria-hidden style={`--beam-color: ${tool.accent};`}></span>
-            {/* Spotlight — cursor-following glow (Aceternity card-spotlight
-                technique: radial gradient at --mx/--my, set by the tiny
-                script below). */}
-            <span class="card-spot" aria-hidden></span>
-
-            {/* Real product screenshot as the card visual */}
-            <div class="relative rounded-2xl overflow-hidden mb-6 border border-white/[0.07]">
-              <img
-                src={tool.img}
-                alt=""
-                width="920"
-                height={tool.imgH}
-                loading="lazy"
-                class="w-full h-[190px] object-cover object-left-top"
-              />
-              <div
-                aria-hidden
-                class="absolute inset-0 pointer-events-none"
-                style="background: linear-gradient(180deg, transparent 55%, rgba(13,17,40,0.5));"
-              >
-              </div>
-              <span
-                class="absolute top-3 right-3 rounded-full px-2.5 py-1 font-mono text-[9px] font-medium tracking-[0.16em] uppercase"
-                style={`background: rgba(13,17,40,0.7); border: 1px solid ${tool.accent}40; color: ${tool.accent};`}
-              >
-                {t[`tools.${tool.key}.tag`]}
-              </span>
-            </div>
+            {/* Ghost ikona fonā — vienotais karšu raksts. */}
+            <ToolGhostIcon tool={tool.key} size={220} class="-right-10 -top-10" />
 
             <div class="relative">
               <p
@@ -144,65 +96,3 @@ const tools = [
   <DownloadCTA locale={locale} />
   <Footer locale={locale} />
 </Base>
-
-<style>
-  /* ── Border beam (Magic UI technique): a short gradient segment travels
-     the card's rounded-rect perimeter via offset-path. Staggered starts so
-     the four cards never pulse in sync. Falls back to nothing where
-     offset-path rect() is unsupported. ── */
-  .card-beam {
-    position: absolute;
-    width: 80px;
-    height: 2px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, transparent, var(--beam-color), transparent);
-    offset-path: rect(0 auto auto 0 round 24px);
-    animation: card-beam-orbit 8s linear infinite;
-    pointer-events: none;
-    opacity: 0.9;
-  }
-  .tool-card:nth-child(2) .card-beam { animation-delay: -2s; }
-  .tool-card:nth-child(3) .card-beam { animation-delay: -4s; }
-  .tool-card:nth-child(4) .card-beam { animation-delay: -6s; }
-  .tool-card:nth-child(5) .card-beam { animation-delay: -1s; }
-
-  @keyframes card-beam-orbit {
-    to { offset-distance: 100%; }
-  }
-
-  /* ── Spotlight (Aceternity technique): radial glow that follows the
-     cursor; --mx/--my set by the script below. ── */
-  .card-spot {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    pointer-events: none;
-    background: radial-gradient(
-      280px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(90, 107, 255, 0.14),
-      transparent 70%
-    );
-  }
-  .tool-card:hover .card-spot {
-    opacity: 1;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .card-beam {
-      animation: none;
-      display: none;
-    }
-  }
-</style>
-
-<script is:inline>
-  // Spotlight cursor tracking — sets --mx/--my per card.
-  document.querySelectorAll(".tool-card").forEach((card) => {
-    card.addEventListener("mousemove", (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty("--mx", e.clientX - r.left + "px");
-      card.style.setProperty("--my", e.clientY - r.top + "px");
-    });
-  });
-</script>

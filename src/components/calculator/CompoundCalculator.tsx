@@ -140,7 +140,7 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
             <div className="mt-7 flex flex-wrap gap-3">
               <span
                 className="flex items-center gap-2.5 rounded-full px-4 py-2 text-[13px] text-dim"
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.10)" }}
+                style={{ background: "rgb(var(--frost-rgb) / 0.05)", border: "1px solid rgb(var(--frost-rgb) / 0.10)" }}
               >
                 <span aria-hidden className="w-2.5 h-2.5 rounded-full" style={{ background: CONTRIB_COLOR }} />
                 {t["cc.contrib"]}
@@ -196,10 +196,10 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
                   x2={W - PAD.r}
                   y1={y(maxV * f)}
                   y2={y(maxV * f)}
-                  stroke="rgba(255,255,255,0.06)"
+                  stroke="rgb(var(--frost-rgb) / 0.06)"
                 />
               ))}
-              <line x1={PAD.l} x2={W - PAD.r} y1={baseline} y2={baseline} stroke="rgba(255,255,255,0.14)" />
+              <line x1={PAD.l} x2={W - PAD.r} y1={baseline} y2={baseline} stroke="rgb(var(--frost-rgb) / 0.14)" />
 
               <path d={growthArea} fill="url(#cc-growth)" />
               <path d={contribArea} fill="url(#cc-contrib)" />

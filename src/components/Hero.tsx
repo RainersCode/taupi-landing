@@ -36,7 +36,7 @@ export default function Hero({ locale }: { locale: Locale }) {
     // and the text-only Hero needs proper vertical balance.
     <section
       className="relative pt-24 md:pt-40 hero-short-pt pb-12 md:pb-16 px-4 md:px-10 overflow-hidden w-full h-full flex items-center"
-      style={{ background: "#0D1128" }}
+      style={{ background: "var(--bg)" }}
     >
       {/* One soft brand glow behind the phone column — the only decoration. */}
       <div
@@ -66,7 +66,7 @@ export default function Hero({ locale }: { locale: Locale }) {
                     existing metadata line — instead of a separate pill:
                     zero vertical cost, and cyan is the house accent for
                     "the words that matter". */}
-                <span aria-hidden className="mx-2.5" style={{ color: "rgba(255,255,255,0.18)" }}>
+                <span aria-hidden className="mx-2.5" style={{ color: "rgb(var(--frost-rgb) / 0.18)" }}>
                   ·
                 </span>
                 <span style={{ color: "#38BDF8" }}>{t["hero.eyebrow.tester"]}</span>

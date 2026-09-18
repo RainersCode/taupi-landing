@@ -26,7 +26,7 @@ export default function LifestylePanel({ locale }: { locale: Locale }) {
     // take the full screen on mobile too.
     <section
       ref={ref}
-      className="relative overflow-hidden border-t border-white/5 w-full h-full"
+      className="relative overflow-hidden border-t border-frost/5 w-full h-full"
     >
       {/* Image + overlay — fills the entire 100vh section */}
       <div className="relative w-full h-full overflow-hidden">
@@ -64,11 +64,14 @@ export default function LifestylePanel({ locale }: { locale: Locale }) {
               className="max-w-[28ch]"
             >
               <blockquote
-                className="font-display font-bold text-ink"
+                className="font-display font-bold"
                 style={{
                   fontSize: "clamp(22px, 2.8vw, 44px)",
                   lineHeight: 1.35,
                   letterSpacing: "-0.02em",
+                  // Literāli balts ABĀS tēmās: teksts sēž uz tumšās navy
+                  // uzlīmes pāri foto, kas nemainās līdzi tēmai.
+                  color: "#F5F5F7",
                 }}
               >
                 <span className="text-accent">&ldquo;</span>
@@ -89,7 +92,9 @@ export default function LifestylePanel({ locale }: { locale: Locale }) {
                 </span>
                 <span className="text-accent">&rdquo;</span>
               </blockquote>
-              <p className="mt-6 eyebrow text-dim">{t["lifestyle.attribution"]}</p>
+              <p className="mt-6 eyebrow" style={{ color: "rgba(255,255,255,0.72)" }}>
+                {t["lifestyle.attribution"]}
+              </p>
             </motion.div>
           </div>
         </div>

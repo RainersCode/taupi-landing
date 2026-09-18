@@ -4,22 +4,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Mirror src/theme.ts from the mobile app
-        bg: "#0D1128",
-        surface: "#161B36",
-        "surface-e": "#1F2445",
+        // Tokeni dzīvo global.css :root / [data-theme="light"] — šeit tikai
+        // kartējums uz mainīgajiem, lai klases (arī /10 alfa modifikatori)
+        // seko tēmai. Mirror src/theme.ts from the mobile app.
+        bg: "rgb(var(--bg-rgb) / <alpha-value>)",
+        surface: "rgb(var(--surface-rgb) / <alpha-value>)",
+        "surface-e": "rgb(var(--surface-e-rgb) / <alpha-value>)",
         "surface-h": "#2A2F55",
-        ink: "#F5F5F7",
-        dim: "#A8A8B3",
-        muted: "#64646F",
-        brand: "#5A6BFF",
-        "brand-light": "#8093FF",
-        "brand-deep": "#3A4AE0",
-        accent: "#38BDF8",
-        success: "#2DD4A7",
-        danger: "#FF3B87",
-        warning: "#FFB547",
+        ink: "rgb(var(--ink-rgb) / <alpha-value>)",
+        dim: "rgb(var(--dim-rgb) / <alpha-value>)",
+        muted: "rgb(var(--muted-rgb) / <alpha-value>)",
+        brand: "rgb(var(--brand-rgb) / <alpha-value>)",
+        "brand-light": "rgb(var(--brand-light-rgb) / <alpha-value>)",
+        "brand-deep": "rgb(var(--brand-deep-rgb) / <alpha-value>)",
+        accent: "rgb(var(--accent-rgb) / <alpha-value>)",
+        "accent-surface": "rgb(var(--accent-surface-rgb) / <alpha-value>)",
+        success: "rgb(var(--success-rgb) / <alpha-value>)",
+        danger: "rgb(var(--danger-rgb) / <alpha-value>)",
+        warning: "rgb(var(--warning-rgb) / <alpha-value>)",
         "long-term": "#7580E0",
+        // Pārklāju bāze: balts sarms tumšajā ↔ tintes skalojums gaišajā.
+        frost: "rgb(var(--frost-rgb) / <alpha-value>)",
       },
       fontFamily: {
         // Mirrors src/theme.ts from the RN app

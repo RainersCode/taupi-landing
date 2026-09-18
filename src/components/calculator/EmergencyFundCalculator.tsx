@@ -125,7 +125,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
                   cy={RING_SIZE / 2}
                   r={radius}
                   fill="none"
-                  stroke="rgba(255,255,255,0.07)"
+                  stroke="rgb(var(--frost-rgb) / 0.07)"
                   strokeWidth={RING_STROKE}
                 />
                 <circle
@@ -152,7 +152,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
                     fontSize: 54,
                     letterSpacing: "-0.03em",
                     lineHeight: 1,
-                    color: funded ? "#2DD4A7" : "#F5F5F7",
+                    color: funded ? "#2DD4A7" : "rgb(var(--frost-rgb))",
                   }}
                 >
                   <FlowMoney value={funded ? 100 : r.pct} locale={locale} prefix="" />

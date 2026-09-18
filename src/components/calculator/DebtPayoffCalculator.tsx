@@ -126,7 +126,7 @@ function DebtInput({
       <p className="font-mono text-[10px] font-medium tracking-[0.14em] uppercase text-muted mb-1.5 min-h-[27px] flex items-end">
         {label}
       </p>
-      <div className="flex items-baseline gap-1 border-b border-white/12 focus-within:border-accent transition-colors pb-1">
+      <div className="flex items-baseline gap-1 border-b border-frost/12 focus-within:border-accent transition-colors pb-1">
         {unit && <span className="text-dim text-[13px]">{unit}</span>}
         <input
           value={text}
@@ -226,7 +226,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
         onClick={() => setMode(row, m)}
         aria-pressed={mode === m}
         className="font-mono text-[10px] font-medium tracking-[0.12em] uppercase rounded transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-        style={{ color: mode === m ? "#F5F5F7" : "#55555F" }}
+        style={{ color: mode === m ? "rgb(var(--frost-rgb))" : "#55555F" }}
       >
         {label}
       </button>
@@ -432,7 +432,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
       </span>
       <span
         className="font-mono text-[13.5px] tabular-nums text-right whitespace-nowrap"
-        style={{ color: cheapest ? WIN_COLOR : "#F5F5F7" }}
+        style={{ color: cheapest ? WIN_COLOR : "rgb(var(--frost-rgb))" }}
       >
         <FlowMoney value={result.totalInterest} locale={locale} />
       </span>
@@ -462,7 +462,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                   className="font-display font-extrabold tracking-tightest tabular-nums whitespace-nowrap"
                   style={{
                     fontSize: heroSize,
-                    color: gap === 0 ? "#F5F5F7" : WIN_COLOR,
+                    color: gap === 0 ? "rgb(var(--frost-rgb))" : WIN_COLOR,
                     lineHeight: 0.95,
                   }}
                 >
@@ -475,7 +475,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                   <p className="eyebrow mb-3">{t["dp.sooner.label"]}</p>
                   <p
                     className="font-display font-extrabold tracking-tightest tabular-nums whitespace-nowrap flex items-baseline"
-                    style={{ fontSize: heroSize, color: "#F5F5F7", lineHeight: 0.95 }}
+                    style={{ fontSize: heroSize, color: "rgb(var(--frost-rgb))", lineHeight: 0.95 }}
                   >
                     <FlowMoney value={monthsSooner as number} locale={locale} prefix="" />
                     <span className="ml-1.5 font-body font-normal text-dim" style={{ fontSize: "0.32em" }}>
@@ -511,7 +511,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
             {/* Leaderboard */}
             <div
               className="mt-8 rounded-2xl overflow-hidden"
-              style={{ border: "1px solid rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.03)" }}
+              style={{ border: "1px solid rgb(var(--frost-rgb) / 0.10)", background: "rgb(var(--frost-rgb) / 0.03)" }}
               aria-live="polite"
             >
               <div
@@ -529,10 +529,10 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                   {t["dp.col.interest"]}
                 </span>
               </div>
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ borderTop: "1px solid rgb(var(--frost-rgb) / 0.06)" }}>
                 {leaderRow("dp.snowball", snow, snowColor, gap < 0)}
               </div>
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ borderTop: "1px solid rgb(var(--frost-rgb) / 0.06)" }}>
                 {leaderRow("dp.avalanche", aval, avalColor, gap > 0)}
               </div>
             </div>
@@ -561,7 +561,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
               {debts.length > 1 && !samePlan && (
                 <div
                   className="flex rounded-full p-0.5"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.10)" }}
+                  style={{ background: "rgb(var(--frost-rgb) / 0.05)", border: "1px solid rgb(var(--frost-rgb) / 0.10)" }}
                   role="group"
                   aria-label={t["dp.chart.strategy"]}
                 >
@@ -574,7 +574,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                       className="rounded-full px-3 py-1.5 font-mono text-[10px] font-medium tracking-[0.12em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                       style={
                         shown === s
-                          ? { background: "rgba(255,255,255,0.12)", color: "#F5F5F7" }
+                          ? { background: "rgb(var(--frost-rgb) / 0.12)", color: "rgb(var(--frost-rgb))" }
                           : { color: "#64646F" }
                       }
                     >
@@ -593,10 +593,10 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                   x2={W - PAD.r}
                   y1={y(startBalance * f)}
                   y2={y(startBalance * f)}
-                  stroke="rgba(255,255,255,0.06)"
+                  stroke="rgb(var(--frost-rgb) / 0.06)"
                 />
               ))}
-              <line x1={PAD.l} x2={W - PAD.r} y1={baseline} y2={baseline} stroke="rgba(255,255,255,0.14)" />
+              <line x1={PAD.l} x2={W - PAD.r} y1={baseline} y2={baseline} stroke="rgb(var(--frost-rgb) / 0.14)" />
 
               {/* One band per debt, stacked in input order */}
               {perDebt.map((_, j) => (
@@ -679,7 +679,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                       x={(x(curMonths) + x(baseMonths)) / 2}
                       y={baseline + 33}
                       textAnchor="middle"
-                      fill="#F5F5F7"
+                      fill="rgb(var(--frost-rgb))"
                       style={{ font: "500 11.5px 'JetBrains Mono', monospace" }}
                     >
                       {monthsSooner} {t["dp.sooner.unit"]}
@@ -730,7 +730,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
               </text>
               {yearTicks.map((m) => (
                 <g key={m}>
-                  <line x1={x(m)} x2={x(m)} y1={baseline} y2={baseline + 4} stroke="rgba(255,255,255,0.25)" />
+                  <line x1={x(m)} x2={x(m)} y1={baseline} y2={baseline + 4} stroke="rgb(var(--frost-rgb) / 0.25)" />
                   <text
                     x={x(m)}
                     y={H - 6}
@@ -776,7 +776,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                 <div
                   key={row.id}
                   className="rounded-2xl p-4"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  style={{ background: "rgb(var(--frost-rgb) / 0.03)", border: "1px solid rgb(var(--frost-rgb) / 0.08)" }}
                 >
                   {/* The payment/term switch lives here, not on the field's own
                       label: a third of the card is too narrow for two words and
@@ -794,7 +794,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                           aria-label={t["dp.remove"]}
                           title={t["dp.remove"]}
                           className="w-6 h-6 rounded-full flex items-center justify-center text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                          style={{ background: "rgba(255,255,255,0.05)" }}
+                          style={{ background: "rgb(var(--frost-rgb) / 0.05)" }}
                         >
                           <svg width="10" height="10" viewBox="0 0 11 11" fill="none" aria-hidden="true">
                             <path d="M2 2l7 7M9 2L2 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -833,7 +833,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
                   type="button"
                   onClick={addRow}
                   className="rounded-2xl min-h-[108px] flex items-center justify-center gap-2 text-[13.5px] font-medium text-brand-light hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  style={{ border: "1px dashed rgba(255,255,255,0.18)" }}
+                  style={{ border: "1px dashed rgb(var(--frost-rgb) / 0.18)" }}
                 >
                   <svg width="12" height="12" viewBox="0 0 11 11" fill="none" aria-hidden="true">
                     <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -844,7 +844,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
             </div>
           </div>
 
-          <div className="lg:border-l lg:border-white/10 lg:pl-10">
+          <div className="lg:border-l lg:border-frost/10 lg:pl-10">
             <ControlCell
               label={t["dp.extra"]}
               value={extra}

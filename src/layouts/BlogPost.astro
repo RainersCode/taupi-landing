@@ -78,7 +78,7 @@ const jsonLd = {
   <Nav locale={locale} />
 
   <main class="mx-auto max-w-3xl px-6 md:px-10 pt-36 md:pt-40 pb-24">
-    <header class="mb-16 border-b border-white/10 pb-10">
+    <header class="mb-16 border-b border-frost/10 pb-10">
       <p class="eyebrow mb-6">
         <a href="/padomi/" class="hover:text-ink transition-colors">← {t["blog.back"]}</a>
       </p>
@@ -109,7 +109,7 @@ const jsonLd = {
     </div>
 
     {sources.length > 0 && (
-      <section class="mt-12 border-t border-white/10 pt-8">
+      <section class="mt-12 border-t border-frost/10 pt-8">
         <p class="eyebrow mb-5">{t["blog.sources"]}</p>
         <ul class="space-y-3">
           {sources.map((src) => (
@@ -136,7 +136,7 @@ const jsonLd = {
       than a paragraph that lost its margin. */}
   {calculator && (
     <section class="mx-auto max-w-6xl px-6 md:px-10 pb-8">
-      <div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-10">
+      <div class="rounded-3xl border border-frost/10 bg-frost/[0.03] p-6 md:p-10">
         <p class="eyebrow mb-5">{t["blog.calc.eyebrow"]}</p>
         <h2
           class="font-display font-bold text-ink mb-10"
@@ -150,7 +150,7 @@ const jsonLd = {
         {calculator === "emergency" && <EmergencyFundCalculator client:visible locale={locale} />}
         {calculator === "debt" && <DebtPayoffCalculator client:visible locale={locale} />}
 
-        <p class="mt-10 pt-6 border-t border-white/10">
+        <p class="mt-10 pt-6 border-t border-frost/10">
           <a href={path(calculator, locale)} class="eyebrow text-accent hover:text-ink transition-colors">
             {t["blog.calc.full"]} →
           </a>

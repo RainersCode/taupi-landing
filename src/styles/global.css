@@ -20,19 +20,46 @@
    Mirror src/theme.ts from the mobile app for brand cohesion.
    ──────────────────────────────────────────────────────────────── */
 :root {
-  --bg: #0d1128;
-  --surface: #161b36;
-  --surface-e: #1f2445;
-  --ink: #f5f5f7;
-  --dim: #a8a8b3;
-  --muted: #64646f;
-  --brand: #5a6bff;
-  --brand-light: #8093ff;
-  --brand-deep: #3a4ae0;
-  --accent: #38bdf8;
-  --success: #2dd4a7;
-  --danger: #ff3b87;
-  --warning: #ffb547;
+  /* RGB tripleti — Tailwind krāsas iet caur rgb(var(--x-rgb) / <alpha>),
+     tāpēc VISAS klases (arī /10 caurspīdīguma modifikatori) maina tēmu līdzi.
+     Vecās --x formas paliek kā rgb() atvasinājumi CSS lietojumam. */
+  --bg-rgb: 13 17 40;
+  --surface-rgb: 22 27 54;
+  --surface-e-rgb: 31 36 69;
+  --ink-rgb: 245 245 247;
+  --dim-rgb: 168 168 179;
+  --muted-rgb: 100 100 111;
+  --brand-rgb: 90 107 255;
+  --brand-light-rgb: 128 147 255;
+  --brand-deep-rgb: 58 74 224;
+  --accent-rgb: 56 189 248;
+  /* Dziļā ciāna PILNKRĀSAS joslām (TrustPanel). Atsevišķs tokens tāpēc, ka
+     `accent` tumšajā tēmā ir gaiša ciāna — laba tekstam, bet uz tās nevar
+     likt baltu tekstu. Šis ir zīmola virsma: tumšs abās tēmās, kā lietotnes
+     heroBase (skat. src/theme.ts komentāru par brand surfaces). */
+  --accent-surface-rgb: 6 83 121;
+  --success-rgb: 45 212 167;
+  --danger-rgb: 255 59 135;
+  --warning-rgb: 255 181 71;
+  /* frost = pārklāju bāze: balts sarms tumšajā, tintes skalojums gaišajā —
+     tas pats polaritātes triks, ko lieto lietotnes overlay* tokeni. */
+  --frost-rgb: 245 245 247;
+
+  --bg: rgb(var(--bg-rgb));
+  --surface: rgb(var(--surface-rgb));
+  --surface-e: rgb(var(--surface-e-rgb));
+  --ink: rgb(var(--ink-rgb));
+  --dim: rgb(var(--dim-rgb));
+  --muted: rgb(var(--muted-rgb));
+  --brand: rgb(var(--brand-rgb));
+  --brand-light: rgb(var(--brand-light-rgb));
+  --brand-deep: rgb(var(--brand-deep-rgb));
+  --accent: rgb(var(--accent-rgb));
+  --success: rgb(var(--success-rgb));
+  --danger: rgb(var(--danger-rgb));
+  --warning: rgb(var(--warning-rgb));
+
+  color-scheme: dark;
 
   /* Mirror src/theme.ts from the RN app. */
   --font-display: "Sora", system-ui, sans-serif;
@@ -40,8 +67,47 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
+/* ── Gaišā tēma — lietotnes "Lilac Cream" palete (src/theme.ts
+   LIGHT_VARIANT): lavandas papīrs, violets brands, teāla akcents.
+   Landing spoguļo lietotni abās tēmās. ── */
+[data-theme="light"] {
+  /* bg nedaudz dziļāks par lietotnes F5F1FD (bija "pa gaišu" uz liela ekrāna);
+     surface paliek gaišāks par fonu, lai kartes paceļas. */
+  --bg-rgb: 239 233 250;
+  --surface-rgb: 252 251 254;
+  --surface-e-rgb: 231 221 248;
+  --ink-rgb: 36 27 56;
+  --dim-rgb: 85 77 111;
+  --muted-rgb: 108 98 140;
+  --brand-rgb: 122 69 214;
+  --brand-light-rgb: 159 121 225;
+  --brand-deep-rgb: 97 42 193;
+  /* Bija teāls 0 117 109 (no lietotnes Lilac Cream paletes) — uz violetā
+     zīmola tas lasījās kā zaļš un izskatījās svešs (2026-09-18). Tagad tā
+     pati ciāna, kas zīmolzīmes punktā (#38BDF8), tikai pietiekami dziļa,
+     lai uz gaišā fona sasniegtu 4.8:1 kontrastu. */
+  --accent-rgb: 11 110 158;
+  --accent-surface-rgb: 11 110 158;
+  --success-rgb: 0 120 60;
+  --danger-rgb: 202 25 69;
+  --warning-rgb: 83 99 169;
+  --frost-rgb: 36 27 56;
+
+  /* ProductReveal sekciju individuālie tumšie foni gaišajā saplok uz lapas
+     fonu — atsevišķas gaišas variācijas būtu troksnis. */
+  --reveal-bg: rgb(var(--bg-rgb));
+
+  color-scheme: light;
+}
+
 * {
   box-sizing: border-box;
+}
+
+/* Horizontālie karuseļi (Iespēju kartes) — ritjosla paslēpta, ritināšana
+   paliek native (pirksts, trackpad, shift+rullītis). */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 html {
@@ -78,10 +144,14 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Gaismu izmēri un pozīcijas FIKSĒTOS px, ne % — procenti mērās pret visu
+     body augstumu, un garā rakstā "40%" kļuva par vairāku tūkstošu px svītru
+     gandrīz visas lapas garumā (2026-09-18). */
   background:
-    radial-gradient(60% 40% at 10% 5%, rgba(128, 147, 255, 0.12), transparent 60%),
-    radial-gradient(40% 30% at 95% 10%, rgba(56, 189, 248, 0.07), transparent 65%),
+    radial-gradient(900px 460px at 180px 120px, rgb(var(--brand-light-rgb) / 0.12), transparent 60%),
+    radial-gradient(620px 360px at calc(100% - 120px) 180px, rgb(var(--accent-rgb) / 0.07), transparent 65%),
     var(--bg);
+  background-repeat: no-repeat;
   min-height: 100vh;
 }
 
@@ -118,18 +188,39 @@ input:-webkit-autofill:active {
 
 /* Selection — on-brand */
 ::selection {
-  background: rgba(90, 107, 255, 0.4);
+  background: rgb(var(--brand-rgb) / 0.4);
   color: var(--ink);
 }
 
-/* Mono labels, uppercase, wide-tracked — used for eyebrows / metadata */
+/* Mono labels, uppercase, wide-tracked — used for eyebrows / metadata.
+   TIKAI īsām etiķetēm (viens–divi vārdi virs virsraksta). Saitēm un
+   sarakstiem lieto .nav-link: mono + versāli + plats atstatums noņem vārda
+   siluetu, un vairāku vārdu rinda kļūst grūti lasāma (2026-09-18 atsauksme).
+   Atstatums nolaists 0.22 → 0.15em, izmērs 11 → 11.5px, lai arī etiķetes
+   lasās vieglāk, nezaudējot raksturu. */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--dim);
+}
+
+/* Navigācijas, kājenes un sarakstu saites — ĶERMEŅA fonts parastajā
+   reģistrā. Cilvēks saiti atpazīst pēc vārda silueta; versāli to noņem, un
+   mono vienādais burtu platums padara latviešu garumzīmes vēl grūtāk
+   šķiramas. Izmērs 15px ir lasīšanas minimums saitēm. */
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--dim);
+  transition: color 0.2s;
+}
+.nav-link:hover {
+  color: var(--ink);
 }
 
 /* Fluid display headings — Sora 800 at landing-page scale.
@@ -312,13 +403,13 @@ input:-webkit-autofill:active {
 .legal-prose hr {
   margin: 3em 0;
   border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgb(var(--frost-rgb) / 0.08);
 }
 
 .legal-prose code {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.85em;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgb(var(--frost-rgb) / 0.06);
   padding: 0.15em 0.4em;
   border-radius: 4px;
   color: var(--ink);
@@ -366,11 +457,11 @@ input:-webkit-autofill:active {
   color: var(--muted);
   font-weight: 500;
   padding: 0.6em 0.8em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgb(var(--frost-rgb) / 0.1);
 }
 .legal-prose tbody td {
   padding: 0.7em 0.8em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgb(var(--frost-rgb) / 0.05);
   vertical-align: top;
 }
 .legal-prose tbody tr:last-child td {
@@ -406,7 +497,7 @@ input:-webkit-autofill:active {
   background: linear-gradient(
     90deg,
     var(--bc-fill) var(--bc-pct, 0%),
-    rgba(255, 255, 255, 0.08) var(--bc-pct, 0%)
+    rgb(var(--frost-rgb) / 0.08) var(--bc-pct, 0%)
   );
 }
 .bc-range::-webkit-slider-thumb {
@@ -427,7 +518,7 @@ input:-webkit-autofill:active {
 .bc-range::-moz-range-track {
   height: 6px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(var(--frost-rgb) / 0.08);
 }
 .bc-range::-moz-range-progress {
   height: 6px;

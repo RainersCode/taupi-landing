@@ -1,0 +1,55 @@
+---
+/**
+ * Lipīgā sānjosla ar cita satura kartēm — budzeta-kalkulatora "Padomi"
+ * sānjoslas raksts, izcelts par komponenti, lai padomi/gids/jaunumi lapas
+ * var savstarpēji linkoties vienā stilā. Kartes ir tās pašas, kas
+ * CalculatorPage aside: klusa virsma, minimāls accent hover.
+ */
+interface Item {
+  href: string;
+  title: string;
+  /** Neobligāts apraksts zem virsraksta (2-3 rindas). */
+  desc?: string;
+  /** Neobligāta mazā rinda virs virsraksta (piem., datums). */
+  meta?: string;
+}
+
+interface Props {
+  eyebrow: string;
+  items: Item[];
+  moreHref?: string;
+  moreLabel?: string;
+}
+
+const { eyebrow, items, moreHref, moreLabel } = Astro.props;
+---
+{/* Kluss saraksts, ne kastes — sānjosla ir palīgsaturs un nedrīkst
+    sacensties ar lapas galvenajām kartēm (2026-09-18 atsauksme). */}
+<aside class="lg:sticky lg:top-28">
+  <p class="eyebrow mb-1">{eyebrow}</p>
+  <div class="divide-y divide-frost/[0.07]">
+    {items.map((item) => (
+      <a href={item.href} class="group block py-4">
+        {item.meta && (
+          <p class="eyebrow text-muted mb-1.5" style="font-size: 9.5px;">{item.meta}</p>
+        )}
+        <p
+          class="font-display font-semibold text-ink/90 text-[14.5px] group-hover:text-accent transition-colors"
+          style="letter-spacing: -0.01em; line-height: 1.35;"
+        >
+          {item.title}
+        </p>
+        {item.desc && (
+          <p class="mt-1.5 text-[12.5px] text-muted line-clamp-2" style="line-height: 1.5;">
+            {item.desc}
+          </p>
+        )}
+      </a>
+    ))}
+  </div>
+  {moreHref && moreLabel && (
+    <a href={moreHref} class="mt-4 inline-block eyebrow hover:text-ink transition-colors">
+      {moreLabel} →
+    </a>
+  )}
+</aside>

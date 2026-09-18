@@ -22,24 +22,30 @@ const principles = [
   { title: t["trust.p4.title"], detail: t["trust.p4.detail"] },
 ];
 ---
+{/* Otrā pilnkrāsas josla lapā (pirmā ir DownloadCTA brand violetā): dziļā
+    ciāna — tā pati krāsa, kas zīmolzīmes punktā. Privātuma solījums ir
+    pietiekami svarīgs, lai to izceltu ar krāsu, un josla starp Iespējām un
+    BUJ dod lapai ritmu: gaišs → krāsa → gaišs → krāsa. */}
 <section
   id="privacy"
-  class="relative py-20 md:py-52 px-4 md:px-10 border-t border-white/5 overflow-hidden"
+  class="relative py-20 md:py-44 px-4 md:px-10 overflow-hidden"
+  style="background: linear-gradient(170deg, rgb(var(--accent-surface-rgb)) 0%, rgb(var(--accent-surface-rgb) / 0.88) 100%);"
 >
   <div class="mx-auto max-w-content">
     <!-- ─── Eyebrow band ─────────────────────────────── -->
     <div class="flex items-baseline gap-6 mb-20 md:mb-28">
-      <span class="eyebrow">{t["trust.eyebrow"]}</span>
-      <span class="h-px flex-1 bg-white/10"></span>
+      <span class="eyebrow" style="color: rgba(255,255,255,0.65);">{t["trust.eyebrow"]}</span>
+      <span class="h-px flex-1" style="background: rgba(255,255,255,0.2);"></span>
     </div>
 
     <!-- ─── Headline — two lines, forced via explicit line strings ── -->
     <h2
-      class="font-display font-extrabold text-ink"
+      class="font-display font-extrabold"
       style="
         font-size: clamp(44px, 7vw, 120px);
         letter-spacing: -0.045em;
         line-height: 0.94;
+        color: #fff;
       "
     >
       <span class="block">{t["trust.title.l1"]}</span>
@@ -48,8 +54,8 @@ const principles = [
 
     <!-- ─── Body — deliberately short, sits one column beneath headline ── -->
     <p
-      class="mt-10 md:mt-12 max-w-[48ch] text-dim"
-      style="font-size: clamp(16px, 1.25vw, 19px); line-height: 1.55;"
+      class="mt-10 md:mt-12 max-w-[48ch]"
+      style="font-size: clamp(16px, 1.25vw, 19px); line-height: 1.55; color: rgba(255,255,255,0.78);"
     >
       {t["trust.body"]}
     </p>
@@ -57,30 +63,30 @@ const principles = [
     <!-- ─── Principles — spec-sheet rows ────────────────── -->
     <ul
       class="mt-24 md:mt-32 list-none"
-      style="border-top: 1px solid rgba(255, 255, 255, 0.09);"
+      style="border-top: 1px solid rgba(255,255,255,0.22);"
     >
       {principles.map((p, i) => (
         <li
           class="grid grid-cols-[2rem_1fr] md:grid-cols-[auto_1fr_auto] gap-x-4 md:gap-x-8 gap-y-1 md:gap-y-0 items-baseline py-5 md:py-7"
-          style="border-bottom: 1px solid rgba(255, 255, 255, 0.07);"
+          style="border-bottom: 1px solid rgba(255,255,255,0.16);"
         >
           <!-- Row number — mono, dim, tabular -->
           <span
-            class="eyebrow text-muted"
-            style="font-variant-numeric: tabular-nums;"
+            class="eyebrow"
+            style="font-variant-numeric: tabular-nums; color: rgba(255,255,255,0.5);"
           >
             {String(i + 1).padStart(2, "0")}
           </span>
 
           <!-- Principle — title in body font, medium weight -->
           <span
-            class="text-ink"
             style="
               font-family: 'DM Sans', system-ui, sans-serif;
               font-weight: 500;
               font-size: clamp(15px, 1.4vw, 20px);
               letter-spacing: -0.01em;
               line-height: 1.35;
+              color: #fff;
             "
           >
             {p.title}
@@ -94,7 +100,7 @@ const principles = [
               font-family: 'JetBrains Mono', ui-monospace, monospace;
               font-size: 11px;
               letter-spacing: 0.12em;
-              color: rgba(56, 189, 248, 0.72);
+              color: rgba(255,255,255,0.72);
               white-space: nowrap;
             "
           >
@@ -105,7 +111,7 @@ const principles = [
     </ul>
 
     <!-- ─── Signature — personal, quiet ─────────────── -->
-    <p class="mt-16 md:mt-20 eyebrow text-muted">
+    <p class="mt-16 md:mt-20 eyebrow" style="color: rgba(255,255,255,0.5);">
       {t["trust.signature"]}
     </p>
   </div>

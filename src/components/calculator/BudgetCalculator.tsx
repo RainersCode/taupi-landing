@@ -54,9 +54,9 @@ const MAX_CUSTOM = 8;
 const STORE_KEY = "taupi:bc:v1";
 
 const glass = {
-  background: "rgba(255,255,255,0.04)",
-  border: "1px solid rgba(255,255,255,0.10)",
-  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+  background: "rgb(var(--frost-rgb) / 0.04)",
+  border: "1px solid rgb(var(--frost-rgb) / 0.10)",
+  boxShadow: "inset 0 1px 0 rgb(var(--frost-rgb) / 0.05)",
 };
 
 type Amounts = Record<LineKey, number>;
@@ -304,7 +304,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
   // Rounded (not raw) diff — matches what money() displays, so a sub-€1
   // float wobble never paints a color over "no change".
   const freeDiff = compare ? Math.round(compare.freeAfter) - Math.round(compare.freeBefore) : 0;
-  let deltaColor = "#F5F5F7";
+  let deltaColor = "rgb(var(--frost-rgb))";
   if (freeDiff < 0) deltaColor = "#FF3B87";
   else if (freeDiff > 0) deltaColor = "#2DD4A7";
 
@@ -376,7 +376,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
         {/* Mode switch */}
         <div
           className="flex rounded-full p-1"
-          style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.10)" }}
+          style={{ background: "rgb(var(--frost-rgb) / 0.05)", border: "1px solid rgb(var(--frost-rgb) / 0.10)" }}
         >
           {(["now", "whatIf"] as CalcMode[]).map((m) => {
             const active = mode === m;
@@ -405,7 +405,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
 
         {/* Income */}
         <p className="eyebrow mt-7 mb-1.5">{t["bc.income"]}</p>
-        <div className="flex items-baseline gap-1.5 border-b border-white/15 focus-within:border-accent transition-colors pb-1.5">
+        <div className="flex items-baseline gap-1.5 border-b border-frost/15 focus-within:border-accent transition-colors pb-1.5">
           <span className="font-body text-[26px] text-dim">€</span>
           {mode === "whatIf" ? (
             // Income is shared between the two scenarios (one income, both
@@ -441,7 +441,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 </p>
                 <div
                   className="flex h-2 rounded-full overflow-hidden opacity-50"
-                  style={{ background: "rgba(255,255,255,0.07)" }}
+                  style={{ background: "rgb(var(--frost-rgb) / 0.07)" }}
                 >
                   {segments(baseEvald.lines)}
                 </div>
@@ -454,7 +454,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 <div
                   className="flex h-3.5 rounded-full overflow-hidden"
                   style={{
-                    background: "rgba(255,255,255,0.07)",
+                    background: "rgb(var(--frost-rgb) / 0.07)",
                     outline: evald.overAllocated ? "1px solid rgba(255,59,135,0.55)" : "none",
                     outlineOffset: 2,
                   }}
@@ -467,7 +467,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 aria-hidden
                 className="mt-8 flex h-3.5 rounded-full overflow-hidden"
                 style={{
-                  background: "rgba(255,255,255,0.07)",
+                  background: "rgb(var(--frost-rgb) / 0.07)",
                   outline: evald.overAllocated ? "1px solid rgba(255,59,135,0.55)" : "none",
                   outlineOffset: 2,
                 }}
@@ -494,7 +494,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
 
             {/* What-if verdict — one readable sentence, colored by outcome */}
             {compare && (
-              <div className="mt-6 pt-5 border-t border-white/10">
+              <div className="mt-6 pt-5 border-t border-frost/10">
                 <p
                   className="pl-3 text-[13.5px] text-ink"
                   style={{ borderLeft: `2px solid ${deltaColor}`, lineHeight: 1.6 }}
@@ -519,7 +519,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 In "Ko ja?" it uses the scenario's free amount, so experiments
                 immediately show their long-term upside. ── */}
             {Math.round(monthlyFree) > 0 && (
-              <div className="mt-6 pt-5 border-t border-white/10">
+              <div className="mt-6 pt-5 border-t border-frost/10">
                 <p className="eyebrow mb-4">{t["bc.invest.eyebrow"]}</p>
 
                 <div className="flex items-baseline justify-between">
@@ -599,7 +599,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
               className={`rounded-full px-4 py-2 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                 showingRecommended ? "text-ink" : "text-brand-light hover:text-ink"
               }`}
-              style={{ border: "1px solid rgba(255,255,255,0.14)" }}
+              style={{ border: "1px solid rgb(var(--frost-rgb) / 0.14)" }}
             >
               {showingRecommended ? t["bc.restoreMine"] : `✦ ${t["bc.recommended"]}`}
             </button>
@@ -644,7 +644,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                   type="button"
                   onClick={addCustomLine}
                   className="flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-medium text-brand-light hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  style={{ border: "1px solid rgba(255,255,255,0.14)" }}
+                  style={{ border: "1px solid rgb(var(--frost-rgb) / 0.14)" }}
                 >
                   <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
                     <path
@@ -694,8 +694,8 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 aria-hidden
                 className="mt-0.5 w-[18px] h-[18px] rounded-[5px] flex items-center justify-center shrink-0 transition-colors"
                 style={{
-                  border: `1px solid ${locked ? "#5A6BFF" : "rgba(255,255,255,0.25)"}`,
-                  background: locked ? "#5A6BFF" : "rgba(255,255,255,0.04)",
+                  border: `1px solid ${locked ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.25)"}`,
+                  background: locked ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.04)",
                 }}
               >
                 {locked && (

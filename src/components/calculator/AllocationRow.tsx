@@ -65,7 +65,7 @@ export default function AllocationRow({
   const ariaName = label || labelPlaceholder || "";
 
   return (
-    <div className="py-4 border-b border-white/[0.07] last:border-0">
+    <div className="py-4 border-b border-frost/[0.07] last:border-0">
       <div className="flex items-center gap-3">
         <span
           aria-hidden
@@ -79,7 +79,7 @@ export default function AllocationRow({
               onChange={(e) => onLabelChange(e.target.value)}
               placeholder={labelPlaceholder}
               aria-label={labelPlaceholder}
-              className="flex-1 min-w-0 bg-transparent text-[15px] text-ink placeholder:text-muted outline-none border-b border-white/15 focus:border-accent transition-colors"
+              className="flex-1 min-w-0 bg-transparent text-[15px] text-ink placeholder:text-muted outline-none border-b border-frost/15 focus:border-accent transition-colors"
             />
             {onRemove && (
               <button
@@ -88,7 +88,7 @@ export default function AllocationRow({
                 aria-label={removeLabel}
                 title={removeLabel}
                 className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                style={{ background: "rgba(255,255,255,0.05)" }}
+                style={{ background: "rgb(var(--frost-rgb) / 0.05)" }}
               >
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
                   <path
@@ -122,7 +122,7 @@ export default function AllocationRow({
               }}
               inputMode="numeric"
               aria-label={`${ariaName} — €`}
-              className="w-[58px] bg-transparent text-right font-mono text-[15px] text-ink outline-none border-b border-white/15 focus:border-accent transition-colors tabular-nums"
+              className="w-[58px] bg-transparent text-right font-mono text-[15px] text-ink outline-none border-b border-frost/15 focus:border-accent transition-colors tabular-nums"
             />
           </span>
         </span>
