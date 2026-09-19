@@ -10,6 +10,18 @@ type Dict = Record<string, string>;
 
 export const strings: Record<Locale, Dict> = {
   lv: {
+    "nav.product": "Produkts",
+    "nav.resources": "Resursi",
+    "nav.product.lead": "Kluss ikdienas pavadonis tavai naudai — budžets, čeki un ieskati vienuviet.",
+    "nav.product.cta": "Apskatīt lietotni",
+    "nav.tools.lead": "Bezmaksas rīki bez reģistrācijas. Dati paliek tavā ierīcē.",
+    "nav.tools.all": "Visi kalkulatori",
+    "nav.resources.gids.desc": "Soli pa solim no pirmā budžeta līdz uzkrājumam.",
+    "nav.resources.blog.desc": "Īsi, praktiski padomi naudas ikdienai.",
+    "nav.resources.jaunumi.desc": "Kas jauns lietotnē un kas tuvākajā laikā.",
+    "nav.about.desc": "Kas stāv aiz Taupi un kāpēc tas top Latvijā.",
+    "nav.privacy.desc": "Tavi dati paliek tavi. Bez reklāmām un sekotājiem.",
+    "nav.features.desc": "Budžets, čeku skenēšana, ieskati un mērķi.",
     "nav.features": "Iespējas",
     "nav.privacy": "Privātums",
     "nav.blog": "Padomi",
@@ -416,6 +428,18 @@ export const strings: Record<Locale, Dict> = {
   },
 
   en: {
+    "nav.product": "Product",
+    "nav.resources": "Resources",
+    "nav.product.lead": "A quiet everyday companion for your money — budget, receipts and insights in one place.",
+    "nav.product.cta": "Explore the app",
+    "nav.tools.lead": "Free tools, no sign-up. Your data stays on your device.",
+    "nav.tools.all": "All calculators",
+    "nav.resources.gids.desc": "Step by step, from a first budget to real savings.",
+    "nav.resources.blog.desc": "Short, practical notes on everyday money.",
+    "nav.resources.jaunumi.desc": "What is new in the app and what is coming.",
+    "nav.about.desc": "Who is behind Taupi, and why it is built in Latvia.",
+    "nav.privacy.desc": "Your data stays yours. No ads, no trackers.",
+    "nav.features.desc": "Budget, receipt scanning, insights and goals.",
     "nav.features": "Features",
     "nav.privacy": "Privacy",
     "nav.blog": "Tips",

@@ -16,80 +16,180 @@ const altLabel = locale === "lv" ? "EN" : "LV";
 const home = path("home", locale);
 const toolsHref = path("tools", locale);
 const aboutHref = path("about", locale);
+
+/**
+ * Navigācija ir Wise modelī: nevis septiņas līdzvērtīgas saites rindā, bet
+ * TRĪS izvēlnes, kas atveras uz hover. Iemesls ir hierarhija — ar septiņām
+ * saitēm neviena no tām nesvēra vairāk par citu, un rīki (lapas reālais
+ * saturs) sēdēja vienā līmenī ar "Jaunumi" (2026-09-19).
+ *
+ * `en: null` maršruti (gids, padomi, jaunumi) eksistē tikai latviski, tāpēc
+ * Resursu izvēlne angļu versijā nemaz netiek renderēta — nevis renderēta un
+ * paslēpta, citādi tā nonāktu HTML un Google sekotu saitēm uz 404.
+ */
+const productItems = [
+  { href: `${home}#features`, label: t["nav.features"], desc: t["nav.features.desc"], icon: "spark" },
+  { href: `${home}#privacy`, label: t["nav.privacy"], desc: t["nav.privacy.desc"], icon: "shield" },
+  { href: aboutHref, label: t["footer.legal.about"], desc: t["nav.about.desc"], icon: "flag" },
+];
+
+/* Miniatūras ir TIE PAŠI faili, kas rīku kartēs — pārlūks tos jau ir
+   ielādējis, tāpēc izvēlne neatver nevienu jaunu pieprasījumu. */
+const toolItems = [
+  { key: "budget", href: path("budget", locale), img: "/images/tools/budget.webp" },
+  { key: "percent", href: path("percent", locale), img: "/images/tools/percent.webp", lvOnly: true },
+  { key: "compound", href: path("compound", locale), img: "/images/tools/compound.webp" },
+  { key: "emergency", href: path("emergency", locale), img: "/images/tools/emergency.webp" },
+  { key: "debt", href: path("debt", locale), img: "/images/tools/debt.webp" },
+].filter((i) => !i.lvOnly || locale === "lv");
+
+const resourceItems = [
+  { href: "/gids/", label: t["nav.gids"], desc: t["nav.resources.gids.desc"], icon: "map" },
+  { href: "/padomi/", label: t["nav.blog"], desc: t["nav.resources.blog.desc"], icon: "note" },
+  { href: "/jaunumi/", label: "Jaunumi", desc: t["nav.resources.jaunumi.desc"], icon: "bell" },
+];
 ---
 <!-- Mobile: tight (px-4, py-3, hide Download button — CTA is below the fold).
      Desktop: unchanged (px-10, py-5). Removed backdrop-blur to avoid scroll
      compositor jank during the pinned reveal section. -->
-<header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-10 py-3 md:py-5" style="background: rgb(var(--bg-rgb) / 0.72);">
+<header class="site-header fixed top-0 left-0 right-0 z-50 px-4 md:px-10 py-3 md:py-5" style="background: rgb(var(--bg-rgb) / 0.72);">
   <div class="mx-auto max-w-content flex items-center justify-between">
     <!-- Gredzens mark + wordmark -->
     <a href={locale === "lv" ? "/" : "/en/"} class="group flex items-center gap-2.5">
       <img src="/gredzens.svg" alt="" width="26" height="26" />
       <span class="font-display font-extrabold text-xl md:text-2xl text-ink" style="letter-spacing: -0.04em;">
-        taupi<span class="text-accent">.</span>
+        taupi<span class="logo-dot">.</span>
       </span>
     </a>
 
     <!-- Right cluster -->
-    <nav class="flex items-center gap-4 md:gap-10">
-      <a href={`${home}#features`} class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
-        {t["nav.features"]}
-      </a>
-      <a href={`${home}#privacy`} class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
-        {t["nav.privacy"]}
-      </a>
+    <nav class="flex items-center gap-4 md:gap-1">
+      {/* ─── PRODUKTS ─────────────────────────────────────────────── */}
+      <div class="nav-group hidden md:block">
+        <button type="button" class="nav-trigger" aria-expanded="false" aria-haspopup="true">
+          {t["nav.product"]}
+          <svg class="nav-chev" width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="nav-menu">
+          <div class="nav-menu-inner nav-menu-split">
+            <!-- Izceltā kartīte — tas pats ekrānuzņēmums, kas hero telefonā -->
+            <a href={`${home}#features`} class="nav-feature">
+              <span class="nav-feature-shot">
+                <img src="/images/screens/sakums-light.webp" alt="" width="942" height="2048" loading="lazy" decoding="async" />
+              </span>
+              <span class="nav-feature-body">
+                <span class="nav-feature-title">Taupi</span>
+                <span class="nav-feature-lead">{t["nav.product.lead"]}</span>
+                <span class="nav-feature-cta">
+                  {t["nav.product.cta"]}
+                  <span aria-hidden="true">→</span>
+                </span>
+              </span>
+            </a>
+
+            <ul class="nav-list">
+              {productItems.map((item) => (
+                <li>
+                  <a href={item.href} class="nav-row">
+                    <span class="nav-row-icon" data-icon={item.icon} aria-hidden="true"></span>
+                    <span>
+                      <span class="nav-row-title">{item.label}</span>
+                      <span class="nav-row-desc">{item.desc}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── RĪKI ─────────────────────────────────────────────────── */}
+      <div class="nav-group hidden md:block">
+        <button type="button" class="nav-trigger" aria-expanded="false" aria-haspopup="true">
+          {t["nav.tools"]}
+          <svg class="nav-chev" width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="nav-menu nav-menu-wide">
+          <div class="nav-menu-inner">
+            <p class="nav-menu-lead">{t["nav.tools.lead"]}</p>
+            <ul class="nav-grid">
+              {toolItems.map((tool) => (
+                <li>
+                  <a href={tool.href} class="nav-tool">
+                    <span class="nav-tool-shot">
+                      <img src={tool.img} alt="" width="1200" height="500" loading="lazy" decoding="async" />
+                    </span>
+                    <span>
+                      <span class="nav-row-title">{t[`tools.${tool.key}.title`]}</span>
+                      <span class="nav-row-desc">{t[`tools.${tool.key}.desc`]}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href={toolsHref} class="nav-menu-all">
+              {t["nav.tools.all"]}
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── RESURSI (tikai LV — šie maršruti angliski neeksistē) ──── */}
       {locale === "lv" && (
-        <a href="/jaunumi/" class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
-          Jaunumi
-        </a>
-        <a href="/padomi/" class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
-          {t["nav.blog"]}
-        </a>
+        <div class="nav-group hidden md:block">
+          <button type="button" class="nav-trigger" aria-expanded="false" aria-haspopup="true">
+            {t["nav.resources"]}
+            <svg class="nav-chev" width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div class="nav-menu">
+            <div class="nav-menu-inner">
+              <ul class="nav-list">
+                {resourceItems.map((item) => (
+                  <li>
+                    <a href={item.href} class="nav-row">
+                      <span class="nav-row-icon" data-icon={item.icon} aria-hidden="true"></span>
+                      <span>
+                        <span class="nav-row-title">{item.label}</span>
+                        <span class="nav-row-desc">{item.desc}</span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
       )}
-      {locale === "lv" && (
-        <a href="/gids/" class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]">
-          {t["nav.gids"]}
-        </a>
-      )}
-      <a
-        href={toolsHref}
-        class="hidden md:inline nav-link rounded-full px-3 py-2 hover:bg-frost/[0.06]"
-      >
-        {t["nav.tools"]}
-      </a>
+
       <a
         href={altHref}
-        class="nav-link text-ink/60 hover:text-accent"
+        class="nav-link ml-2 md:ml-4 text-ink/60 hover:text-accent"
         aria-label={`Switch to ${altLabel}`}
       >
         {altLabel}
       </a>
-      <!-- Tēmas slēdzis: rāda PRETĒJO tēmu (saule tumšajā → klikšķis uz gaišo). -->
-      <button
-        id="theme-toggle"
-        type="button"
-        class="flex items-center justify-center w-9 h-9 rounded-full border border-frost/15 text-dim hover:text-ink hover:border-frost/25 transition-colors"
-        aria-label={locale === "lv" ? "Pārslēgt gaišo/tumšo tēmu" : "Toggle light/dark theme"}
-      >
-        <svg class="theme-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4.2" />
-          <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M4.8 4.8l1.6 1.6M17.6 17.6l1.6 1.6M19.2 4.8l-1.6 1.6M6.4 17.6l-1.6 1.6" />
-        </svg>
-        <svg class="theme-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" />
-        </svg>
-      </button>
       <a
         href={`${home}#waitlist`}
-        class="hidden md:inline-flex items-center rounded-full bg-brand px-5 py-2.5 text-sm font-medium hover:bg-brand-deep transition-colors" style="color: #fff;"
+        class="hidden md:inline-flex items-center rounded-full bg-brand px-5 py-2.5 text-sm font-medium hover:bg-brand-deep transition-colors ml-2" style="color: #fff;"
       >
         {launch.live ? t["nav.download"] : t["nav.join"]}
       </a>
 
-      <!-- Mobile menu — native <details> toggle opening a full-screen
-           panel with display-scale links (the site's own type language),
-           staggered rise-in and a soft brand glow. No JS island; a tiny
-           inline script closes it after a tap and locks page scroll. -->
+      <!-- Mobilā izvēlne — Wise modelī: pirmais līmenis ir īss saraksts, un
+           sadaļas ar apakšpunktiem atver SAVU paneli ar atpakaļpogu, nevis
+           izver visu vienā garā sarakstā. Native <details> tur atvēršanu,
+           paneļu maiņa ir ~25 rindas vanilla JS. -->
       <details id="mobile-nav" class="md:hidden">
         <summary
           class="list-none cursor-pointer flex items-center justify-center w-10 h-10 -mr-1.5 text-ink"
@@ -104,33 +204,123 @@ const aboutHref = path("about", locale);
         </summary>
 
         <div class="nav-panel">
-          <nav class="panel-inner">
-            <div class="panel-links">
-              <a href={`${home}#features`}>{t["nav.features"]}</a>
-              <a href={`${home}#privacy`}>{t["nav.privacy"]}</a>
-              <a href={toolsHref}>
-                {t["nav.tools"]}
-              </a>
-              {locale === "lv" && <a href="/padomi/">{t["nav.blog"]}</a>}
-              {locale === "lv" && <a href="/jaunumi/">Jaunumi</a>}
-              {locale === "lv" && <a href="/gids/">{t["nav.gids"]}</a>}
-              <a href={aboutHref}>
-                {t["footer.legal.about"]}
-              </a>
-            </div>
-
-            <div class="panel-bottom">
-              <a href={`${home}#waitlist`} class="panel-cta">{launch.live ? t["nav.download"] : t["nav.join"]}</a>
-              <div class="panel-contact">
-                <a href="mailto:info@taupi.eu">info@taupi.eu</a>
-                <a href="tel:+37128333522">+371 28 333 522</a>
+          {/* ── Līmenis 1 ── */}
+          <div class="m-panel" data-panel="root" data-active>
+            <nav class="m-inner m-inner-root">
+              <div class="m-list">
+                <button type="button" class="m-row m-row-btn" data-goto="product">
+                  <span>{t["nav.product"]}</span>
+                  <svg class="m-chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+                <button type="button" class="m-row m-row-btn" data-goto="tools">
+                  <span>{t["nav.tools"]}</span>
+                  <svg class="m-chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+                {locale === "lv" && (
+                  <button type="button" class="m-row m-row-btn" data-goto="resources">
+                    <span>{t["nav.resources"]}</span>
+                    <svg class="m-chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  </button>
+                )}
+                <a href={`${home}#privacy`} class="m-row">
+                  <span>{t["nav.privacy"]}</span>
+                </a>
               </div>
-              <p class="panel-made">
-                <span>{t["footer.made"]}</span>
-                <span>taupi.eu</span>
-              </p>
+
+              <div class="panel-bottom">
+                <a href={`${home}#waitlist`} class="panel-cta">{launch.live ? t["nav.download"] : t["nav.join"]}</a>
+                <div class="panel-contact">
+                  <a href="mailto:info@taupi.eu">info@taupi.eu</a>
+                  <a href="tel:+37128333522">+371 28 333 522</a>
+                </div>
+                <p class="panel-made">
+                  <span>{t["footer.made"]}</span>
+                  <span>taupi.eu</span>
+                </p>
+              </div>
+            </nav>
+          </div>
+
+          {/* ── Līmenis 2: Produkts ── */}
+          <div class="m-panel" data-panel="product">
+            <nav class="m-inner">
+              <button type="button" class="m-back" data-back>
+                <svg class="m-back-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                {t["nav.product"]}
+              </button>
+              <div class="m-list">
+                {productItems.map((item) => (
+                  <a href={item.href} class="m-row m-row-sub">
+                    <span>
+                      <span class="m-row-title">{item.label}</span>
+                      <span class="m-row-desc">{item.desc}</span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </nav>
+          </div>
+
+          {/* ── Līmenis 2: Rīki ── */}
+          <div class="m-panel" data-panel="tools">
+            <nav class="m-inner">
+              <button type="button" class="m-back" data-back>
+                <svg class="m-back-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                {t["nav.tools"]}
+              </button>
+              <div class="m-list">
+                {toolItems.map((tool) => (
+                  <a href={tool.href} class="m-row m-row-sub">
+                    <span class="m-shot">
+                      <img src={tool.img} alt="" width="1200" height="500" loading="lazy" decoding="async" />
+                    </span>
+                    <span>
+                      <span class="m-row-title">{t[`tools.${tool.key}.title`]}</span>
+                      <span class="m-row-desc">{t[`tools.${tool.key}.desc`]}</span>
+                    </span>
+                  </a>
+                ))}
+                <a href={toolsHref} class="m-row m-row-all">
+                  {t["nav.tools.all"]}
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </nav>
+          </div>
+
+          {/* ── Līmenis 2: Resursi ── */}
+          {locale === "lv" && (
+            <div class="m-panel" data-panel="resources">
+              <nav class="m-inner">
+                <button type="button" class="m-back" data-back>
+                  <svg class="m-back-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  {t["nav.resources"]}
+                </button>
+                <div class="m-list">
+                  {resourceItems.map((item) => (
+                    <a href={item.href} class="m-row m-row-sub">
+                      <span>
+                        <span class="m-row-title">{item.label}</span>
+                        <span class="m-row-desc">{item.desc}</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </nav>
             </div>
-          </nav>
+          )}
         </div>
       </details>
     </nav>
@@ -138,17 +328,284 @@ const aboutHref = path("about", locale);
 </header>
 
 <style>
-  /* Tēmas slēdža ikonas: saule tumšajā (aicina uz gaišo), mēness gaišajā. */
-  .theme-moon {
-    display: none;
-  }
-  :global([data-theme="light"]) .theme-sun {
-    display: none;
-  }
-  :global([data-theme="light"]) .theme-moon {
-    display: block;
+  /* ═══ DESKTOP: hover izvēlnes ═══════════════════════════════════════
+     Atvēršana ir TIKAI CSS (:hover + :focus-within), bez JS. focus-within
+     ir tas, kas notur tastatūru: taustiņu lietotājs ar Tab iekļūst pogā,
+     izvēlne atveras, un Tab turpinās izvēlnes iekšienē. Ar JS-only hover
+     šis ceļš pazustu.
+
+     `padding-top` uz .nav-menu, nevis `margin` — tā starp pogu un paneli
+     nav caurumu, pār kuru pele varētu "izkrist" un aizvērt izvēlni. */
+  .nav-group {
+    position: relative;
   }
 
+  .nav-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--dim);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 9999px;
+    transition: color 0.2s, background-color 0.2s;
+  }
+  .nav-group:hover .nav-trigger,
+  .nav-group:focus-within .nav-trigger {
+    color: var(--ink);
+    background: rgb(var(--frost-rgb) / 0.06);
+  }
+  .nav-chev {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .nav-group:hover .nav-chev,
+  .nav-group:focus-within .nav-chev {
+    transform: rotate(180deg);
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 440px;
+    padding-top: 14px;
+    transform: translateX(-50%) translateY(-6px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.22s;
+  }
+  .nav-menu-wide {
+    width: 680px;
+  }
+  .nav-group:hover .nav-menu,
+  .nav-group:focus-within .nav-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Panelis ir necaurspīdīgs ar nolūku: zem tā slīd lapas saturs, un pat
+     viegla caurspīdība padarīja tekstu nelasāmu virs hero foto. */
+  .nav-menu-inner {
+    background: rgb(var(--surface-rgb));
+    border: 1px solid rgb(var(--frost-rgb) / 0.08);
+    border-radius: 20px;
+    padding: 14px;
+    box-shadow:
+      0 2px 6px -2px rgb(var(--frost-rgb) / 0.10),
+      0 24px 48px -16px rgb(var(--frost-rgb) / 0.22);
+  }
+  .nav-menu-split {
+    display: grid;
+    grid-template-columns: 172px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  /* ── Izceltā kartīte ── */
+  .nav-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, rgb(var(--brand-rgb) / 0.12), rgb(var(--brand-rgb) / 0.04));
+    text-decoration: none;
+    overflow: hidden;
+    transition: background 0.25s;
+  }
+  .nav-feature:hover {
+    background: linear-gradient(160deg, rgb(var(--brand-rgb) / 0.18), rgb(var(--brand-rgb) / 0.07));
+  }
+  .nav-feature-shot {
+    display: block;
+    height: 96px;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    background: rgb(var(--bg-rgb));
+  }
+  .nav-feature-shot img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: top center;
+    height: 100%;
+  }
+  .nav-feature-body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .nav-feature-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .nav-feature-lead {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--dim);
+  }
+  .nav-feature-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .nav-feature:hover .nav-feature-cta span {
+    transform: translateX(3px);
+  }
+  .nav-feature-cta span {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* ── Saraksta rindas ── */
+  .nav-list,
+  .nav-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px 8px;
+  }
+
+  .nav-row,
+  .nav-tool {
+    display: flex;
+    gap: 11px;
+    padding: 10px 11px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  .nav-row:hover,
+  .nav-tool:hover,
+  .nav-row:focus-visible,
+  .nav-tool:focus-visible {
+    background: rgb(var(--frost-rgb) / 0.05);
+  }
+  .nav-row-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .nav-row-desc {
+    display: block;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--dim);
+  }
+  .nav-row:hover .nav-row-title,
+  .nav-tool:hover .nav-row-title {
+    color: var(--accent);
+  }
+
+  /* Ikonas ir CSS masku formas, nevis inline SVG katrā rindā — tā viena
+     krāsa (currentColor ekvivalents) tur visu komplektu sinhronu. */
+  .nav-row-icon {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgb(var(--brand-rgb) / 0.10);
+    position: relative;
+  }
+  .nav-row-icon::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    background: var(--accent);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+  }
+  .nav-row-icon[data-icon="spark"]::after {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z'/%3E%3C/svg%3E");
+  }
+  .nav-row-icon[data-icon="shield"]::after {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z'/%3E%3C/svg%3E");
+  }
+  .nav-row-icon[data-icon="flag"]::after {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 21V4M5 4h9l-1.5 3.5L14 11H5'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 21V4M5 4h9l-1.5 3.5L14 11H5'/%3E%3C/svg%3E");
+  }
+  .nav-row-icon[data-icon="map"]::after {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4L3.5 6v14L9 18l6 2 5.5-2V4L15 6z'/%3E%3Cpath d='M9 4v14M15 6v14'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4L3.5 6v14L9 18l6 2 5.5-2V4L15 6z'/%3E%3Cpath d='M9 4v14M15 6v14'/%3E%3C/svg%3E");
+  }
+  .nav-row-icon[data-icon="note"]::after {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='3.5' width='14' height='17' rx='2'/%3E%3Cpath d='M9 8h6M9 12h6M9 16h3'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='3.5' width='14' height='17' rx='2'/%3E%3Cpath d='M9 8h6M9 12h6M9 16h3'/%3E%3C/svg%3E");
+  }
+  .nav-row-icon[data-icon="bell"]::after {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9a6 6 0 1112 0c0 5 2 6 2 6H4s2-1 2-6z'/%3E%3Cpath d='M10.5 19a1.8 1.8 0 003 0'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9a6 6 0 1112 0c0 5 2 6 2 6H4s2-1 2-6z'/%3E%3Cpath d='M10.5 19a1.8 1.8 0 003 0'/%3E%3C/svg%3E");
+  }
+
+  /* ── Rīku režģis ── */
+  .nav-menu-lead {
+    margin: 4px 11px 10px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .nav-tool-shot {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 40px;
+    border-radius: 9px;
+    overflow: hidden;
+    background: rgb(var(--bg-rgb));
+  }
+  .nav-tool-shot img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .nav-menu-all {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 11px 11px;
+    border-top: 1px solid rgb(var(--frost-rgb) / 0.07);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-menu-all span {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .nav-menu-all:hover span {
+    transform: translateX(4px);
+  }
+
+  /* ═══ MOBILE ════════════════════════════════════════════════════════ */
   /* Hide the default disclosure triangle across browsers */
   #mobile-nav summary::-webkit-details-marker {
     display: none;
@@ -171,43 +628,176 @@ const aboutHref = path("about", locale);
     position: fixed;
     inset: 0;
     z-index: -1;
+    overflow: hidden;
     background:
       radial-gradient(55% 40% at 85% 8%, rgb(var(--brand-rgb) / 0.16), transparent 65%),
       radial-gradient(45% 35% at 8% 96%, rgb(var(--accent-rgb) / 0.08), transparent 65%),
       var(--bg);
   }
   #mobile-nav[open] .nav-panel {
-    display: flex;
-    overflow-y: auto;
+    display: block;
     animation: panel-fade 0.3s ease both;
   }
 
-  .panel-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    padding: 104px 24px calc(24px + env(safe-area-inset-bottom));
+  /* Katrs līmenis ir savs pilnekrāna panelis. Pārslēgšanās ir slīdošs
+     translateX, nevis display swap: bērns ienāk no labās, vecāks aiziet pa
+     kreisi — tas pats žests, ko lietotājs sagaida no iOS/Android dziļuma. */
+  .m-panel {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateX(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.24s ease, visibility 0.34s;
+  }
+  .m-panel[data-active] {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+  .m-panel[data-behind] {
+    transform: translateX(-28%);
+    opacity: 0;
+    visibility: hidden;
   }
 
-  .panel-links {
+  /* `space-between` TIKAI saknes panelī. Tur tas ir jēgpilns — saites augšā,
+     CTA un kontakti pie apakšas. Apakšpaneļos apakšējās grupas nav, tāpēc
+     space-between nospieda visu sarakstu uz ekrāna apakšu (2026-09-19).
+
+     Atsevišķa klase, nevis `.m-panel[data-panel="root"] .m-inner` — Astro
+     scoped CSS no tā selektora nogrieza priekšteci un atstāja pliku
+     `.m-inner{space-between}`, kas pārrakstīja VISUS paneļus atpakaļ. */
+  .m-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 100%;
+    padding: 96px 20px calc(24px + env(safe-area-inset-bottom));
+  }
+  .m-inner-root {
+    justify-content: space-between;
+  }
+
+  .m-list {
     display: flex;
     flex-direction: column;
   }
-  .panel-links a {
+
+  .m-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid rgb(var(--frost-rgb) / 0.07);
+    padding: 20px 4px;
     font-family: var(--font-display);
-    /* 800/40px lasījās kā kliegšana pilnekrāna panelī — 600 un mazliet
-       mazāks izmērs tur pašu hierarhiju, bet bez plakāta smaguma. */
     font-weight: 600;
-    font-size: clamp(24px, 6.5vw, 34px);
+    font-size: clamp(21px, 5.4vw, 27px);
     letter-spacing: -0.02em;
-    line-height: 1.1;
+    line-height: 1.15;
     color: var(--ink);
     text-decoration: none;
-    padding: 16px 0;
-    border-bottom: 1px solid rgb(var(--frost-rgb) / 0.06);
+    cursor: pointer;
   }
-  .panel-links a:active {
+  .m-row-btn {
+    justify-content: space-between;
+  }
+  .m-row:active {
+    color: var(--accent);
+  }
+  /* SVG, nevis teksta glifs (‹ ›). Glifam ir sava optiskā ass, kas atšķiras
+     katrā fontā un pie katra izmēra, tāpēc tas nekad nestāv vienā līnijā ar
+     blakus tekstu. SVG ģeometrija ir precīza (2026-09-19). */
+  .m-chev {
+    flex: 0 0 auto;
+    color: var(--muted);
+  }
+
+  /* Otrais līmenis ir SATURS, ne navigācijas skelets, tāpēc tipogrāfija te
+     kāpj lejā: virsraksts 17px + apraksts. Ja apakšpunkti paliktu 27px kā
+     pirmais līmenis, panelis lasītos kā vēl viena izvēlne, nevis kā atbilde. */
+  .m-row-sub {
+    align-items: flex-start;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 16px 4px;
+  }
+  .m-row-title {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .m-row-desc {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--dim);
+  }
+  .m-shot {
+    flex: 0 0 auto;
+    width: 58px;
+    height: 44px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgb(var(--surface-rgb));
+  }
+  .m-shot img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .m-row-all {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    justify-content: space-between;
+    border-bottom: 0;
+    padding-top: 22px;
+  }
+
+  .m-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    align-self: flex-start;
+    background: none;
+    border: 0;
+    padding: 0 0 22px;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    cursor: pointer;
+  }
+  /* NEKĀDU manuālu nobīžu. Pārrēķināts ar JetBrains Mono metrikām (em 1000,
+     ascender 1020, descender -300, capHeight 730): pie fiksēta line-height
+     versāļu optiskais vidus ir 0.06px no rindas kastes vidus, t.i. praktiski
+     nulle. `align-items: center` to nokārto pats. Iepriekš te bija pievienots
+     margin-top: 1px "optiskai korekcijai" — tieši tas arī bija visa redzamā
+     nesakritība (2026-09-19). */
+  .m-back-icon {
+    flex: 0 0 auto;
+  }
+  .m-back:active {
     color: var(--accent);
   }
 
@@ -215,6 +805,7 @@ const aboutHref = path("about", locale);
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding-top: 40px;
   }
   .panel-cta {
     display: flex;
@@ -260,16 +851,16 @@ const aboutHref = path("about", locale);
     margin: 0;
   }
 
-  /* Staggered rise-in for links + bottom group */
-  #mobile-nav[open] .panel-links a,
-  #mobile-nav[open] .panel-bottom > * {
+  /* Staggered rise-in — tikai pirmajam līmenim. Otrā līmeņa paneļiem jau ir
+     savs slīdošais žests; divas animācijas vienlaikus lasītos kā raustīšanās. */
+  #mobile-nav[open] .m-panel[data-panel="root"] .m-list > *,
+  #mobile-nav[open] .m-panel[data-panel="root"] .panel-bottom > * {
     animation: panel-rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
-  #mobile-nav[open] .panel-links a:nth-child(1) { animation-delay: 0.05s; }
-  #mobile-nav[open] .panel-links a:nth-child(2) { animation-delay: 0.11s; }
-  #mobile-nav[open] .panel-links a:nth-child(3) { animation-delay: 0.17s; }
-  #mobile-nav[open] .panel-links a:nth-child(4) { animation-delay: 0.23s; }
-  #mobile-nav[open] .panel-links a:nth-child(5) { animation-delay: 0.29s; }
+  #mobile-nav[open] .m-panel[data-panel="root"] .m-list > *:nth-child(1) { animation-delay: 0.05s; }
+  #mobile-nav[open] .m-panel[data-panel="root"] .m-list > *:nth-child(2) { animation-delay: 0.11s; }
+  #mobile-nav[open] .m-panel[data-panel="root"] .m-list > *:nth-child(3) { animation-delay: 0.17s; }
+  #mobile-nav[open] .m-panel[data-panel="root"] .m-list > *:nth-child(4) { animation-delay: 0.23s; }
   #mobile-nav[open] .panel-cta { animation-delay: 0.3s; }
   #mobile-nav[open] .panel-contact { animation-delay: 0.35s; }
   #mobile-nav[open] .panel-made { animation-delay: 0.4s; }
@@ -290,36 +881,50 @@ const aboutHref = path("about", locale);
 
   @media (prefers-reduced-motion: reduce) {
     #mobile-nav[open] .nav-panel,
-    #mobile-nav[open] .panel-links a,
+    #mobile-nav[open] .m-list > *,
     #mobile-nav[open] .panel-bottom > * {
       animation: none;
+    }
+    .m-panel,
+    .nav-menu,
+    .nav-chev {
+      transition: none;
     }
   }
 </style>
 
 <script is:inline>
-  // Close the menu after tapping a link (same-page anchors don't reload),
-  // and lock page scroll behind the full-screen panel while it's open.
   (() => {
     const nav = document.getElementById("mobile-nav");
     if (!nav) return;
+
+    const panels = nav.querySelectorAll("[data-panel]");
+    const show = (name) => {
+      panels.forEach((p) => {
+        const isTarget = p.dataset.panel === name;
+        p.toggleAttribute("data-active", isTarget);
+        // Saknes panelis aiziet PA KREISI (aiz bērna), pārējie gaida pa labi.
+        p.toggleAttribute("data-behind", !isTarget && p.dataset.panel === "root");
+        if (isTarget) p.scrollTop = 0;
+      });
+    };
+
+    nav.querySelectorAll("[data-goto]").forEach((b) =>
+      b.addEventListener("click", () => show(b.dataset.goto))
+    );
+    nav.querySelectorAll("[data-back]").forEach((b) =>
+      b.addEventListener("click", () => show("root"))
+    );
+
+    // Aizverot izvēlni, VIENMĒR atgriežamies saknē — citādi nākamā atvēršana
+    // sāktos dziļumā, kur lietotājs bija palicis, un tas lasās kā kļūda.
     nav.addEventListener("toggle", () => {
       document.documentElement.style.overflow = nav.open ? "hidden" : "";
+      if (!nav.open) show("root");
     });
+
     nav.querySelectorAll("a").forEach((a) => {
       a.addEventListener("click", () => nav.removeAttribute("open"));
     });
   })();
-
-  // Tēmas slēdzis — pārslēdz data-theme uz <html>, iegaumē localStorage un
-  // notur pārlūka chrome krāsu (theme-color) sinhronā ar lapu.
-  document.getElementById("theme-toggle")?.addEventListener("click", () => {
-    const root = document.documentElement;
-    const light = root.dataset.theme !== "light";
-    if (light) root.dataset.theme = "light";
-    else delete root.dataset.theme;
-    try { localStorage.setItem("theme", light ? "light" : "dark"); } catch {}
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", light ? "#F5F1FD" : "#0D1128");
-  });
 </script>
