@@ -79,7 +79,7 @@ export default function Hero({ locale }: { locale: Locale }) {
                 <span aria-hidden className="mx-2.5" style={{ color: "rgb(var(--frost-rgb) / 0.18)" }}>
                   ·
                 </span>
-                <span style={{ color: "#38BDF8" }}>{t["hero.eyebrow.tester"]}</span>
+                <span style={{ color: "var(--accent)" }}>{t["hero.eyebrow.tester"]}</span>
               </>
             )}
           </motion.p>

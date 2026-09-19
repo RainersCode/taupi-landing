@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import NumberFlow from "@number-flow/react";
 import type { Locale } from "~/i18n/strings";
+import { BRAND, OK } from "./palette";
 
 /**
  * Shared input controls + tiny helpers for the calculator islands.
@@ -148,7 +149,7 @@ export function ControlCell({
   unit = "€",
   suffix,
   hint,
-  fill = "#5A6BFF",
+  fill = BRAND,
   editable = true,
   hardClamp = false,
 }: {
@@ -252,7 +253,7 @@ export function SliderField({
   max,
   step = 1,
   display,
-  fill = "#2DD4A7",
+  fill = OK,
 }: {
   label: string;
   value: number;

@@ -16,6 +16,7 @@ import { getDict } from "~/i18n/strings";
 import type { Locale } from "~/i18n/strings";
 import { path } from "~/i18n/routes";
 import { BENCHMARKS, LINES } from "~/lib/affordability";
+import { OK, GOLD, BAD } from "./calculator/palette";
 
 interface Props {
   locale: Locale;
@@ -95,9 +96,9 @@ const rows = LINES.map((k) => {
 });
 
 const legend = [
-  { color: "#2DD4A7", label: t["bc.legend.good"] },
-  { color: "#FFB547", label: t["bc.legend.amber"] },
-  { color: "#FF3B87", label: t["bc.legend.bad"] },
+  { color: OK, label: t["bc.legend.good"] },
+  { color: GOLD, label: t["bc.legend.amber"] },
+  { color: BAD, label: t["bc.legend.bad"] },
 ];
 ---
 <Base

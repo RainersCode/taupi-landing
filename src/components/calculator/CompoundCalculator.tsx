@@ -3,10 +3,11 @@ import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { futureValue } from "~/lib/finance";
 import { ControlCell, FlowMoney, StageGlow, glass, useMoney, interpolate, pluralKey } from "./fields";
+import { BRAND, OK } from "./palette";
 
 const STORE_KEY = "taupi:cc:v1";
-const CONTRIB_COLOR = "#5A6BFF"; // brand — the money you put in
-const GROWTH_COLOR = "#2DD4A7"; // success — the money interest earned
+const CONTRIB_COLOR = BRAND; // brand — the money you put in
+const GROWTH_COLOR = OK; // success — the money interest earned
 
 // Chart geometry (viewBox units — the SVG scales responsively)
 const W = 640;
@@ -280,7 +281,7 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
           step={0.5}
           suffix="%"
           hardClamp
-          fill="#2DD4A7"
+          fill={OK}
         />
         <ControlCell
           label={t["bc.invest.years"]}
@@ -290,7 +291,7 @@ export default function CompoundCalculator({ locale }: { locale: Locale }) {
           max={40}
           suffix={locale === "lv" ? "g." : "y"}
           hardClamp
-          fill="#2DD4A7"
+          fill={OK}
         />
       </div>
 

@@ -15,12 +15,13 @@ import {
 import { futureValue } from "~/lib/finance";
 import AllocationRow from "./AllocationRow";
 import { FlowMoney, StageGlow } from "./fields";
+import { BAD, BRAND, GOLD, INDIGO, INFO, OK } from "./palette";
 
 // Bar/row colors — the app's calculator palette (BudgetCalculatorScreen), so
 // the web tool and the app screenshots read as one product. Exported for the
 // benchmark table on the page (CalculatorPage.astro).
 export const LINE_COLORS: Record<LineKey, string> = {
-  housing: "#7C8CFF",
+  housing: INDIGO,
   utilities: "#64B5F6",
   transport: "#4FC3F7",
   food: "#81C784",
@@ -32,9 +33,9 @@ export const LINE_COLORS: Record<LineKey, string> = {
 // good stays quiet; amber warns; over/under alarm — mirrors the app.
 const STATUS_COLORS: Record<LineEval["status"], string> = {
   good: "#64646F",
-  amber: "#FFB547",
-  over: "#FF3B87",
-  under: "#FF3B87",
+  amber: GOLD,
+  over: BAD,
+  under: BAD,
 };
 
 const LABEL_KEYS: Record<LineKey, string> = {
@@ -299,14 +300,14 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
   };
 
   const freePct = income > 0 ? Math.round((Math.abs(evald.free) / income) * 100) : 0;
-  const freeColor = evald.overAllocated ? "#FF3B87" : "#2DD4A7";
+  const freeColor = evald.overAllocated ? BAD : OK;
 
   // Rounded (not raw) diff — matches what money() displays, so a sub-€1
   // float wobble never paints a color over "no change".
   const freeDiff = compare ? Math.round(compare.freeAfter) - Math.round(compare.freeBefore) : 0;
   let deltaColor = "rgb(var(--frost-rgb))";
-  if (freeDiff < 0) deltaColor = "#FF3B87";
-  else if (freeDiff > 0) deltaColor = "#2DD4A7";
+  if (freeDiff < 0) deltaColor = BAD;
+  else if (freeDiff > 0) deltaColor = OK;
 
   // One readable sentence instead of before→after number rows: what you'd
   // have left, how that compares to "Tagad", and what it means per year.
@@ -447,7 +448,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 </div>
                 <p
                   className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase mt-3.5 mb-1.5"
-                  style={{ color: "#38BDF8" }}
+                  style={{ color: INFO }}
                 >
                   {t["bc.mode.whatIf"]}
                 </p>
@@ -537,7 +538,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                   aria-valuetext={String(investYears)}
                   className="bc-range mt-1"
                   style={{
-                    "--bc-fill": "#2DD4A7",
+                    "--bc-fill": OK,
                     "--bc-pct": `${((investYears - 1) / 39) * 100}%`,
                   } as CSSProperties}
                 />
@@ -559,7 +560,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                   aria-valuetext={`${investPct}%`}
                   className="bc-range mt-1"
                   style={{
-                    "--bc-fill": "#2DD4A7",
+                    "--bc-fill": OK,
                     "--bc-pct": `${(investPct / 15) * 100}%`,
                   } as CSSProperties}
                 />
@@ -570,7 +571,7 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                   </span>
                   <span
                     className="font-display font-extrabold text-[24px] tracking-tight tabular-nums"
-                    style={{ color: "#2DD4A7" }}
+                    style={{ color: OK }}
                   >
                     ~<FlowMoney value={Math.max(0, fv.future)} locale={locale} />
                   </span>
@@ -694,8 +695,8 @@ export default function BudgetCalculator({ locale }: { locale: Locale }) {
                 aria-hidden
                 className="mt-0.5 w-[18px] h-[18px] rounded-[5px] flex items-center justify-center shrink-0 transition-colors"
                 style={{
-                  border: `1px solid ${locked ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.25)"}`,
-                  background: locked ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.04)",
+                  border: `1px solid ${locked ? BRAND : "rgb(var(--frost-rgb) / 0.25)"}`,
+                  background: locked ? BRAND : "rgb(var(--frost-rgb) / 0.04)",
                 }}
               >
                 {locked && (

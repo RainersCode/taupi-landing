@@ -9,16 +9,17 @@ import {
   monthsForPayment,
 } from "~/lib/finance-web";
 import { ControlCell, FlowMoney, StageGlow, glass, interpolate, futureMonthShort, useMoney } from "./fields";
+import { BAD, BRAND, GHOST, INDIGO, INFO, OK, SURFACE } from "./palette";
 
 const STORE_KEY = "taupi:dp:v1";
 const MAX_DEBTS = 6;
 // Verdict colors. These now live ONLY in the leaderboard and the hero figure:
 // the chart itself colors by debt identity, so green here always means "the
 // cheaper strategy" and never "a debt".
-const WIN_COLOR = "#2DD4A7";
-const LOSE_COLOR = "#7C8CFF";
-const TIE_SNOW = "#7C8CFF";
-const TIE_AVAL = "#38BDF8";
+const WIN_COLOR = OK;
+const LOSE_COLOR = INDIGO;
+const TIE_SNOW = INDIGO;
+const TIE_AVAL = INFO;
 
 type Strategy = "snowball" | "avalanche";
 
@@ -26,16 +27,17 @@ type Strategy = "snowball" | "avalanche";
 // on the brand and stepped into the dark-mode lightness band for this page's
 // surface; success green is deliberately absent so a debt can never be mistaken
 // for the winning strategy. Validated with the dataviz palette checker against
-// #0D1128: worst ADJACENT pair ΔE 11.0 (deuteranopia) / 20.3 (normal vision).
+// Pret agrāko navy fonu: worst ADJACENT pair ΔE 11.0 (deuteranopia) /
+// 20.3 (normal vision). Pārmērītas pret gaišo fonu — 3.20–3.67:1, grafikai ok.
 //
 // Slots are assigned by stack POSITION and never skip, because only adjacent
 // pairs were validated — the full six do NOT survive an all-pairs test, and a
 // stacked area only ever puts consecutive slots against each other.
-const DEBT_COLORS = ["#5A6BFF", "#00919D", "#D93F61", "#058BBD", "#CA5A03", "#B250C2"];
+const DEBT_COLORS = [BRAND, "#00919D", "#D93F61", "#058BBD", "#CA5A03", "#B250C2"];
 // Painted between stacked bands to keep a 2px gap, so touching fills stay
 // legible instead of blending into one mass.
-const SURFACE = "#0D1128";
-const GHOST_COLOR = "#8E8E9C"; // the "without the extra" trajectory
+
+const GHOST_COLOR = GHOST; // the "without the extra" trajectory
 
 // Chart geometry (viewBox units — scales responsively)
 const W = 640;
@@ -444,7 +446,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
       {debts.length === 0 ? (
         <p className="text-dim text-[15px]">{t["dp.enter"]}</p>
       ) : !snow || !aval || !perDebt || !shownResult ? (
-        <p className="text-[15px] max-w-[52ch]" style={{ color: "#FF3B87", lineHeight: 1.6 }}>
+        <p className="text-[15px] max-w-[52ch]" style={{ color: BAD, lineHeight: 1.6 }}>
           {t["dp.never"]}
         </p>
       ) : (
@@ -853,7 +855,7 @@ export default function DebtPayoffCalculator({ locale }: { locale: Locale }) {
               max={1000}
               step={10}
               hint={t["dp.extra.hint"]}
-              fill="#2DD4A7"
+              fill={OK}
             />
           </div>
         </div>

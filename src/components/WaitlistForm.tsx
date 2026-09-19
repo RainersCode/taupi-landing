@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
+import { BRAND, BAD } from "./calculator/palette";
 
 /**
  * Shared waitlist capture — lives in the Hero and the #waitlist section.
@@ -105,8 +106,8 @@ export default function WaitlistForm({
           aria-hidden
           className="w-[18px] h-[18px] rounded-[5px] flex items-center justify-center shrink-0 transition-colors"
           style={{
-            border: `1px solid ${tester ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.25)"}`,
-            background: tester ? "#5A6BFF" : "rgb(var(--frost-rgb) / 0.04)",
+            border: `1px solid ${tester ? BRAND : "rgb(var(--frost-rgb) / 0.25)"}`,
+            background: tester ? BRAND : "rgb(var(--frost-rgb) / 0.04)",
           }}
         >
           {tester && (
@@ -126,11 +127,11 @@ export default function WaitlistForm({
           <span aria-hidden className="mx-1.5" style={{ color: "rgb(var(--frost-rgb) / 0.18)" }}>
             —
           </span>
-          <span style={{ color: "#38BDF8" }}>{t["waitlist.tester.perk"]}</span>
+          <span style={{ color: BRAND }}>{t["waitlist.tester.perk"]}</span>
         </span>
       </label>
 
-      <p className="mt-3 text-[12.5px]" style={{ color: state === "error" ? "#FF3B87" : "#64646F" }}>
+      <p className="mt-3 text-[12.5px]" style={{ color: state === "error" ? BAD : "#64646F" }}>
         {state === "error" ? t["waitlist.error"] : t["waitlist.note"]}
       </p>
     </form>

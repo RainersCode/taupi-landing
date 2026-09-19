@@ -3,6 +3,7 @@ import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
 import { emergencyFund, monthsToGoal } from "~/lib/finance";
 import { ControlCell, FlowMoney, StageGlow, glass, useMoney, interpolate, pluralKey, futureMonth } from "./fields";
+import { BRAND, INFO, OK } from "./palette";
 
 const STORE_KEY = "taupi:ef:v1";
 const RING_SIZE = 280;
@@ -46,7 +47,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
   const valid = expenses > 0 && months > 0;
   const r = emergencyFund(expenses, months, saved);
   const funded = valid && r.shortfall <= 0;
-  const accent = funded ? "#2DD4A7" : "#38BDF8";
+  const accent = funded ? OK : INFO;
 
   const planMonths = valid ? monthsToGoal(saved, monthlySave, r.target, 0) : null;
   const planLine =
@@ -92,7 +93,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
             {planLine && (
               <p
                 className="mt-7 pl-3 text-[14.5px] text-ink max-w-[46ch]"
-                style={{ borderLeft: "2px solid #38BDF8", lineHeight: 1.6 }}
+                style={{ borderLeft: `2px solid ${INFO}`, lineHeight: 1.6 }}
               >
                 {planLine}
               </p>
@@ -116,8 +117,8 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
               >
                 <defs>
                   <linearGradient id="ef-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#5A6BFF" />
-                    <stop offset="100%" stopColor="#38BDF8" />
+                    <stop offset="0%" stopColor={BRAND} />
+                    <stop offset="100%" stopColor={INFO} />
                   </linearGradient>
                 </defs>
                 <circle
@@ -133,7 +134,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
                   cy={RING_SIZE / 2}
                   r={radius}
                   fill="none"
-                  stroke={funded ? "#2DD4A7" : "url(#ef-grad)"}
+                  stroke={funded ? OK : "url(#ef-grad)"}
                   strokeWidth={RING_STROKE}
                   strokeLinecap="round"
                   strokeDasharray={circumference}
@@ -152,7 +153,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
                     fontSize: 54,
                     letterSpacing: "-0.03em",
                     lineHeight: 1,
-                    color: funded ? "#2DD4A7" : "rgb(var(--frost-rgb))",
+                    color: funded ? OK : "rgb(var(--frost-rgb))",
                   }}
                 >
                   <FlowMoney value={funded ? 100 : r.pct} locale={locale} prefix="" />
@@ -191,7 +192,7 @@ export default function EmergencyFundCalculator({ locale }: { locale: Locale }) 
           max={24}
           suffix={t["ef.monthsShort"]}
           hardClamp
-          fill="#38BDF8"
+          fill={INFO}
           hint={t["ef.months.hint"]}
         />
         <ControlCell label={t["ef.saved"]} value={saved} onChange={setSaved} min={0} max={20000} step={100} />

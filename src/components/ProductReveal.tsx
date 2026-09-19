@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import PhoneFrame from "./PhoneFrame";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
+import { OK, GOLD, INDIGO, BRAND } from "./calculator/palette";
 
 /**
  * Full-section scroll takeover.
@@ -531,10 +532,10 @@ function FloatingBadge({
 }) {
   const accents: Record<BadgeAccent, { border: string; eyebrow: string }> = {
     default: { border: "rgb(var(--frost-rgb) / 0.08)", eyebrow: "#64646F" },
-    success: { border: "rgba(45,212,167,0.25)", eyebrow: "#2DD4A7" },
-    brand: { border: "rgba(128,147,255,0.3)", eyebrow: "#8093FF" },
-    warning: { border: "rgba(255,181,71,0.25)", eyebrow: "#FFB547" },
-    longterm: { border: "rgba(117,128,224,0.3)", eyebrow: "#7580E0" },
+    success: { border: "rgba(0,121,74,0.30)", eyebrow: OK },
+    brand: { border: "rgba(122,69,214,0.30)", eyebrow: BRAND },
+    warning: { border: "rgba(150,86,10,0.30)", eyebrow: GOLD },
+    longterm: { border: "rgba(76,79,209,0.30)", eyebrow: INDIGO },
   };
   const a = accents[badge.accent ?? "default"];
   const compact = badge.size === "compact";
