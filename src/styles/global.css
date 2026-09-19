@@ -467,7 +467,16 @@ input:-webkit-autofill:active {
   height: 22px;
   background: transparent;
   cursor: pointer;
+  /* Bez šī mobilajā slīdnis raustījās: pārlūks pieskārienu uzskata par
+     IESPĒJAMU ritināšanu, tāpēc jebkura vertikāla īkšķa novirze velk lapu,
+     kamēr tas pats žests velk arī slīdni. Ar peli šādas neskaidrības nav —
+     tāpēc desktopā problēma neparādījās (2026-09-19).
+
+     `none`, nevis `pan-y`: slīdnis ir horizontāls, un pan-y gadījumā velkot
+     ar nelielu slīpumu lapa joprojām aizslīdētu zem pirksta. */
+  touch-action: none;
 }
+
 .bc-range::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 999px;
@@ -510,6 +519,24 @@ input:-webkit-autofill:active {
   background: var(--ink);
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
+/* Uz pieskāriena ierīcēm slīdnim vajag īstu pirksta laukumu. 22px augsts
+   celiņš ar 16px pogu ir peles izmērs; te tas kļūst par 44px zonu, kas ir
+   minimums, ko cilvēks trāpa bez skatīšanās. */
+@media (pointer: coarse) {
+  .bc-range {
+    height: 44px;
+  }
+  .bc-range::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+    margin-top: -8px;
+  }
+  .bc-range::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 .bc-range:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 6px;
@@ -519,6 +546,14 @@ input:-webkit-autofill:active {
 /* Stacked-bar segment widths animate as sliders move */
 .bc-anim {
   transition: width 360ms cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+/* ...bet NE tad, kad slīdnis tiek vilkts. Velkot katrs input notikums sāk
+   360ms pāreju no jauna, tāpēc josla dzenas pakaļ pirkstam ar redzamu
+   nokavēšanos. Pēc pirksta atlaišanas pāreja atgriežas, lai tastatūras
+   bultiņas un skaitliskā ievade joprojām kustētos gludi. */
+body:has(.bc-range:active) .bc-anim {
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
