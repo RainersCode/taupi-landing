@@ -9,7 +9,7 @@ const STORE_KEY = "taupi:pc:v1";
 
 /** This tool's signature color — the four existing calculators already own
  *  indigo, mint, sky and coral (see ToolsHubPage). */
-const GOLD = "#FFB547";
+const GOLD = "var(--tool-gold)";
 
 /**
  * Plain percentage calculator — the four everyday questions that the
@@ -98,7 +98,7 @@ function Field({
       <p className="font-mono text-[10.5px] font-medium tracking-[0.18em] uppercase text-muted mb-2">
         {label}
       </p>
-      <div className="flex items-baseline gap-1.5 border-b border-frost/15 focus-within:border-[#FFB547] transition-colors pb-1">
+      <div className="flex items-baseline gap-1.5 border-b border-frost/15 focus-within:border-[color:var(--tool-gold)] transition-colors pb-1">
         {unit && <span className="text-dim text-[17px] shrink-0">{unit}</span>}
         <input
           value={text}
@@ -151,7 +151,7 @@ function ProportionBar({
           className="absolute inset-y-0 left-0"
           style={{
             width: `${a}%`,
-            background: "linear-gradient(90deg, #FFB547, #FF9A3C)",
+            background: "linear-gradient(90deg, var(--tool-gold), var(--tool-gold-deep))",
             transition: "width 400ms cubic-bezier(0.22, 0.8, 0.2, 1)",
           }}
         />
@@ -160,7 +160,7 @@ function ProportionBar({
           style={{
             left: `${a}%`,
             width: `${b}%`,
-            background: "rgba(255,181,71,0.28)",
+            background: "rgb(var(--tool-gold-rgb) / 0.28)",
             transition: "left 400ms cubic-bezier(0.22, 0.8, 0.2, 1), width 400ms cubic-bezier(0.22, 0.8, 0.2, 1)",
           }}
         />
@@ -175,7 +175,7 @@ function ProportionBar({
           )}
           {labelOverflow && (
             <span className="flex items-center gap-2 font-mono text-[11px] text-dim tabular-nums">
-              <span className="h-2 w-2 rounded-full" style={{ background: "rgba(255,181,71,0.45)" }} />
+              <span className="h-2 w-2 rounded-full" style={{ background: "rgb(var(--tool-gold-rgb) / 0.45)" }} />
               {labelOverflow}
             </span>
           )}
@@ -361,7 +361,7 @@ export default function PercentCalculator({ locale }: { locale: Locale }) {
 
   const tabStyle = (active: boolean): CSSProperties =>
     active
-      ? { background: "rgba(255,181,71,0.14)", borderColor: "rgba(255,181,71,0.45)", color: GOLD }
+      ? { background: "rgb(var(--tool-gold-rgb) / 0.14)", borderColor: "rgb(var(--tool-gold-rgb) / 0.45)", color: GOLD }
       : { background: "rgb(var(--frost-rgb) / 0.04)", borderColor: "rgb(var(--frost-rgb) / 0.10)" };
 
   return (
@@ -386,7 +386,7 @@ export default function PercentCalculator({ locale }: { locale: Locale }) {
 
       {/* The answer */}
       <div className="relative grid grid-cols-1 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] gap-10 lg:gap-14 items-center">
-        <StageGlow color="rgba(255,181,71,0.10)" />
+        <StageGlow color="rgb(var(--tool-gold-rgb) / 0.10)" />
 
         <div>
           <p className="eyebrow mb-3">{answerLabel}</p>

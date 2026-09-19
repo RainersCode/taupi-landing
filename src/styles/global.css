@@ -21,29 +21,38 @@
    ──────────────────────────────────────────────────────────────── */
 :root {
   /* RGB tripleti — Tailwind krāsas iet caur rgb(var(--x-rgb) / <alpha>),
-     tāpēc VISAS klases (arī /10 caurspīdīguma modifikatori) maina tēmu līdzi.
-     Vecās --x formas paliek kā rgb() atvasinājumi CSS lietojumam. */
-  --bg-rgb: 13 17 40;
-  --surface-rgb: 22 27 54;
-  --surface-e-rgb: 31 36 69;
-  --ink-rgb: 245 245 247;
-  --dim-rgb: 168 168 179;
-  --muted-rgb: 100 100 111;
-  --brand-rgb: 90 107 255;
-  --brand-light-rgb: 128 147 255;
-  --brand-deep-rgb: 58 74 224;
-  --accent-rgb: 56 189 248;
-  /* Dziļā ciāna PILNKRĀSAS joslām (TrustPanel). Atsevišķs tokens tāpēc, ka
-     `accent` tumšajā tēmā ir gaiša ciāna — laba tekstam, bet uz tās nevar
-     likt baltu tekstu. Šis ir zīmola virsma: tumšs abās tēmās, kā lietotnes
-     heroBase (skat. src/theme.ts komentāru par brand surfaces). */
-  --accent-surface-rgb: 6 83 121;
-  --success-rgb: 45 212 167;
-  --danger-rgb: 255 59 135;
-  --warning-rgb: 255 181 71;
-  /* frost = pārklāju bāze: balts sarms tumšajā, tintes skalojums gaišajā —
-     tas pats polaritātes triks, ko lieto lietotnes overlay* tokeni. */
-  --frost-rgb: 245 245 247;
+     tāpēc VISAS klases (arī /10 caurspīdīguma modifikatori) seko līdzi.
+
+     Lapa ir TIKAI GAIŠĀ. Tumšā tēma noņemta 2026-09-19: dubultā tēma prasīja
+     katrai krāsai divas vērtības, un praksē katra otrā krāsa vienā no tām
+     krita (skat. rīku parakstkrāsas zemāk — piecas no piecām gaišajā deva
+     zem 3:1). Ja tumšo kādreiz atjauno, tā jāceļ atpakaļ ar [data-theme]
+     blokiem, nevis pārrakstot šos tokenus.
+
+     Palete = lietotnes "Lilac Cream" (src/theme.ts LIGHT_VARIANT). */
+  --bg-rgb: 239 233 250;
+  --surface-rgb: 252 251 254;
+  --surface-e-rgb: 231 221 248;
+  --ink-rgb: 36 27 56;
+  --dim-rgb: 85 77 111;
+  --muted-rgb: 108 98 140;
+  --brand-rgb: 122 69 214;
+  --brand-light-rgb: 159 121 225;
+  --brand-deep-rgb: 97 42 193;
+  /* Akcents = TAS PATS zīmola violets. Bija dziļa ciāna 11 110 158, bet uz
+     lavandas tā lasījās zaļgani un blakus violetajam zīmolam izskatījās
+     sveša (2026-09-19). Tagad lapai ir viena zīmola krāsa: hover, saites,
+     bultiņas, fokāsa gredzeni un pogas runā vienā balsī. 4.85:1. */
+  --accent-rgb: 122 69 214;
+  --accent-surface-rgb: 122 69 214;
+  --success-rgb: 0 120 60;
+  --danger-rgb: 202 25 69;
+  --warning-rgb: 83 99 169;
+  /* frost = pārklāju bāze: tintes skalojums uz gaišā fona. */
+  --frost-rgb: 36 27 56;
+
+  /* ProductReveal sekciju individuālie tumšie foni saplok uz lapas fonu. */
+  --reveal-bg: rgb(var(--bg-rgb));
 
   --bg: rgb(var(--bg-rgb));
   --surface: rgb(var(--surface-rgb));
@@ -59,45 +68,12 @@
   --danger: rgb(var(--danger-rgb));
   --warning: rgb(var(--warning-rgb));
 
-  color-scheme: dark;
+  color-scheme: light;
 
   /* Mirror src/theme.ts from the RN app. */
   --font-display: "Sora", system-ui, sans-serif;
   --font-body: "DM Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-}
-
-/* ── Gaišā tēma — lietotnes "Lilac Cream" palete (src/theme.ts
-   LIGHT_VARIANT): lavandas papīrs, violets brands, teāla akcents.
-   Landing spoguļo lietotni abās tēmās. ── */
-[data-theme="light"] {
-  /* bg nedaudz dziļāks par lietotnes F5F1FD (bija "pa gaišu" uz liela ekrāna);
-     surface paliek gaišāks par fonu, lai kartes paceļas. */
-  --bg-rgb: 239 233 250;
-  --surface-rgb: 252 251 254;
-  --surface-e-rgb: 231 221 248;
-  --ink-rgb: 36 27 56;
-  --dim-rgb: 85 77 111;
-  --muted-rgb: 108 98 140;
-  --brand-rgb: 122 69 214;
-  --brand-light-rgb: 159 121 225;
-  --brand-deep-rgb: 97 42 193;
-  /* Bija teāls 0 117 109 (no lietotnes Lilac Cream paletes) — uz violetā
-     zīmola tas lasījās kā zaļš un izskatījās svešs (2026-09-18). Tagad tā
-     pati ciāna, kas zīmolzīmes punktā (#38BDF8), tikai pietiekami dziļa,
-     lai uz gaišā fona sasniegtu 4.8:1 kontrastu. */
-  --accent-rgb: 11 110 158;
-  --accent-surface-rgb: 11 110 158;
-  --success-rgb: 0 120 60;
-  --danger-rgb: 202 25 69;
-  --warning-rgb: 83 99 169;
-  --frost-rgb: 36 27 56;
-
-  /* ProductReveal sekciju individuālie tumšie foni gaišajā saplok uz lapas
-     fonu — atsevišķas gaišas variācijas būtu troksnis. */
-  --reveal-bg: rgb(var(--bg-rgb));
-
-  color-scheme: light;
 }
 
 * {
@@ -252,6 +228,7 @@ input:-webkit-autofill:active {
   font-weight: 400;
   color: var(--accent);
 }
+
 
 /* Hero — short desktop viewports. Fixed paddings/gaps tuned for tall
    monitors (160px top pad, 40px gaps) pushed the waitlist form to the very
@@ -552,5 +529,138 @@ input:-webkit-autofill:active {
   .bc-range:hover::-webkit-slider-thumb,
   .bc-range:focus-visible::-webkit-slider-thumb {
     transform: none;
+  }
+}
+
+/* ── Hero papīra tekstūra ─────────────────────────────────────────────
+   Čeku foto pilnā platumā zem Hero satura, pilnais kadrs.
+
+   Foto ir tumšs, tāpēc uz gaišā fona to liek caur `multiply`. Piesātinājums
+   nolaists, lai foto brūnie toņi nekonfliktē ar violeto zīmolu.
+
+   `mix-blend-mode` abos gadījumos notur tekstūru kā apgaismojumu, nevis kā
+   uzlīmētu bildi. */
+.hero-texture {
+  background-image: url("/images/hero-paper.webp");
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  filter: saturate(0.35);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .hero-texture {
+    display: none;
+  }
+}
+
+/* ── Privātuma sekcijas diagonāles ────────────────────────────────────
+   Vienlaidu brand krāsa palika, virsū nāk PLATAS 45° joslas, 22px.
+
+   Gaišā josla ir izņemta pavisam — rakstu nes TIKAI ēna. Ar balto joslu, pat
+   pie 3%, raksts uz violetā lasījās par skaļu: atspīdums uz piesātinātas
+   krāsas ceļas daudz vairāk nekā tikpat stipra ēna (2026-09-19). Tagad tas
+   ir iegravējums, nevis svītrains fons.
+
+   Raksts ir CSS gradients, ne attēls: nulle baitu, vienmēr ass jebkurā DPR.
+
+   Maska apakšā ir OBLIGĀTA. Šī sekcija ar apakšmalu saplūst DownloadCTA
+   gradientā, un tieši tāpēc abas lasās kā viens bloks; ja joslas aizietu
+   līdz malai, šuve kļūtu redzama kā horizontāla robeža. Tāpēc raksts izgaist
+   pie 72% un pēdējā ceturtdaļa ir tīra krāsa. */
+.trust-rules::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0px,
+    transparent 22px,
+    rgb(0 0 0 / 0.04) 22px,
+    rgb(0 0 0 / 0.04) 44px
+  );
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+}
+
+/* Saturs virs liniatūras. */
+.trust-rules > * {
+  position: relative;
+}
+
+/* ── Logo punkts ──────────────────────────────────────────────────────
+   Atsevišķa klase, nevis `text-accent`, tāpēc ka punkts ir ZĪMOLA elements,
+   ne akcenta lietojums. Šobrīd akcents un zīmols ir viena krāsa, tāpēc
+   vizuāli tas neko nemaina; klase eksistē tieši tāpēc, ka nākotnē tie var
+   atkal atšķirties, un tad punktam jāpaliek pie zīmola, nevis jāaiziet
+   akcentam līdzi neapdomāti. Lieto Nav.astro un Footer.astro. */
+.logo-dot {
+  color: var(--accent);
+}
+
+/* ── Rīku parakstkrāsas ───────────────────────────────────────────────
+   Kalkulatoru parakstkrāsas sākotnēji bija cieti iekodēti hex JS failos, visas
+   izvēlētas tumšajai tēmai. Uz lavandas tās krita: zelts #FFB547 deva 1.48:1,
+   kad lasāmam tekstam vajag 4.5:1 (2026-09-19). Tagad #96560A — 4.87:1, iztur
+   AA un vēl lasās kā silts zelts, ne brūns.
+
+   Tokens, nevis otra cietā konstante: krāsa bija sešās vietās vienā failā.
+   Alfas variantiem lieto rgb(var(--tool-gold-rgb) / .14). */
+:root {
+  --tool-gold-rgb: 150 86 10;
+  --tool-gold-deep-rgb: 122 64 0;
+}
+
+/* Atvasinājums Tailwind patvaļīgajām vērtībām: border-[color:var(--tool-gold)].
+   Atsaucas uz rgb tripletu, tāpēc tēmu maina līdzi bez atkārtošanas. */
+:root {
+  --tool-gold: rgb(var(--tool-gold-rgb));
+  --tool-gold-deep: rgb(var(--tool-gold-deep-rgb));
+}
+
+/* ── Rīku karšu foto ──────────────────────────────────────────────────
+   Foto klāj visu karti, virsū nāk scrim no KREISĀS puses, kur sēž teksts.
+   Scrim iet caur --bg-rgb, tāpēc tas paliek sinhrons ar lapas fonu.
+
+   Kreisā mala ir 97% necaurspīdīga ar nolūku: virsraksts un apraksts nedrīkst
+   sēdēt uz foto detaļām. Ja scrim tiek atslābināts, vispirms jāpārbauda tieši
+   kreisā puse, nevis kopskats (2026-09-19). */
+.tool-card-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tool-card-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgb(var(--bg-rgb) / 0.97) 0%,
+    rgb(var(--bg-rgb) / 0.86) 45%,
+    rgb(var(--bg-rgb) / 0.35) 100%
+  );
+  transition: opacity 400ms ease;
+}
+
+.group:hover .tool-card-photo {
+  transform: scale(1.06);
+}
+
+.group:hover .tool-card-scrim {
+  opacity: 0.88;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-card-photo,
+  .group:hover .tool-card-photo {
+    transform: none;
+    transition: none;
   }
 }

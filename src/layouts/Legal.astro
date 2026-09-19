@@ -39,21 +39,8 @@ const breadcrumbs = [{ name: frontmatter.title, href: Astro.url.pathname }];
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0D1128" />
+    <meta name="theme-color" content="#EFE9FA" />
 
-    <!-- Tēmas izšķiršana pirms pirmā renderējuma — tas pats, kas Base.astro. -->
-    <script is:inline>
-      (() => {
-        let stored = null;
-        try { stored = localStorage.getItem("theme"); } catch {}
-        const light = stored
-          ? stored === "light"
-          : matchMedia("(prefers-color-scheme: light)").matches;
-        if (light) document.documentElement.dataset.theme = "light";
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta && light) meta.setAttribute("content", "#F5F1FD");
-      })();
-    </script>
 
     <Seo
       title={`${frontmatter.title} — Taupi`}
