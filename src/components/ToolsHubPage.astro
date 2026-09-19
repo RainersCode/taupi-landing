@@ -25,12 +25,15 @@ const t = getDict(locale);
 // `lvOnly` tools are dropped from the EN hub — routes.percent.en is null, so
 // `path()` would silently fall back to the Latvian page and hand an English
 // reader a Latvian one.
+/* Katras kartes foto. Kadrēti tā, lai objekts sēž kadra LABAJĀ pusē — teksts
+   iet pa kreisi un scrim to pusi nosedz, tāpēc pa kreisi objektam nav jēgas.
+   Visi 1200x500, 12-62 KB (oriģināli bija 5-12 MB). */
 const tools = [
-  { key: "budget", href: path("budget", locale), span: "md:col-span-3" },
-  { key: "percent", href: path("percent", locale), span: "md:col-span-3", lvOnly: true },
-  { key: "compound", href: path("compound", locale), span: "md:col-span-2" },
-  { key: "emergency", href: path("emergency", locale), span: "md:col-span-2" },
-  { key: "debt", href: path("debt", locale), span: "md:col-span-2" },
+  { key: "budget", href: path("budget", locale), span: "md:col-span-3", img: "/images/tools/budget.webp" },
+  { key: "percent", href: path("percent", locale), span: "md:col-span-3", lvOnly: true, img: "/images/tools/percent.webp" },
+  { key: "compound", href: path("compound", locale), span: "md:col-span-2", img: "/images/tools/compound.webp" },
+  { key: "emergency", href: path("emergency", locale), span: "md:col-span-2", img: "/images/tools/emergency.webp" },
+  { key: "debt", href: path("debt", locale), span: "md:col-span-2", img: "/images/tools/debt.webp" },
 ]
   .filter((tool) => locale === "lv" || !tool.lvOnly)
   // EN hub ir 4 rīki (percent ir lv-only) — bento 3+2+2+2 tur atstātu robu,
@@ -69,10 +72,21 @@ const tools = [
             href={tool.href}
             class={`${tool.span} group relative overflow-hidden rounded-2xl border border-frost/10 bg-frost/[0.03] p-7 hover:border-accent/15 hover:bg-frost/[0.05] transition-colors min-h-[210px] flex flex-col justify-end`}
           >
-            {/* Ghost ikona fonā — vienotais karšu raksts. */}
-            <ToolGhostIcon tool={tool.key} size={220} class="-right-10 -top-10" />
+            {/* Foto fonā + scrim. Aizstāj ghost ikonu TIKAI šeit; Guide.astro
+                rīku kartēs ikona paliek, tur foto būtu par skaļu. */}
+            <img
+              src={tool.img}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              width="1200"
+              height="500"
+              class="tool-card-photo"
+            />
+            <div class="tool-card-scrim" aria-hidden="true"></div>
 
-            <div class="relative">
+            <div class="relative z-[2]">
               <p
                 class="font-display font-bold text-ink text-[20px] group-hover:text-accent transition-colors"
                 style="letter-spacing: -0.015em; line-height: 1.25;"
