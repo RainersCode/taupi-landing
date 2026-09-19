@@ -38,13 +38,23 @@ export default function Hero({ locale }: { locale: Locale }) {
       className="relative pt-24 md:pt-40 hero-short-pt pb-12 md:pb-16 px-4 md:px-10 overflow-hidden w-full h-full flex items-center"
       style={{ background: "var(--bg)" }}
     >
+      {/* Papīra tekstūra: čeku foto pilnā platumā, tik klusi, ka nelasās kā
+          bilde — tikai graudi zem virsraksta. Sēž ZEM brand glow, lai glow
+          paliek galvenais akcents. Caurspīdīgums nāk no global.css
+          (.hero-texture), jo gaišajā tēmā tumšs foto pelēko lavandu — skat.
+          turieni komentāru par polaritāti. */}
+      <div
+        aria-hidden
+        className="hero-texture pointer-events-none absolute inset-0 bg-cover bg-center"
+      />
+
       {/* One soft brand glow behind the phone column — the only decoration. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(45% 40% at 72% 45%, rgba(90,107,255,0.16), transparent 65%)",
+            "radial-gradient(45% 40% at 72% 45%, rgb(var(--brand-rgb) / 0.16), transparent 65%)",
         }}
       />
 
@@ -124,7 +134,7 @@ export default function Hero({ locale }: { locale: Locale }) {
           <div className="relative scale-90 md:scale-100 origin-top">
             <PhoneFrame
               h={640}
-              screenshot="/images/screens/sakums.webp"
+              screenshot="/images/screens/sakums-light.webp"
               alt={locale === "lv" ? "Taupi sākuma ekrāns — dienas budžets" : "Taupi home screen — daily budget"}
             />
 
@@ -137,12 +147,20 @@ export default function Hero({ locale }: { locale: Locale }) {
                 width: "115%",
                 height: 56,
                 background:
-                  "radial-gradient(50% 80% at 50% 0%, rgba(90,107,255,0.22), transparent 70%)",
+                  "radial-gradient(50% 80% at 50% 0%, rgb(var(--brand-rgb) / 0.22), transparent 70%)",
                 filter: "blur(12px)",
               }}
             />
 
-            {/* Single floating chip — saved this month, matches the screenshot */}
+            {/* Single floating chip — saved this month. Summa atbilst hero
+                ekrānuzņēmumam (€45.41 "Ietaupīts šomēnes"); ja ekrānuzņēmumu
+                maina, jāmaina arī šī.
+
+                Krāsas ir fiksētas tumšas, nevis tokeni. Kopš ekrānuzņēmumi ir
+                gaišās tēmas, čips vairs nav "lietotnes UI gabals" — tagad tas
+                strādā kā kontrasta punkts pret gaišo ekrānu. Der abās tēmās,
+                bet ja gribas, lai tas atkal spoguļo lietotni, tas jāpārtaisa
+                gaišs (2026-09-19). */}
             <motion.div
               initial={{ opacity: 0, x: reduce ? 0 : 20, y: reduce ? 0 : 10 }}
               animate={{ opacity: 1, x: 0, y: 0 }}
@@ -169,7 +187,7 @@ export default function Hero({ locale }: { locale: Locale }) {
                 className="mt-0.5 text-[18px] font-extrabold text-white"
                 style={{ letterSpacing: "-0.025em" }}
               >
-                +€69.29
+                +€45.41
               </p>
             </motion.div>
           </div>
