@@ -44,9 +44,11 @@ const locale = "en" as const;
 
     <FeatureGrid locale={locale} client:visible />
 
-    <TrustPanel locale={locale} />
-
     <Faq locale={locale} />
+
+    <!-- Privātuma solījums sēž TIEŠI virs CTA: viena brand krāsa, neredzama
+         šuve, tāpēc abi lasās kā viens noslēdzošs bloks. -->
+    <TrustPanel locale={locale} />
 
     <DownloadCTA locale={locale} />
   </main>

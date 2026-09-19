@@ -10,12 +10,16 @@ const { locale } = Astro.props;
 const t = getDict(locale);
 ---
 {/* Brand krāsu josla (Wise zaļās sekcijas analogs): pilna platuma violets/
-    indigo gradients ar baltu tipogrāfiju — vienīgā pilnkrāsas sekcija lapā,
-    tāpēc CTA nolasās kā galvenais akcents abās tēmās. */}
+    indigo gradients ar baltu tipogrāfiju.
+
+    Gradients ir 180deg, nevis slīps: sākumlapā virs CTA sēž TrustPanel ar
+    vienlaidu `brand` fonu, un tikai vertikāls gradients sākas ar tieši to
+    pašu toni pa VISU augšmalu — slīpā gadījumā šuve bija redzama kā
+    horizontāla līnija (2026-09-18). */}
 <section
   id="waitlist"
   class="relative py-24 md:py-40 px-4 md:px-10 overflow-hidden"
-  style="background: linear-gradient(165deg, rgb(var(--brand-rgb)) 0%, rgb(var(--brand-deep-rgb)) 100%);"
+  style="background: linear-gradient(180deg, rgb(var(--brand-rgb)) 0%, rgb(var(--brand-deep-rgb)) 100%);"
 >
   <!-- Kluss baltas gaismas plankums aiz CTA -->
   <div
