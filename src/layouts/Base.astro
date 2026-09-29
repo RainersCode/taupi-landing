@@ -58,7 +58,14 @@ const {
       schema={schema}
     />
 
+    <!-- Ikona = lietotnes ikona (zils fons, balts gredzens). Google meklēšana
+         izvēlas rastru, kura mala dalās ar 48, un izgriež to aplī — tāpēc
+         fons iet līdz malām. Avots: public/favicon.svg; PNG/ICO no tā. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Cookieless visit counting (Vercel Web Analytics) — no trackers,
          in line with the privacy promise. -->

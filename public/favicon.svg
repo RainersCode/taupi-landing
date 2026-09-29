@@ -1,13 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="taupiRing" x1="0" y1="0" x2="0.85" y2="1">
-      <stop offset="0" stop-color="#9298FF"/>
-      <stop offset="1" stop-color="#5A6BFF"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5A6BFF"/>
+      <stop offset="1" stop-color="#3F4DE0"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EEF0FC"/>
+      <stop offset="1" stop-color="#C5CCF5"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#0D1128"/>
-  <g transform="translate(7 7) scale(0.5)">
-    <circle cx="50" cy="50" r="34" fill="none" stroke="url(#taupiRing)" stroke-width="15" stroke-linecap="round" stroke-dasharray="165 48.6" transform="rotate(-4 50 50)"/>
-    <circle cx="74" cy="26" r="9.5" fill="#38BDF8"/>
-  </g>
+  <rect width="64" height="64" fill="url(#bg)"/>
+  <circle cx="32" cy="32" r="17.1" fill="none" stroke="url(#ring)" stroke-width="6.75" stroke-linecap="round" stroke-dasharray="76.8 30.6" transform="rotate(6.3 32 32)"/>
+  <circle cx="44" cy="19.9" r="4.3" fill="#38BDF8"/>
 </svg>
