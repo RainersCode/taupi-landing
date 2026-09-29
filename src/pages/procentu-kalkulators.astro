@@ -1,17 +1,81 @@
 ---
 import ToolPage from "~/components/ToolPage.astro";
 import PercentCalculator from "~/components/calculator/PercentCalculator";
+
+/**
+ * Biežākie aprēķini — gatavas atbildes uz tiem meklējumiem, ar kuriem šī
+ * lapa parādās Google ("cik ir 21% PVN no 100", "15% no 2000"). Atbilde ir
+ * redzama bez JS; saite ieliek tos pašus skaitļus kalkulatorā.
+ * Skaitļi pārrēķināti ar roku — mainot piemēru, pārrēķini arī atbildi.
+ */
+const examples = [
+  { q: "Cik ir 21% PVN no €100?", a: "PVN €21, kopā ar PVN €121", how: "100 × 0,21", params: "veids=vat&a=100&likme=21" },
+  { q: "Cik PVN ir cenā €50, ja PVN jau iekļauts?", a: "PVN €8,68, bez PVN €41,32", how: "50 ÷ 1,21 = 41,32", params: "veids=vat&a=50&likme=21&ar=1" },
+  { q: "Cik ir 15% no 2000?", a: "300", how: "2000 × 0,15", params: "veids=part&a=15&b=2000" },
+  { q: "Cik ir 10% no 850?", a: "85", how: "850 ÷ 10", params: "veids=part&a=10&b=850" },
+  { q: "Cik ir 20% atlaide no €49,99?", a: "€10,00 atlaide, jaunā cena €39,99", how: "49,99 × 0,2", params: "veids=part&a=20&b=49.99" },
+  { q: "Cik procentu ir 45 no 60?", a: "75%", how: "45 ÷ 60 × 100", params: "veids=share&a=45&b=60" },
+  { q: "Cena no €2,50 kļuva €3,00. Par cik procentiem?", a: "+20%", how: "(3 − 2,5) ÷ 2,5 × 100", params: "veids=change&a=2.5&b=3" },
+  { q: "Alga no €1 200 kļuva €1 350. Par cik procentiem?", a: "+12,5%", how: "150 ÷ 1200 × 100", params: "veids=change&a=1200&b=1350" },
+];
 ---
 <ToolPage
   locale="lv"
   title="Procentu kalkulators — procenti no summas, izmaiņa un PVN | Taupi"
   description="Bezmaksas procentu kalkulators latviski: cik ir 15% no summas, cik procentu ir daļa no kopsummas, procentuālā izmaiņa un PVN. Aprēķins uzreiz, bez reģistrācijas."
-  reviewed="2026-09-14"
+  reviewed="2026-09-29"
   h1Key="pc.title"
   subKey="pc.sub"
   methodTitleKey="pc.method.title"
   methodBodyKey="pc.method.body"
   faqKey="percent"
 >
-  <PercentCalculator client:load locale="lv" />
+  <div id="kalkulators" class="scroll-mt-28">
+    <PercentCalculator client:load locale="lv" />
+  </div>
+
+  <section class="mt-16 md:mt-20 max-w-3xl" aria-labelledby="biezakie">
+    <p class="eyebrow mb-5">Piemēri</p>
+    <h2
+      id="biezakie"
+      class="font-display font-bold text-ink"
+      style="font-size: clamp(22px, 2.6vw, 30px); letter-spacing: -0.02em; line-height: 1.2;"
+    >
+      Biežākie aprēķini
+    </h2>
+    <p class="mt-3 text-dim text-[15px]" style="line-height: 1.6;">
+      Uzspied uz jautājuma, un kalkulators augšā aizpildīsies ar tiem pašiem skaitļiem.
+    </p>
+    <ul class="mt-6 divide-y divide-frost/10 border-y border-frost/10">
+      {examples.map((ex) => (
+        <li class="py-4 grid gap-1 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-6 sm:items-baseline">
+          <a
+            href={`?${ex.params}#kalkulators`}
+            data-prefill={ex.params}
+            class="font-medium text-ink hover:text-accent transition-colors"
+          >
+            {ex.q}
+          </a>
+          <p class="text-dim text-[15px] sm:text-right">
+            <strong class="text-ink font-semibold">{ex.a}</strong>
+            <span class="block text-muted text-[13px] font-mono">{ex.how}</span>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </section>
 </ToolPage>
+
+<script>
+  // Tās pašas lapas klikšķis: bez pārlādes nodod parametrus kalkulatoram un
+  // aizritina līdz tam. Bez JS saite strādā kā parasta (?…#kalkulators).
+  document.querySelectorAll<HTMLAnchorElement>("[data-prefill]").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const params = a.dataset.prefill ?? "";
+      window.dispatchEvent(new CustomEvent("taupi:percent-prefill", { detail: params }));
+      history.replaceState(null, "", `?${params}`);
+      document.getElementById("kalkulators")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }),
+  );
+</script>

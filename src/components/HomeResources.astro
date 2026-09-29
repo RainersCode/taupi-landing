@@ -1,0 +1,74 @@
+---
+/**
+ * Sākumlapas "Rīki un padomi" — kluss saišu saraksts uz kalkulatoriem un
+ * padomu rakstiem. Sākumlapa ir vienīgā lapa ar ārējām saitēm (App Store,
+ * Google Play), tāpēc tieši no šejienes iekšējās saites dod rakstiem
+ * vislielāko svaru; bez tām Google rakstus atrada, bet neindeksēja.
+ * Tikai LV: padomi ir tikai latviski. Faq.astro sadaļas uzbūve.
+ */
+import { getCollection } from "astro:content";
+import { getDict } from "~/i18n/strings";
+import { path } from "~/i18n/routes";
+
+const t = getDict("lv");
+
+const tools = (["percent", "budget", "compound", "emergency", "debt"] as const).map((key) => ({
+  href: path(key, "lv"),
+  title: t[`tools.${key}.title`],
+}));
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft && data.locale === "lv"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map((post) => ({ href: `/padomi/${post.id}/`, title: post.data.title }));
+
+const columns = [
+  { heading: "Kalkulatori", items: tools, more: { href: path("tools", "lv"), label: "Visi kalkulatori" } },
+  { heading: t["blog.eyebrow"], items: posts, more: { href: path("blog", "lv"), label: "Visi padomi" } },
+];
+---
+<section class="relative py-24 md:py-32 px-4 md:px-10 border-t border-frost/5">
+  <div class="mx-auto max-w-content">
+    <div class="flex items-baseline gap-6 mb-12 md:mb-16">
+      <span class="eyebrow">Bez maksas</span>
+      <span class="h-px flex-1 bg-frost/10"></span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
+      <div class="md:col-span-5">
+        <h2
+          class="font-display font-extrabold text-ink"
+          style="font-size: clamp(36px, 5vw, 64px); letter-spacing: -0.035em; line-height: 1.02;"
+        >
+          Rīki un padomi.
+        </h2>
+        <p class="mt-6 text-dim max-w-[40ch]" style="line-height: 1.65;">
+          Kalkulatori un raksti par naudu latviski. Tiem nevajag ne lietotni, ne reģistrāciju.
+        </p>
+      </div>
+
+      <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-10">
+        {columns.map((col) => (
+          <nav aria-label={col.heading}>
+            <p class="eyebrow text-muted mb-1">{col.heading}</p>
+            <ul class="divide-y divide-frost/[0.07]">
+              {col.items.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="block py-3.5 font-display font-semibold text-ink/90 text-[15px] hover:text-accent transition-colors"
+                    style="letter-spacing: -0.01em; line-height: 1.35;"
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href={col.more.href} class="mt-4 inline-block eyebrow hover:text-ink transition-colors">
+              {col.more.label} →
+            </a>
+          </nav>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

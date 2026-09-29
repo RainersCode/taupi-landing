@@ -32,9 +32,28 @@ interface Props {
       "2026-08-25". Rendered as a visible line and as schema dateModified —
       the freshness signal bank pages use. Bump it when you edit the page. */
   reviewed?: string;
+  /** Neobligāta rinda zem apakšvirsraksta, kas sūta uz radniecīgu rīku —
+      piem., salikto procentu lapa uz vienkāršo procentu kalkulatoru, lai
+      abas lapas nekonkurētu par vienu meklējumu. */
+  crossLink?: { text: string; href: string; label: string };
 }
-const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey, faqKey, reviewed } =
+const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey, faqKey, reviewed, crossLink } =
   Astro.props;
+
+// Padomu raksti, kas der pie katra rīka (blog ir tikai LV). Iekšējās saites
+// no kalkulatoriem ir tas, kas rakstiem trūka, lai Google tos indeksētu.
+const RELATED_POSTS: Record<string, string[]> = {
+  percent: ["ka-ietaupit-naudu-ikdiena"],
+  compound: ["kada-seciba-sakartot-finanses", "50-30-20-budzeta-metode"],
+  emergency: ["kada-seciba-sakartot-finanses", "ka-ietaupit-naudu-ikdiena"],
+  debt: ["kada-seciba-sakartot-finanses", "50-30-20-budzeta-metode"],
+};
+const relatedIds = locale === "lv" && faqKey ? (RELATED_POSTS[faqKey] ?? []) : [];
+const relatedPosts = relatedIds.length
+  ? (await getCollection("blog", ({ id, data }) => !data.draft && relatedIds.includes(id))).sort(
+      (a, b) => relatedIds.indexOf(a.id) - relatedIds.indexOf(b.id),
+    )
+  : [];
 const t = getDict(locale);
 const hubHref = path("tools", locale);
 const faqItems = faqKey ? toolFaqs[faqKey]?.[locale] : undefined;
@@ -93,6 +112,14 @@ const schema = reviewed
       <p class="mt-6 text-dim max-w-[56ch] text-lg" style="line-height: 1.65;">
         {t[subKey]}
       </p>
+      {crossLink && (
+        <p class="mt-4 text-dim text-[15px]" style="line-height: 1.6;">
+          {crossLink.text}{" "}
+          <a href={crossLink.href} class="text-accent underline underline-offset-4 decoration-accent/40 hover:decoration-accent">
+            {crossLink.label}
+          </a>
+        </p>
+      )}
     </header>
 
     <section class="mx-auto max-w-content px-6 md:px-10">
@@ -146,6 +173,27 @@ const schema = reviewed
       >
         {t["tp.app.note"]}
       </p>
+
+      {relatedPosts.length > 0 && (
+        <nav class="mt-14 border-t border-frost/10 pt-8" aria-label={t["blog.eyebrow"]}>
+          <p class="eyebrow mb-1">{t["blog.eyebrow"]}</p>
+          <div class="divide-y divide-frost/[0.07]">
+            {relatedPosts.map((post) => (
+              <a href={`/padomi/${post.id}/`} class="group block py-4">
+                <p
+                  class="font-display font-semibold text-ink/90 text-[16px] group-hover:text-accent transition-colors"
+                  style="letter-spacing: -0.01em; line-height: 1.35;"
+                >
+                  {post.data.title}
+                </p>
+                <p class="mt-1.5 text-[14px] text-muted line-clamp-2" style="line-height: 1.5;">
+                  {post.data.description}
+                </p>
+              </a>
+            ))}
+          </div>
+        </nav>
+      )}
     </section>
 
     {faqItems && faqItems.length > 0 && <ToolFaq locale={locale} items={faqItems} />}

@@ -52,7 +52,7 @@ const t = getDict(locale);
       class="font-display font-extrabold mx-auto"
       style="font-size: clamp(48px, 9vw, 128px); letter-spacing: -0.05em; line-height: 0.95; max-width: 12ch; color: #fff;"
     >
-      {t["cta.title"]}
+      {launch.live ? t["cta.title.live"] : t["cta.title"]}
     </h2>
 
     <p

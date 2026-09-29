@@ -225,7 +225,34 @@ export default function PercentCalculator({ locale }: { locale: Locale }) {
         if (typeof s.vatIncludes === "boolean") setVatIncludes(s.vatIncludes);
       }
     } catch {}
+    // "Biežākie aprēķini" saites (?veids=vat&a=121&likme=21&ar=1) pārraksta
+    // saglabāto — cilvēks uzspieda konkrētu piemēru un grib redzēt tieši to.
+    // Tās pašas lapas klikšķis atnāk kā notikums, bez lapas pārlādes.
+    const applyParams = (p: URLSearchParams) => {
+      const m = p.get("veids") as Mode | null;
+      if (!m || !MODES.includes(m)) return;
+      const n = (k: string) => {
+        const v = Number.parseFloat((p.get(k) ?? "").replace(",", "."));
+        return Number.isFinite(v) ? v : undefined;
+      };
+      const a = n("a");
+      const b = n("b");
+      setMode(m);
+      if (m === "part") { if (a !== undefined) setPctRate(a); if (b !== undefined) setPctBase(b); }
+      if (m === "share") { if (a !== undefined) setSharePart(a); if (b !== undefined) setShareWhole(b); }
+      if (m === "change") { if (a !== undefined) setChangeFrom(a); if (b !== undefined) setChangeTo(b); }
+      if (m === "vat") {
+        if (a !== undefined) setVatAmount(a);
+        const r = n("likme");
+        if (r !== undefined && VAT_RATES.includes(r)) setVatRate(r);
+        setVatIncludes(p.get("ar") === "1");
+      }
+    };
+    applyParams(new URLSearchParams(location.search));
+    const onPrefill = (e: Event) => applyParams(new URLSearchParams((e as CustomEvent<string>).detail));
+    window.addEventListener("taupi:percent-prefill", onPrefill);
     hydrated.current = true;
+    return () => window.removeEventListener("taupi:percent-prefill", onPrefill);
   }, []);
   useEffect(() => {
     if (!hydrated.current) return;

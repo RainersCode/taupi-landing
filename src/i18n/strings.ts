@@ -113,6 +113,7 @@ export const strings: Record<Locale, Dict> = {
     "trust.signature": "Darināts Latvijā. Atbildam uz katru e-pastu.",
 
     "cta.title": "Esi starp pirmajiem.",
+    "cta.title.live": "Lejupielādē Taupi.",
     "cta.sub": "Taupi drīzumā būs App Store un Google Play. Pieteikšanās aizņem piecas sekundes — dosim ziņu, tiklīdz varēsi lejupielādēt.",
     "cta.sub.live": "Taupi ir pieejams App Store un Google Play. Lejupielādē un sāc jau šodien.",
 
@@ -531,6 +532,7 @@ export const strings: Record<Locale, Dict> = {
     "trust.signature": "Built in Latvia. We reply to every email.",
 
     "cta.title": "Be among the first.",
+    "cta.title.live": "Get Taupi.",
     "cta.sub": "Taupi is coming to the App Store and Google Play. Signing up takes five seconds — we'll email you the moment you can download.",
     "cta.sub.live": "Taupi is out now on the App Store and Google Play. Download it and start today.",
 
