@@ -1,6 +1,7 @@
 ---
 title: "Ātrā izvēle iepirkumu sarakstam"
 pubDate: 2026-09-25
+tema: partika
 ---
 
 Iepirkumu sarakstu tagad var salikt, šķirot kārtis. **Ātrā izvēle** rāda

@@ -1,6 +1,7 @@
 ---
 title: "Alga nāks vēlāk?"
 pubDate: 2026-09-24
+tema: budzets
 ---
 
 Dienas limits līdz šim dalīja atlikumu tikai līdz nākamajai algas dienai.

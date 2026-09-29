@@ -1,6 +1,7 @@
 ---
 title: "Kas mainās tavā makā"
 pubDate: 2026-09-16
+tema: budzets
 ---
 
 Sākuma ekrānā parādās jauna kartīte **Kas mainās tavā makā**. Tajā ir

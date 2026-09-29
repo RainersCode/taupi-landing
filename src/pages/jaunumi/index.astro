@@ -24,6 +24,18 @@ const rendered = await Promise.all(
 const fmt = (d: Date) =>
   d.toLocaleDateString("lv-LV", { year: "numeric", month: "long", day: "numeric" });
 
+// Tēmas filtra čipiem — atslēgas sakrīt ar content.config.ts `tema` enum.
+const TEMAS = [
+  { key: "budzets", label: "Budžets" },
+  { key: "partika", label: "Pārtika" },
+  { key: "izskats", label: "Izskats" },
+] as const;
+const temaLabel = Object.fromEntries(TEMAS.map((t) => [t.key, t.label]));
+const temaCount = (key: string) => entries.filter((e) => e.data.tema === key).length;
+
+// Enkurs bez datuma prefiksa: /jaunumi/#atra-izvele.
+const anchor = (id: string) => id.replace(/^\d{4}-\d{2}-\d{2}-/, "");
+
 // Sānjosla: gida sākums — jaunumu lasītājs ir aktīvs lietotājs, un
 // "kā šo lietot" ir dabiskais nākamais solis pēc "kas jauns".
 const guideItems = (
@@ -67,32 +79,83 @@ const guideItems = (
         ieteikumi. Ja tev ir sava ideja, uzraksti mums no lietotnes
         atsauksmju sadaļas.
       </p>
+
+      {/* Tēmu filtrs. Bez JS čipi nedara neko un redzami visi ieraksti;
+          izvēle glabājas ?tema=, lai filtrētu skatu var iedot kā saiti. */}
+      <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filtrēt pēc tēmas">
+        <button type="button" class="tema-chip" data-tema-filter="" aria-pressed="true">
+          Visi <span class="tema-count">{entries.length}</span>
+        </button>
+        {TEMAS.map((t) => (
+          <button type="button" class="tema-chip" data-tema-filter={t.key} aria-pressed="false">
+            {t.label} <span class="tema-count">{temaCount(t.key)}</span>
+          </button>
+        ))}
+      </div>
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_290px] gap-14 items-start">
-    <div>
+    {/* -mt-12: pirmajam redzamajam ierakstam nav augšas atkāpes arī tad,
+        ja filtrs paslēpis ierakstus virs tā (first:pt-0 to neredz). */}
+    <div class="-mt-12">
       {rendered.map(({ entry, Content }) => (
-        <article class="border-b border-frost/10 py-12 first:pt-0">
-          <p class="eyebrow text-muted mb-5">{fmt(entry.data.pubDate)}</p>
+        <article
+          id={anchor(entry.id)}
+          data-tema={entry.data.tema}
+          class="border-b border-frost/10 py-12 scroll-mt-28"
+        >
+          <p class="eyebrow text-muted mb-5">
+            {fmt(entry.data.pubDate)} · {temaLabel[entry.data.tema]}
+          </p>
           <h2
             class="font-display font-bold text-ink"
             style="font-size: clamp(22px, 2.6vw, 32px); letter-spacing: -0.02em; line-height: 1.2;"
           >
-            {entry.data.title}
+            <a href={`#${anchor(entry.id)}`} class="hover:text-accent transition-colors">
+              {entry.data.title}
+            </a>
           </h2>
           <div class="prose-news mt-5 text-dim max-w-[62ch]" style="line-height: 1.7;">
             <Content />
           </div>
         </article>
       ))}
+      <p data-tema-empty hidden class="py-12 text-dim">Šajā tēmā ierakstu vēl nav.</p>
     </div>
 
-    <SideRail
-      eyebrow="Gids"
-      items={guideItems}
-      moreHref="/gids/"
-      moreLabel="Viss gids"
-    />
+    {/* Sānjosla: ierakstu saturs (seko filtram) + gida sākums. Visa kolonna
+        lipīga, tāpēc SideRail iekšējais sticky šeit neko nemaina. */}
+    <div class="lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto space-y-10">
+      <nav aria-label="Šajā lapā" class="hidden lg:block">
+        <p class="eyebrow mb-1">Šajā lapā</p>
+        <div class="divide-y divide-frost/[0.07]">
+          {entries.map((entry) => (
+            <a
+              href={`#${anchor(entry.id)}`}
+              data-tema={entry.data.tema}
+              class="group block py-3"
+            >
+              <p class="eyebrow text-muted mb-1" style="font-size: 9.5px;">
+                {fmt(entry.data.pubDate)}
+              </p>
+              <p
+                class="font-display font-semibold text-ink/90 text-[14px] group-hover:text-accent transition-colors"
+                style="letter-spacing: -0.01em; line-height: 1.35;"
+              >
+                {entry.data.title}
+              </p>
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      <SideRail
+        eyebrow="Gids"
+        items={guideItems}
+        moreHref="/gids/"
+        moreLabel="Viss gids"
+      />
+    </div>
     </div>
   </main>
 
@@ -113,4 +176,73 @@ const guideItems = (
     color: var(--ink);
     font-weight: 600;
   }
+
+  /* Klusi čipi: plāna mala, akcents tikai aktīvajam. */
+  .tema-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgb(var(--frost-rgb) / 0.15);
+    color: rgb(var(--dim-rgb));
+    font-size: 14px;
+    font-weight: 500;
+    transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+  }
+  .tema-chip:hover {
+    border-color: rgb(var(--frost-rgb) / 0.3);
+    color: rgb(var(--ink-rgb));
+  }
+  .tema-chip[aria-pressed="true"] {
+    border-color: rgb(var(--accent-rgb) / 0.55);
+    background: rgb(var(--accent-rgb) / 0.07);
+    color: rgb(var(--accent-rgb));
+  }
+  .tema-count {
+    font-size: 12px;
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+  }
+  [data-tema][hidden] {
+    display: none;
+  }
 </style>
+
+<script>
+  // Tēmu filtrs: slēpj ierakstus un sānjoslas saites, kuru tēma neatbilst;
+  // izvēle dzīvo ?tema= (replaceState, bez vēstures trokšņa).
+  const chips = document.querySelectorAll<HTMLButtonElement>("[data-tema-filter]");
+  const items = document.querySelectorAll<HTMLElement>("[data-tema]");
+  const empty = document.querySelector<HTMLElement>("[data-tema-empty]");
+  const valid = new Set(Array.from(chips, (c) => c.dataset.temaFilter ?? ""));
+
+  function apply(tema: string) {
+    chips.forEach((c) => c.setAttribute("aria-pressed", String((c.dataset.temaFilter ?? "") === tema)));
+    let shown = 0;
+    items.forEach((el) => {
+      const hide = tema !== "" && el.dataset.tema !== tema;
+      el.hidden = hide;
+      if (!hide && el.tagName === "ARTICLE") shown++;
+    });
+    if (empty) empty.hidden = shown > 0;
+  }
+
+  const initial = new URLSearchParams(location.search).get("tema") ?? "";
+  // Ja atvērts ar #enkuru uz ierakstu no citas tēmas, filtrs nedrīkst to paslēpt.
+  const target = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+  const start = valid.has(initial) && (!target || target.dataset.tema === initial || initial === "") ? initial : "";
+  apply(start);
+
+  chips.forEach((chip) =>
+    chip.addEventListener("click", () => {
+      const tema = chip.dataset.temaFilter ?? "";
+      apply(tema);
+      const url = new URL(location.href);
+      if (tema) url.searchParams.set("tema", tema);
+      else url.searchParams.delete("tema");
+      url.hash = "";
+      history.replaceState(null, "", url);
+    }),
+  );
+</script>

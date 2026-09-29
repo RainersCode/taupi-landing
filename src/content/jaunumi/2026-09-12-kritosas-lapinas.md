@@ -1,6 +1,7 @@
 ---
 title: "Krītošās lapiņas Sākuma ekrānā"
 pubDate: 2026-09-12
+tema: izskats
 ---
 
 Sākuma ekrānam ir jauns dzīvības rādītājs: katru reizi, kad pieraksti

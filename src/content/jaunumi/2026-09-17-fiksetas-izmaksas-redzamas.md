@@ -1,6 +1,7 @@
 ---
 title: "Fiksētās izmaksas beidzot redzamas"
 pubDate: 2026-09-17
+tema: budzets
 ---
 
 Īre, abonementi un citas fiksētās izmaksas līdz šim nerādījās statistikas

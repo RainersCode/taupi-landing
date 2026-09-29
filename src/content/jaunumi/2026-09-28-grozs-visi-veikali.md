@@ -1,6 +1,7 @@
 ---
 title: "Groza salīdzinājums visos veikalos"
 pubDate: 2026-09-28
+tema: partika
 ---
 
 Salīdzinājums **Viss grozs vienā veikalā** vairs neaprobežojas ar Rimi

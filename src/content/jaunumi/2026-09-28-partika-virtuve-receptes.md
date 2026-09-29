@@ -1,6 +1,7 @@
 ---
 title: "Pārtika: krājumi, Virtuve un 291 recepte"
 pubDate: 2026-09-28T18:00:00
+tema: partika
 ---
 
 Izvēlnē **+** tagad ir sadaļa **Pārtika** ar trim daļām: *Iepirkties*

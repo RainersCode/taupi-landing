@@ -1,6 +1,7 @@
 ---
 title: "Pārtikas cenas un iepirkumu grozs"
 pubDate: 2026-09-11
+tema: partika
 ---
 
 Jauna sadaļa **Pārtikas cenas**: īstas cenas no kopienas skenētajiem čekiem,

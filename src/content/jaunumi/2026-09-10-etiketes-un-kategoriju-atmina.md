@@ -1,6 +1,7 @@
 ---
 title: "Savas etiķetes un kategoriju atmiņa"
 pubDate: 2026-09-10
+tema: budzets
 ---
 
 Kategorijā **Cits** tagad vari izveidot savas etiķetes — piemēram, "kafija" —
