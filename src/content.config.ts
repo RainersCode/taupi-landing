@@ -100,7 +100,7 @@ const jaunumi = defineCollection({
     pubDate: z.coerce.date(),
     // Tēma filtra čipiem /jaunumi/ lapā. Obligāta — ieraksts bez tēmas
     // izkristu no katra filtra, tāpēc labāk lai būve krīt.
-    tema: z.enum(["budzets", "partika", "izskats"]),
+    tema: z.enum(["budzets", "partika", "spele", "invest", "izskats"]),
     locale: z.enum(["lv", "en"]).default("lv"),
     draft: z.boolean().default(false),
   }),

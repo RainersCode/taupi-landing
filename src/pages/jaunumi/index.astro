@@ -28,6 +28,8 @@ const fmt = (d: Date) =>
 const TEMAS = [
   { key: "budzets", label: "Budžets" },
   { key: "partika", label: "Pārtika" },
+  { key: "spele", label: "Dienas spēle" },
+  { key: "invest", label: "Investīcijas" },
   { key: "izskats", label: "Izskats" },
 ] as const;
 const temaLabel = Object.fromEntries(TEMAS.map((t) => [t.key, t.label]));
