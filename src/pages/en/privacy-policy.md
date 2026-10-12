@@ -2,8 +2,8 @@
 layout: "~/layouts/Legal.astro"
 title: "Privacy Policy"
 description: "How Taupi collects, uses and protects your data — EU data storage, encryption, your GDPR rights and how to reach us with questions."
-updated: "2026-08-31"
-version: "2.2"
+updated: "2026-10-12"
+version: "2.3"
 locale: "en"
 ---
 
@@ -36,6 +36,7 @@ We keep the collection deliberately small.
 - **Receipt images** you photograph or upload for OCR.
 - **Extracted line items, totals, and store name** parsed from those receipts.
 - Images are transmitted to our receipt-parsing service and to Anthropic's Claude API for text extraction; **we do not retain the image after parsing is complete**.
+- **A receipt may contain health information.** A doctor's, dentist's or pharmacy receipt can reveal something about your or a family member's health, and it may also show a name and personal ID number. This is special-category personal data (GDPR Art. 9). We process such a receipt only if you choose to scan it, and only to recognise the purchase for your entry. If you don't want such a receipt to reach our AI provider, enter the expense manually.
 
 ### Technical data
 - **Device/platform identifiers** supplied by the OS (iOS / Android version, device model) — used only for crash triage and push-notification routing, never for advertising.
@@ -57,12 +58,13 @@ If you enable "Share prices anonymously" in Settings, scanned receipt line items
 
 ## 3. Why we process your data (purposes and legal basis)
 
-| Purpose | Data used | Legal basis (GDPR Art. 6) |
+| Purpose | Data used | Legal basis (GDPR Art. 6 and 9) |
 |---|---|---|
 | Create and secure your account | email, password hash, OAuth ID | Contract (Art. 6(1)(b)) |
 | Show you your own financial entries | entries you created | Contract (Art. 6(1)(b)) |
 | Generate AI insights and summaries | entries + profile signals | Legitimate interest (Art. 6(1)(f)) — providing the core product you signed up for |
 | Parse receipt images | image sent to AI provider | Contract (Art. 6(1)(b)) — you initiated the scan |
+| Parse receipts that contain health information (doctor, dentist, pharmacy) | image and extracted line items | Explicit consent (Art. 9(2)(a)) — you choose to scan such a receipt |
 | Send you push notifications (daily reminder, weekly summary) | push token + entry data | Consent (Art. 6(1)(a)) — you enable this in Settings |
 | Contribute to the anonymous price catalogue | item / store / price (no user ID) | Consent (Art. 6(1)(a)) |
 | Understand feature usage (first-party events) | app opens, screen views + account ID | Legitimate interest (Art. 6(1)(f)) — improving the product; you may object at any time (see §8) |
@@ -71,7 +73,7 @@ If you enable "Share prices anonymously" in Settings, scanned receipt line items
 | Abuse prevention and security | IP + request metadata | Legitimate interest (Art. 6(1)(f)) |
 | Respond to legal requests | whatever is necessary | Legal obligation (Art. 6(1)(c)) |
 
-You can withdraw consent at any time (for push / price-sharing) in Settings. Withdrawal does not affect processing that already happened.
+You can withdraw consent at any time (for push / price-sharing) in Settings. You withdraw consent for health information simply by no longer scanning such receipts; you can edit or delete entries already recognised. Withdrawal does not affect processing that already happened.
 
 ## 4. Who processes your data on our behalf (subprocessors)
 
@@ -80,7 +82,7 @@ We use the following service providers ("processors"). They process data only on
 | Provider | What they do | Location | Safeguard |
 |---|---|---|---|
 | **Supabase** (Supabase, Inc.) | Database + authentication | EU (Frankfurt) | Data Processing Agreement; EU-hosted |
-| **Anthropic** (Anthropic PBC) | Claude LLM for receipt OCR and insights | United States | Standard Contractual Clauses; API data not used to train models per Anthropic's commercial policy |
+| **Anthropic** (Anthropic PBC) | Claude LLM for receipt OCR and insights | United States | Standard Contractual Clauses; API data not used to train models per Anthropic's commercial policy and deleted within 30 days |
 | **Vercel** (Vercel Inc.) | Hosts our API endpoints (receipt OCR proxy, insights proxy) | United States / EU | Standard Contractual Clauses |
 | **Apple Inc.** | "Sign in with Apple" identity service | Ireland / United States | Apple's own controller/processor terms |
 | **Google LLC** | "Sign in with Google" identity service | Ireland / United States | Google's own controller/processor terms |
@@ -100,7 +102,7 @@ Your primary data (account, entries, receipts-in-flight) is stored in the **Euro
 |---|---|
 | Account + financial entries | Kept while your account exists. Deleted within **30 days** of account deletion. |
 | Supabase database backups | Rotated out within **90 days** of deletion. |
-| Receipt images sent to AI | **Not retained** — discarded immediately after parsing. |
+| Receipt images sent to AI | **Not retained** in our systems — discarded immediately after parsing. Anthropic deletes them automatically within **30 days**. |
 | API / abuse-prevention logs | **14 days** rolling. |
 | First-party usage events (app opens, screen views) | Kept while your account exists; deleted automatically together with your account. |
 | Anonymous price-catalogue rows | Retained indefinitely in de-identified form (not linkable to you). |
@@ -137,7 +139,7 @@ If you think we are mishandling your data, you can lodge a complaint with the **
 When you use **AI insights** or **receipt scanning**:
 
 - The relevant data (your entries summary, or the receipt image) is sent from your device to our API backend (hosted on Vercel), which forwards it to **Anthropic's Claude API** over TLS.
-- Anthropic processes the request and returns a result. Under Anthropic's commercial API terms, **your data is not used to train their models** and is retained by them only for a short window for operational and abuse-prevention purposes (see Anthropic's own policy at [anthropic.com/privacy](https://www.anthropic.com/privacy)).
+- Anthropic processes the request and returns a result. Under Anthropic's commercial API terms, **your data is not used to train their models**. Anthropic automatically deletes inputs and outputs within **30 days** of receipt; until then they are kept for operational and abuse-prevention purposes (see [Anthropic's data retention terms](https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data) and [anthropic.com/privacy](https://www.anthropic.com/privacy)).
 - The AI output is informational only — it is **not financial, tax, investment, or legal advice**. See the Terms of Service for more.
 - We recommend you do not put anything you would not want a third-party service to see (e.g. ID numbers, medical info) into free-text fields in the app.
 

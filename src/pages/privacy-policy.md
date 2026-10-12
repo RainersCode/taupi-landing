@@ -2,8 +2,8 @@
 layout: "~/layouts/Legal.astro"
 title: "Privātuma politika"
 description: "Kā Taupi vāc, izmanto un aizsargā tavus datus — glabāšana Eiropas Savienībā, šifrēšana, tavas GDPR tiesības un kontakti jautājumiem."
-updated: "2026-08-31"
-version: "2.2"
+updated: "2026-10-12"
+version: "2.3"
 locale: "lv"
 ---
 
@@ -36,6 +36,7 @@ Mēs apzināti turam datu vākšanu minimālu.
 - **Čeku attēli**, ko nofotografē vai augšupielādē OCR atpazīšanai.
 - **Atpazītās preces, summas un veikala nosaukums**, kas izvilkti no šiem čekiem.
 - Attēli tiek pārsūtīti uz mūsu čeku apstrādes pakalpojumu un Anthropic Claude API teksta atpazīšanai; **mēs nesaglabājam attēlu pēc apstrādes pabeigšanas**.
+- **Čekā var būt informācija par veselību.** Ārsta, zobārsta vai aptiekas čeks var atklāt ziņas par tavu vai ģimenes locekļa veselību, un tajā var būt arī vārds un personas kods. Tie ir īpašas kategorijas personas dati (VDAR 9. pants). Šādu čeku apstrādājam tikai tad, ja tu pats izvēlies to skenēt, un tikai tam, lai atpazītu pirkumu tavam ierakstam. Ja nevēlies, lai šāds čeks nonāk pie AI pakalpojuma sniedzēja, ievadi izdevumu manuāli.
 
 ### Tehniskie dati
 - **Ierīces / platformas identifikatori**, ko sniedz operētājsistēma (iOS / Android versija, ierīces modelis) — tikai avāriju izmeklēšanai un push paziņojumu maršrutēšanai, nekad reklāmai.
@@ -57,12 +58,13 @@ Ja iestatījumos iespējosi "Dalīties ar cenām anonīmi", skenēto čeku prece
 
 ## 3. Kāpēc apstrādājam tavus datus (mērķi un juridiskais pamats)
 
-| Mērķis | Izmantotie dati | Juridiskais pamats (VDAR 6. pants) |
+| Mērķis | Izmantotie dati | Juridiskais pamats (VDAR 6. un 9. pants) |
 |---|---|---|
 | Konta izveide un aizsardzība | e-pasts, paroles hash, OAuth ID | Līgums (6.(1)(b)) |
 | Tavu finanšu ierakstu rādīšana | tavi ieraksti | Līgums (6.(1)(b)) |
 | AI ieskatu un kopsavilkumu ģenerēšana | ieraksti + profila signāli | Leģitīmas intereses (6.(1)(f)) — pamatpakalpojuma sniegšana |
 | Čeku attēlu apstrāde | attēls, kas nosūtīts AI pakalpojumam | Līgums (6.(1)(b)) — tu uzsāki skenēšanu |
+| Čeku apstrāde, ja čekā ir informācija par veselību (ārsts, zobārsts, aptieka) | attēls un atpazītās pozīcijas | Nepārprotama piekrišana (9.(2)(a)) — tu pats izvēlies skenēt šādu čeku |
 | Push paziņojumu sūtīšana (dienas atgādinājums, nedēļas kopsavilkums) | push žetons + ierakstu dati | Piekrišana (6.(1)(a)) — iespējo iestatījumos |
 | Iemaksa anonīmajā cenu katalogā | prece / veikals / cena (bez lietotāja ID) | Piekrišana (6.(1)(a)) |
 | Funkciju lietojuma izpratne (pirmās puses notikumi) | lietotnes atvēršanas, ekrānu skatījumi + konta ID | Leģitīmas intereses (6.(1)(f)) — produkta uzlabošana; jebkurā brīdī vari iebilst (skat. 8. sadaļu) |
@@ -71,7 +73,7 @@ Ja iestatījumos iespējosi "Dalīties ar cenām anonīmi", skenēto čeku prece
 | Ļaunprātīgas izmantošanas novēršana un drošība | IP + pieprasījuma metadati | Leģitīmas intereses (6.(1)(f)) |
 | Atbildēšana uz juridiskiem pieprasījumiem | kas vajadzīgs | Juridisks pienākums (6.(1)(c)) |
 
-Tu vari atsaukt piekrišanu jebkurā brīdī (push / cenu dalīšanai) iestatījumos. Atsaukšana neietekmē apstrādi, kas jau notikusi.
+Tu vari atsaukt piekrišanu jebkurā brīdī (push / cenu dalīšanai) iestatījumos. Piekrišanu veselības informācijas apstrādei atsauc, vienkārši vairs neskenējot šādus čekus; jau atpazītos ierakstus vari labot vai dzēst. Atsaukšana neietekmē apstrādi, kas jau notikusi.
 
 ## 4. Kas apstrādā tavus datus mūsu vārdā (apakšapstrādātāji)
 
@@ -80,7 +82,7 @@ Mēs izmantojam šādus pakalpojumu sniedzējus ("apstrādātājus"). Viņi apst
 | Pakalpojuma sniedzējs | Ko dara | Atrašanās vieta | Aizsardzība |
 |---|---|---|---|
 | **Supabase** (Supabase, Inc.) | Datubāze + autentifikācija | ES (Frankfurte) | Datu apstrādes līgums; izvietots ES |
-| **Anthropic** (Anthropic PBC) | Claude LLM čeku OCR un ieskatiem | ASV | Standarta līguma noteikumi; API dati netiek izmantoti modeļu apmācībai saskaņā ar Anthropic komerciālo politiku |
+| **Anthropic** (Anthropic PBC) | Claude LLM čeku OCR un ieskatiem | ASV | Standarta līguma noteikumi; API dati netiek izmantoti modeļu apmācībai saskaņā ar Anthropic komerciālo politiku un tiek dzēsti 30 dienu laikā |
 | **Vercel** (Vercel Inc.) | Mitina mūsu API galapunktus (čeku OCR proxy, ieskatu proxy) | ASV / ES | Standarta līguma noteikumi |
 | **Apple Inc.** | "Sign in with Apple" identitātes pakalpojums | Īrija / ASV | Apple paša pārziņa/apstrādātāja noteikumi |
 | **Google LLC** | "Sign in with Google" identitātes pakalpojums | Īrija / ASV | Google paša pārziņa/apstrādātāja noteikumi |
@@ -100,7 +102,7 @@ Tavi galvenie dati (konts, ieraksti, čeki apstrādes laikā) glabājas **Eiropa
 |---|---|
 | Konts + finanšu ieraksti | Glabājas, kamēr tavs konts pastāv. Dzēsti **30 dienu** laikā pēc konta dzēšanas. |
 | Supabase datubāzes dublējumkopijas | Rotētas ārā **90 dienu** laikā pēc dzēšanas. |
-| Čeku attēli, kas nosūtīti AI | **Netiek saglabāti** — atmesti uzreiz pēc apstrādes. |
+| Čeku attēli, kas nosūtīti AI | Mūsu sistēmās **netiek saglabāti**, atmesti uzreiz pēc apstrādes. Anthropic tos automātiski dzēš **30 dienu** laikā. |
 | API / ļaunprātīgas izmantošanas žurnāli | **14 dienas** rotējoši. |
 | Pirmās puses lietošanas notikumi (lietotnes atvēršanas, ekrānu skatījumi) | Glabājas, kamēr tavs konts pastāv; automātiski dzēsti kopā ar kontu. |
 | Anonīmā cenu kataloga rindas | Glabājas neierobežoti depersonalizētā formā (nav piesaistāmas tev). |
@@ -137,7 +139,7 @@ Ja uzskati, ka mēs nepareizi rīkojamies ar taviem datiem, vari iesniegt sūdz�
 Kad lieto **AI ieskatus** vai **čeku skenēšanu**:
 
 - Attiecīgie dati (tavu ierakstu kopsavilkums vai čeka attēls) tiek nosūtīti no tavas ierīces uz mūsu API aizmugures sistēmu (mitināta Vercel), kas tos pārsūta uz **Anthropic Claude API** caur TLS.
-- Anthropic apstrādā pieprasījumu un atgriež rezultātu. Saskaņā ar Anthropic komerciālajiem API noteikumiem **tavi dati netiek izmantoti modeļu apmācībai** un tos saglabā tikai īsu laiku darbības un ļaunprātīgas izmantošanas novēršanas vajadzībām (skat. Anthropic politiku [anthropic.com/privacy](https://www.anthropic.com/privacy)).
+- Anthropic apstrādā pieprasījumu un atgriež rezultātu. Saskaņā ar Anthropic komerciālajiem API noteikumiem **tavi dati netiek izmantoti modeļu apmācībai**. Anthropic ievadi un rezultātus automātiski dzēš **30 dienu** laikā pēc saņemšanas; līdz tam tos glabā darbības un ļaunprātīgas izmantošanas novēršanas vajadzībām (skat. [Anthropic datu glabāšanas noteikumus](https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data) un [anthropic.com/privacy](https://www.anthropic.com/privacy)).
 - AI rezultāts ir tikai informatīvs — tā **nav finanšu, nodokļu, ieguldījumu vai juridiska konsultācija**. Skat. Lietošanas noteikumus.
 - Iesakām nelikt brīvā teksta laukos to, ko nevēlies, lai redzētu trešās puses pakalpojums (piem., personas kodus, medicīnisku informāciju).
 
