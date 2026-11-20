@@ -165,26 +165,26 @@ export default function Hero({ locale }: { locale: Locale }) {
               initial={{ opacity: 0, x: reduce ? 0 : 20, y: reduce ? 0 : 10 }}
               animate={{ opacity: 1, x: 0, y: 0 }}
               transition={{ duration: 0.9, delay: 1.6, ease: [0.2, 0.8, 0.2, 1] }}
-              className="absolute -right-6 bottom-24 hidden md:flex flex-col rounded-2xl px-4 py-3"
+              className="absolute -right-6 bottom-24 hidden md:flex flex-col rounded-2xl px-4 py-3.5"
               style={{
                 background: "rgba(22, 27, 54, 0.92)",
-                border: "1px solid rgba(45,212,167,0.2)",
+                border: "1px solid rgba(45,212,167,0.4)",
                 boxShadow: "0 12px 32px -12px rgba(0,0,0,0.6)",
                 transform: "rotate(-4deg)",
               }}
             >
               <p
-                className="text-[8.5px] uppercase"
+                className="text-[10.5px] uppercase font-medium whitespace-nowrap"
                 style={{
                   fontFamily: "JetBrains Mono",
-                  letterSpacing: "0.22em",
+                  letterSpacing: "0.16em",
                   color: "#2DD4A7",
                 }}
               >
                 {locale === "lv" ? "Šomēnes ietaupīts" : "Saved this month"}
               </p>
               <p
-                className="mt-0.5 text-[18px] font-extrabold text-white"
+                className="mt-1 text-[22px] font-extrabold text-white"
                 style={{ letterSpacing: "-0.025em" }}
               >
                 +€45.41

@@ -1,12 +1,18 @@
 ---
 import ToolPage from "~/components/ToolPage.astro";
 import CompoundCalculator from "~/components/calculator/CompoundCalculator";
+
+// Search Console 19.08.–19.11.2026: 1 666 impressions, 2 clicks, position 7.8.
+// The queries this page can actually win are the euro ones ("compound interest
+// calculator euro / europe") — against moneychimp and Investor.gov on the bare
+// head term it cannot. Title and body (src/content/tools/compound-en.md) lean
+// into the euro angle instead of repeating the generic pitch.
 ---
 <ToolPage
   locale="en"
-  title="Compound interest calculator — how your savings grow | Taupi"
-  description="Free compound interest calculator: enter your monthly contribution, return and years — see how much of the pot is earned by interest. No sign-up."
-  reviewed="2026-08-25"
+  title="Compound interest calculator in euros (€) | Taupi"
+  description="Free compound interest calculator in euros: enter a starting amount, monthly contribution, return and years — see how much interest earns. No sign-up."
+  reviewed="2026-11-20"
   h1Key="cc.title"
   subKey="cc.sub"
   methodTitleKey="cc.method.title"

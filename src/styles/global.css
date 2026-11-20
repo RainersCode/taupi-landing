@@ -634,16 +634,24 @@ body:has(.bc-range:active) .bc-anim {
 }
 
 /* ── Rīku parakstkrāsas ───────────────────────────────────────────────
-   Kalkulatoru parakstkrāsas sākotnēji bija cieti iekodēti hex JS failos, visas
-   izvēlētas tumšajai tēmai. Uz lavandas tās krita: zelts #FFB547 deva 1.48:1,
-   kad lasāmam tekstam vajag 4.5:1 (2026-09-19). Tagad #96560A — 4.87:1, iztur
-   AA un vēl lasās kā silts zelts, ne brūns.
+   Procentu kalkulatora siltā parakstkrāsa. Tumšajā tēmā tā bija zelts
+   #FFB547; uz lavandas tas deva 1.48:1. Pirmais labojums (2026-09-19) to
+   aptumšoja līdz #96560A — lasāms (4.87:1), bet silta krāsa, ko aptumšo,
+   nezaudējot piesātinājumu, kļūst brūna, un tieši tā tā arī izskatījās.
 
-   Tokens, nevis otra cietā konstante: krāsa bija sešās vietās vienā failā.
+   Tagad (2026-11-20) divi toņi vienas brūnas vietā, katrs savam darbam:
+     --tool-gold       #E4570B  3.12:1  lielie cipari (>=24px) un grafika —
+                                        tiem pietiek ar 3:1, tāpēc drīkst
+                                        palikt spilgti oranžs
+     --tool-gold-deep  #B93E0B  4.71:1  sīkais teksts (ciļņu uzraksti) un
+                                        joslas gradienta tumšais gals
+   Kontrasts mērīts pret lapas fonu 239 233 250. Sīkam tekstam NEKAD nelieto
+   gaišāko toni.
+
    Alfas variantiem lieto rgb(var(--tool-gold-rgb) / .14). */
 :root {
-  --tool-gold-rgb: 150 86 10;
-  --tool-gold-deep-rgb: 122 64 0;
+  --tool-gold-rgb: 228 87 11;
+  --tool-gold-deep-rgb: 185 62 11;
 }
 
 /* Atvasinājums Tailwind patvaļīgajām vērtībām: border-[color:var(--tool-gold)].

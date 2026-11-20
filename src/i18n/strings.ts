@@ -325,7 +325,7 @@ export const strings: Record<Locale, Dict> = {
       "Samazinātā likme — medikamenti, zīdaiņu pārtika, siltumenerģija mājsaimniecībām, sabiedriskais transports iekšzemē, kā arī svaigi augļi, ogas, dārzeņi, maize, piens, olas un mājputnu gaļa.",
     "pc.vat.rate.5": "Samazinātā likme grāmatām, mācību literatūrai un presei valsts valodā.",
 
-    "pc.method.title": "Kā rēķina procentus?",
+    "pc.method.title": "Kā aprēķināt procentus?",
     "pc.method.body":
       "Procents ir simtā daļa: 15% no summas nozīmē summu, kas reizināta ar 15 un dalīta ar 100. Pretējais jautājums — “cik procentu viena summa ir no otras” — ir dalīšana: daļu dala ar kopsummu un reizina ar 100. Procentuālo izmaiņu rēķina no sākuma vērtības, nevis no beigu vērtības, tāpēc pieaugums par 50% un pēc tam samazinājums par 50% neatgriež sākotnējo skaitli. PVN ir procents, ko pieskaita summai bez nodokļa; lai to atrēķinātu no gala cenas, jādala ar 1,21 — nevis jāatņem 21%.",
 

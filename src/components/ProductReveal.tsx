@@ -2,7 +2,6 @@ import { motion } from "motion/react";
 import PhoneFrame from "./PhoneFrame";
 import type { Locale } from "~/i18n/strings";
 import { getDict } from "~/i18n/strings";
-import { OK, GOLD, INDIGO, BRAND } from "./calculator/palette";
 
 /**
  * Full-section scroll takeover.
@@ -530,12 +529,17 @@ function FloatingBadge({
   badge: PlacedBadge;
   delay: number;
 }) {
+  // The badge is a DARK chip (navy, see `background` below) sitting on a light
+  // page. Its eyebrow colours must therefore be LIGHT tints — not the palette.ts
+  // values, which were darkened for text on the lavender page and gave
+  // only 2.7–3.1:1 here at 8.5px (dark violet on navy was barely visible).
+  // Measured against the chip's #161B36: all five are now above 7.7:1.
   const accents: Record<BadgeAccent, { border: string; eyebrow: string }> = {
-    default: { border: "rgb(var(--frost-rgb) / 0.08)", eyebrow: "#64646F" },
-    success: { border: "rgba(0,121,74,0.30)", eyebrow: OK },
-    brand: { border: "rgba(122,69,214,0.30)", eyebrow: BRAND },
-    warning: { border: "rgba(150,86,10,0.30)", eyebrow: GOLD },
-    longterm: { border: "rgba(76,79,209,0.30)", eyebrow: INDIGO },
+    default: { border: "rgba(190,190,210,0.28)", eyebrow: "#BEBED2" },
+    success: { border: "rgba(45,212,167,0.40)", eyebrow: "#2DD4A7" },
+    brand: { border: "rgba(190,163,255,0.40)", eyebrow: "#BEA3FF" },
+    warning: { border: "rgba(255,181,71,0.40)", eyebrow: "#FFB547" },
+    longterm: { border: "rgba(160,170,255,0.40)", eyebrow: "#A0AAFF" },
   };
   const a = accents[badge.accent ?? "default"];
   const compact = badge.size === "compact";
@@ -554,8 +558,8 @@ function FloatingBadge({
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: 0.9, delay, ease: [0.2, 0.8, 0.2, 1] }}
       className={`absolute hidden md:flex items-center gap-2.5 rounded-2xl ${
-        compact ? "pl-2 pr-3 py-2" : "pl-2 pr-4 py-2.5"
-      } ${positionClass[badge.position]}`}
+        compact ? "pr-3 py-2" : "pr-4 py-3"
+      } ${badge.icon ? "pl-2" : compact ? "pl-3" : "pl-4"} ${positionClass[badge.position]}`}
       style={{
         background: "rgba(22, 27, 54, 0.94)",
         border: `1px solid ${a.border}`,
@@ -573,17 +577,17 @@ function FloatingBadge({
       )}
       <div className="text-left leading-tight">
         <p
-          className={`${compact ? "text-[8px]" : "text-[8.5px]"} uppercase`}
+          className={`${compact ? "text-[9.5px]" : "text-[10.5px]"} uppercase font-medium whitespace-nowrap`}
           style={{
             fontFamily: "JetBrains Mono",
-            letterSpacing: "0.22em",
+            letterSpacing: "0.16em",
             color: a.eyebrow,
           }}
         >
           {badge.eyebrow}
         </p>
         <p
-          className={`mt-0.5 ${compact ? "text-[12px]" : "text-[13px]"} font-bold text-white`}
+          className={`mt-1 ${compact ? "text-[14px]" : "text-[18px]"} font-extrabold text-white whitespace-nowrap`}
           style={{
             fontVariantNumeric: "tabular-nums",
             letterSpacing: "-0.01em",

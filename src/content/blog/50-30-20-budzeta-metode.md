@@ -65,7 +65,7 @@ Kontroles pēc: CSP dati par 2026. gada 1. ceturksni rāda vidējo bruto algu **
 
 ## Trīs Latvijas algas, trīs sadalījumi
 
-Tagad piemērosim proporciju reālām summām.
+Tagad piemērosim proporciju reālām summām. Savai algai trīs daļas var ātri izrēķināt [procentu kalkulatorā](/procentu-kalkulators/) — vai uzreiz visu sadalījumu kalkulatorā šī raksta beigās.
 
 **Minimālā alga — €660 neto**
 

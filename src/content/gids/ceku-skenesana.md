@@ -9,7 +9,7 @@ tools:
   - "budget"
 ---
 
-Čeku skenēšana ir ātrākais veids, kā ievadīt lielu pirkumu: AI izlasa veikalu, datumu un katru pozīciju. Ja gribi pārbaudīt, cik no čeka summas ir PVN, to izrēķina [procentu kalkulators](/procentu-kalkulators/).
+Čeku skenēšana ir ātrākais veids, kā ievadīt lielu pirkumu: AI izlasa veikalu, datumu un katru pozīciju. Ja gribi pārbaudīt, cik no čeka summas ir PVN, to izrēķina [procentu kalkulators](/procentu-kalkulators/#pvn).
 
 ## Kā ieskenēt čeku
 

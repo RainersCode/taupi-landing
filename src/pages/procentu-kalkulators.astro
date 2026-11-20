@@ -2,6 +2,12 @@
 import ToolPage from "~/components/ToolPage.astro";
 import PercentCalculator from "~/components/calculator/PercentCalculator";
 
+// Search Console 19.08.–19.11.2026: šī lapa viena pati dod 8 745 no vietnes
+// 13,6 tūkst. seansiem, bet tikai 17 klikšķus (pozīcija 8,3). Galvenie
+// vaicājumi: "procentu kalkulators" (3 782 seansi), "procenti no summas",
+// "procentu kalkulators online", "aprēķināt procentus". Virsraksts sākas ar
+// galveno vaicājumu un iekļaujas ~60 zīmēs, lai rezultātos netiktu apgriezts.
+
 /**
  * Biežākie aprēķini — gatavas atbildes uz tiem meklējumiem, ar kuriem šī
  * lapa parādās Google ("cik ir 21% PVN no 100", "15% no 2000"). Atbilde ir
@@ -21,9 +27,9 @@ const examples = [
 ---
 <ToolPage
   locale="lv"
-  title="Procentu kalkulators — procenti no summas, izmaiņa un PVN | Taupi"
-  description="Bezmaksas procentu kalkulators latviski: cik ir 15% no summas, cik procentu ir daļa no kopsummas, procentuālā izmaiņa un PVN. Aprēķins uzreiz, bez reģistrācijas."
-  reviewed="2026-09-29"
+  title="Procentu kalkulators online: procenti no summas, PVN | Taupi"
+  description="Aprēķini procentus uzreiz: cik ir X% no summas, cik procentu ir daļa no kopsummas, par cik % mainījās cena un cik ir PVN. Bez maksas un bez reģistrācijas."
+  reviewed="2026-11-20"
   h1Key="pc.title"
   subKey="pc.sub"
   methodTitleKey="pc.method.title"

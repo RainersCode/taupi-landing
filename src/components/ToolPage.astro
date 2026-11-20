@@ -43,9 +43,9 @@ const { locale, title, description, h1Key, subKey, methodTitleKey, methodBodyKey
 // Padomu raksti, kas der pie katra rīka (blog ir tikai LV). Iekšējās saites
 // no kalkulatoriem ir tas, kas rakstiem trūka, lai Google tos indeksētu.
 const RELATED_POSTS: Record<string, string[]> = {
-  percent: ["ka-ietaupit-naudu-ikdiena"],
-  compound: ["kada-seciba-sakartot-finanses", "50-30-20-budzeta-metode"],
-  emergency: ["kada-seciba-sakartot-finanses", "ka-ietaupit-naudu-ikdiena"],
+  percent: ["ka-ietaupit-naudu-ikdiena", "ka-sakrat-naudu"],
+  compound: ["ka-sakrat-naudu", "kada-seciba-sakartot-finanses", "50-30-20-budzeta-metode"],
+  emergency: ["ka-sakrat-naudu", "kada-seciba-sakartot-finanses", "ka-ietaupit-naudu-ikdiena"],
   debt: ["kada-seciba-sakartot-finanses", "50-30-20-budzeta-metode"],
 };
 const relatedIds = locale === "lv" && faqKey ? (RELATED_POSTS[faqKey] ?? []) : [];

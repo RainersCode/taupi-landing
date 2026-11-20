@@ -24,6 +24,8 @@ Praktiskā lasīšanas secība ir tāda:
 2. **Tad sarkanās rindas.** Kura kategorija izlec visvairāk?
 3. **Tad uzkrājumu rinda.** Tā ir vienīgā, kurai jābūt *vismaz* norādītajā līmenī, nevis *ne vairāk kā*.
 
+Ja gribi pārbaudīt tikai vienu skaitli — piemēram, cik procentu no algas ir €480 īre —, to ātrāk izdara [procentu kalkulators](/procentu-kalkulators/#dala).
+
 ## Kas iet kurā rindā
 
 Rezultāts ir tik precīzs, cik precīzi sadali izdevumus. Biežāk apstrīdamie gadījumi:
