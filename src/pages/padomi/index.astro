@@ -22,7 +22,7 @@ const fmt = (d: Date) =>
   d.toLocaleDateString("lv-LV", { year: "numeric", month: "long", day: "numeric" });
 
 // Sānjoslas kalkulatori — raksti bieži beidzas ar "izrēķini pats".
-const toolItems = (["budget", "compound", "emergency", "debt"] as const).map((key) => ({
+const toolItems = (["budget", "percent", "compound", "emergency", "debt"] as const).map((key) => ({
   href: path(key, locale),
   title: t[`tools.${key}.title`],
   desc: t[`tools.${key}.desc`],

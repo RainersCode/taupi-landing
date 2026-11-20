@@ -8,7 +8,9 @@ import { StageGlow, glass, interpolate } from "./fields";
 const STORE_KEY = "taupi:pc:v1";
 
 /** This tool's signature color — the four existing calculators already own
- *  indigo, mint, sky and coral (see ToolsHubPage). */
+ *  indigo, mint, sky and coral (see ToolsHubPage). A vivid orange at 3.12:1:
+ *  enough for the large numerals and the bars, NOT for small text — that
+ *  uses --tool-gold-deep (see global.css). */
 const GOLD = "var(--tool-gold)";
 
 /**
@@ -24,6 +26,20 @@ const GOLD = "var(--tool-gold)";
 type Mode = "part" | "share" | "change" | "vat";
 
 const MODES: Mode[] = ["part", "share", "change", "vat"];
+
+/**
+ * URL fragments that open a specific tab, so a link can land on the answer
+ * it promises — "/procentu-kalkulators/#pvn" from an article about receipts
+ * opens the VAT tab instead of "15% of 200". None of these collide with a
+ * heading id in the page body, so the browser does not scroll away from the
+ * tool.
+ */
+const HASH_MODES: Record<string, Mode> = {
+  "#procenti-no-summas": "part",
+  "#dala": "share",
+  "#izmaina": "change",
+  "#pvn": "vat",
+};
 
 /** Latvia's VAT rates (PVN likums 41. pants): 21% standard, 12% reduced
  *  (medicines, heating, press), 5% (fresh Latvian-grown produce). */
@@ -248,11 +264,25 @@ export default function PercentCalculator({ locale }: { locale: Locale }) {
         setVatIncludes(p.get("ar") === "1");
       }
     };
+    // A fragment names only the tab ("/procentu-kalkulators/#pvn") — that is
+    // what links from OTHER pages use, because a fragment keeps the link
+    // pointing at the canonical URL, where a ?query variant would not. It runs
+    // first so that explicit ?veids= parameters, which also carry numbers,
+    // still win when both are present.
+    const fromHash = () => {
+      const m = HASH_MODES[window.location.hash];
+      if (m) setMode(m);
+    };
+    fromHash();
     applyParams(new URLSearchParams(location.search));
     const onPrefill = (e: Event) => applyParams(new URLSearchParams((e as CustomEvent<string>).detail));
     window.addEventListener("taupi:percent-prefill", onPrefill);
+    window.addEventListener("hashchange", fromHash);
     hydrated.current = true;
-    return () => window.removeEventListener("taupi:percent-prefill", onPrefill);
+    return () => {
+      window.removeEventListener("taupi:percent-prefill", onPrefill);
+      window.removeEventListener("hashchange", fromHash);
+    };
   }, []);
   useEffect(() => {
     if (!hydrated.current) return;
@@ -388,7 +418,8 @@ export default function PercentCalculator({ locale }: { locale: Locale }) {
 
   const tabStyle = (active: boolean): CSSProperties =>
     active
-      ? { background: "rgb(var(--tool-gold-rgb) / 0.14)", borderColor: "rgb(var(--tool-gold-rgb) / 0.45)", color: GOLD }
+      ? // 13.5px label: needs 4.5:1, so it takes the deep tone, not GOLD.
+        { background: "rgb(var(--tool-gold-rgb) / 0.12)", borderColor: "rgb(var(--tool-gold-rgb) / 0.45)", color: "var(--tool-gold-deep)" }
       : { background: "rgb(var(--frost-rgb) / 0.04)", borderColor: "rgb(var(--frost-rgb) / 0.10)" };
 
   return (

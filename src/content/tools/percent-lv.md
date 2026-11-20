@@ -37,6 +37,36 @@ No šiem trim var salikt gandrīz jebko. 15% = 10% + 5% = €20 + €10 = €30.
 
 **Atlaides.** "−30%" nozīmē, ka jāmaksā 70% no cenas. Nerēķini atlaidi un tad neatņem — reizini cenu ar 0,7 uzreiz. Divas atlaides pēc kārtas nesummējas: −20% un pēc tam vēl −20% nav −40%, bet −36%, jo otro atlaidi rēķina no jau samazinātās cenas.
 
+### Procentu tabula: 5–50% no summas
+
+Apaļām summām atbildi var nolasīt tabulā. Jebkuru citu kombināciju ievadi kalkulatora cilnē "Procenti no summas".
+
+| Procenti | no €50 | no €100 | no €250 | no €1 000 |
+|---|---|---|---|---|
+| 5% | €2,50 | €5 | €12,50 | €50 |
+| 10% | €5 | €10 | €25 | €100 |
+| 15% | €7,50 | €15 | €37,50 | €150 |
+| 20% | €10 | €20 | €50 | €200 |
+| 21% | €10,50 | €21 | €52,50 | €210 |
+| 25% | €12,50 | €25 | €62,50 | €250 |
+| 50% | €25 | €50 | €125 | €500 |
+
+## Kā aprēķināt procentus uz kalkulatora
+
+Uz parasta kalkulatora — arī telefonā — procentu rēķināšanai nevajag pat taustiņu "%". Pietiek atcerēties, ka procentus var pierakstīt kā decimāldaļskaitli: 15% ir 0,15, 21% ir 0,21, 7% ir 0,07.
+
+| Ko gribi uzzināt | Ko ievadīt | Piemērs |
+|---|---|---|
+| X% no summas | summa × 0,X | 200 × 0,15 = 30 |
+| Summa plus X% | summa × 1,X | 200 × 1,15 = 230 |
+| Summa mīnus X% | summa × (1 − 0,X) | 200 × 0,85 = 170 |
+| Cik % ir daļa no kopsummas | daļa ÷ kopsumma × 100 | 30 ÷ 200 × 100 = 15 |
+| Par cik % mainījās | (jaunā − vecā) ÷ vecā × 100 | (230 − 200) ÷ 200 × 100 = 15 |
+
+Taustiņš "%" dara to pašu, tikai īsāk: uz vairuma kalkulatoru `200 × 15 %` uzreiz parāda 30, un `200 + 15 %` parāda 230. Tomēr dažādi kalkulatori šo taustiņu apstrādā atšķirīgi — īpaši saskaitot un atņemot —, tāpēc reizināšana ar decimāldaļskaitli ir drošākais veids: tā dod vienu un to pašu rezultātu uz jebkuras ierīces.
+
+Viena lieta, ko vērts iegaumēt: pieskaitot procentus, reizini ar skaitli, kas lielāks par vienu (×1,21 nozīmē "plus 21%"), bet atņemot — ar skaitli, kas mazāks par vienu (×0,79 nozīmē "mīnus 21%"). Tās nav pretējas darbības. Kāpēc — skaidrots zemāk pie PVN.
+
 ## Cik procentu ir daļa no kopsummas
 
 Šis ir rēķins, kas personīgajās finansēs ir noderīgākais. Absolūts skaitlis pats par sevi neko nepasaka: vai €480 mēnesī par mājokli ir daudz? Atbilde ir atkarīga tikai no tā, cik tas ir procentos no ienākumiem. Pie €1 200 algas tie ir 40% un ir problēma; pie €2 400 tie ir 20% un ir ļoti labi.
@@ -91,6 +121,18 @@ Jo lielāka summa, jo lielāka kļūda. Pie €10 000 rēķina tā jau ir €364
 Ātrs orientieris: **no cenas ar 21% PVN nodoklis ir aptuveni 17,36%**, nevis 21%. Kalkulatora cilnē "PVN" izvēlies "Atrēķināt PVN no summas", un dalīšanu tas izdarīs pats.
 
 Praktisks pieturas punkts patērētājam: mazumtirdzniecībā cenai, kas norādīta preču zīmē vai plauktā, jābūt **galīgajai cenai ar visiem nodokļiem**. PVN atrēķināšana parasti vajadzīga otrā virzienā — grāmatvedībai, rēķinu izrakstīšanai vai lai saprastu, cik no samaksātā bija nodoklis.
+
+## Procentu likme gadā — noguldījumam un kredītam
+
+Bankas procentu likmi gandrīz vienmēr norāda **gadam**, arī tad, ja nauda tur stāv tikai dažus mēnešus. Lai uzzinātu, cik tas ir eiro, likmi pārrēķina uz faktisko laiku:
+
+**Procenti = summa × gada likme ÷ 100 × mēneši ÷ 12**
+
+€1 000 noguldījums ar 3% gadā pēc 12 mēnešiem nopelna 1 000 × 3 ÷ 100 = €30. Tas pats noguldījums uz 6 mēnešiem nopelna pusi — €15, nevis €30. Tieši šo starpību bieži palaiž garām, salīdzinot īsus depozītus: "3%" uz trim mēnešiem ir €7,50 no tūkstoša.
+
+Kredītam tā pati formula der tikai vienam mēnesim. Procentus rēķina no **atlikuma**, un atlikums ar katru maksājumu sarūk, tāpēc kopējā pārmaksa nav "summa × likme × gadi". €5 000 kredītam ar 12% gadā pirmajā mēnesī procenti ir 5 000 × 12 ÷ 100 ÷ 12 = €50, bet pēdējā — daži eiro.
+
+Salīdzinot kredītu piedāvājumus, skaties nevis uz aizņēmuma likmi, bet uz **gada procentu likmi (GPL)**: tajā ir ierēķināti ne tikai procenti, bet arī komisijas un citas obligātās izmaksas, tāpēc tā parāda, cik kredīts maksā patiesībā. Divi kredīti ar vienādu likmi, bet atšķirīgu noformēšanas maksu, nemaksā vienādi — un GPL to parāda vienā skaitlī.
 
 ## Kad procenti vairs nav vienkārši
 

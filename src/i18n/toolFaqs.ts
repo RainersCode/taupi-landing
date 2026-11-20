@@ -141,6 +141,18 @@ export const toolFaqs: Record<string, Record<Locale, FaqItem[]>> = {
         a: "Daļu dala ar kopsummu un reizina ar 100. Piemēram, €30 no €200 ir 30 ÷ 200 × 100 = 15%. Tieši šo rēķinu vajag, lai saprastu, cik lielu daļu no algas aizņem īre vai pārtika.",
       },
       {
+        q: "Kā aprēķināt procentus uz kalkulatora?",
+        a: "Pārvērt procentus decimāldaļskaitlī un reizini: 15% no 200 ir 200 × 0,15 = 30. Lai procentus pieskaitītu, reizini ar 1,15 (rezultāts 230); lai atņemtu — ar 0,85 (rezultāts 170). Taustiņš “%” dara to pašu īsāk, taču dažādi kalkulatori to apstrādā atšķirīgi, tāpēc reizināšana ar decimāldaļskaitli ir drošākais veids.",
+      },
+      {
+        q: "Kā aprēķināt atlaidi procentos?",
+        a: "Reizini cenu ar to daļu, kas paliek jāmaksā. Atlaide −30% nozīmē, ka maksā 70%: €80 × 0,7 = €56. Lai uzzinātu, cik liela bija atlaide procentos, starpību dala ar sākotnējo cenu: (80 − 56) ÷ 80 × 100 = 30%. Divas atlaides pēc kārtas nesummējas — −20% un vēl −20% kopā ir −36%, nevis −40%.",
+      },
+      {
+        q: "Kā aprēķināt procentuālo pieaugumu vai samazinājumu?",
+        a: "No jaunās vērtības atņem veco, starpību dala ar veco vērtību un reizina ar 100. Ja alga pieaug no €1 000 uz €1 080, pieaugums ir 80 ÷ 1 000 × 100 = 8%. Dalīt vienmēr vajag ar sākuma vērtību — kalkulatora cilne “Procentuālā izmaiņa” to izdara pati un parāda arī starpību eiro.",
+      },
+      {
         q: "Kā pareizi atrēķināt PVN no cenas, kurā tas jau ir iekļauts?",
         a: "No summas ar PVN nevar vienkārši atņemt 21% — tā ir visbiežāk pieļautā kļūda. Summu dala ar 1,21. No €121 paliek €100 bez PVN, un PVN daļa ir €21. Ja atņemtu 21%, sanāktu €95,59, un tas būtu nepareizi.",
       },

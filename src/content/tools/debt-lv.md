@@ -28,6 +28,8 @@ Atšķirība parādās tikai tad, kad dārgākais kredīts **nav** mazākais —
 | Patēriņa kredīts | €1 500 | 15% | €60 |
 | Ātrais kredīts | €2 500 | 42% | €90 |
 
+Cik eiro ir "42% gadā"? Pirmajā mēnesī ātrajam kredītam procenti ir 2 500 × 42 ÷ 100 ÷ 12 = €87,50 — gandrīz viss €90 minimālais maksājums, un atlikums sarūk tikai par €2,50. Šādu aprēķinu jebkurai likmei veic [procentu kalkulators](/procentu-kalkulators/).
+
 Sniega bumba sāktu ar €400 nomaksu; lavīna sāktu ar €2 500 ātro kredītu. Rezultāti:
 
 | | Tikai minimālie | Ar €150 papildus |
