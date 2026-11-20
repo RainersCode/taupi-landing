@@ -6,8 +6,8 @@ sources:
     href: "https://stat.gov.lv/lv/statistikas-temas/valsts-ekonomika/paterina-cenas/2389-paterina-cenu-parmainas"
   - label: "CSP — Mājsaimniecību patēriņa izdevumu sastāvs un struktūra"
     href: "https://stat.gov.lv/lv/statistikas-temas/iedzivotaji/majsaimniecibu-izdevumi/tabulas/mbi031-majsaimniecibu-paterina"
-  - label: "VID — Attaisnotie izdevumi par privātajiem pensiju fondiem"
-    href: "https://www.vid.gov.lv/lv/attaisnotie-izdevumi"
+  - label: "VID — Gada ienākumu deklarācija"
+    href: "https://www.vid.gov.lv/lv/gada-ienakumu-deklaracija"
   - label: "Latvijas Banka — Noguldījumu garantiju fonds"
     href: "https://www.bank.lv/darbibas-jomas/klientu-aizsardziba"
 ---
