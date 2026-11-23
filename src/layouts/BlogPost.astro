@@ -165,5 +165,74 @@ const jsonLd = {
 
   <Footer locale={locale} />
 
+  {/* Enlarged view for article image galleries. A post opts in by wrapping
+      its thumbnails in [data-gallery]; each thumbnail is a link to the full
+      image, so without JS the link still opens the picture. */}
+  <dialog class="zoom" id="zoom" aria-label={locale === "lv" ? "Palielināta bilde" : "Enlarged image"}>
+    <button type="button" class="zoom-btn zoom-close" data-zoom="close" aria-label={locale === "lv" ? "Aizvērt" : "Close"}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <button type="button" class="zoom-btn zoom-prev" data-zoom="prev" aria-label={locale === "lv" ? "Iepriekšējā bilde" : "Previous image"}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
+    <img class="zoom-img" alt="" />
+    <button type="button" class="zoom-btn zoom-next" data-zoom="next" aria-label={locale === "lv" ? "Nākamā bilde" : "Next image"}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+    </button>
+    <p class="zoom-count" aria-live="polite"></p>
+  </dialog>
+
+  <script>
+    const dialog = document.getElementById("zoom") as HTMLDialogElement | null;
+    const galleries = document.querySelectorAll<HTMLElement>("[data-gallery]");
+
+    if (dialog && galleries.length > 0) {
+      const image = dialog.querySelector<HTMLImageElement>(".zoom-img")!;
+      const count = dialog.querySelector<HTMLElement>(".zoom-count")!;
+      let items: HTMLAnchorElement[] = [];
+      let index = 0;
+
+      const show = (next: number) => {
+        index = (next + items.length) % items.length;
+        const link = items[index];
+        image.src = link.href;
+        image.alt = link.querySelector("img")?.alt ?? "";
+        count.textContent = `${index + 1} / ${items.length}`;
+      };
+
+      galleries.forEach((gallery) => {
+        const links = Array.from(gallery.querySelectorAll<HTMLAnchorElement>("a"));
+        links.forEach((link, i) => {
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            items = links;
+            show(i);
+            dialog.showModal();
+          });
+        });
+      });
+
+      dialog.addEventListener("click", (event) => {
+        const action = (event.target as HTMLElement).closest<HTMLElement>("[data-zoom]")?.dataset.zoom;
+        if (action === "prev") show(index - 1);
+        else if (action === "next") show(index + 1);
+        // A click on the dialog itself is a click on the dimmed area around the image.
+        else if (action === "close" || event.target === dialog) dialog.close();
+      });
+
+      dialog.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") show(index - 1);
+        if (event.key === "ArrowRight") show(index + 1);
+      });
+
+      let touchX = 0;
+      dialog.addEventListener("touchstart", (event) => (touchX = event.touches[0].clientX), { passive: true });
+      dialog.addEventListener("touchend", (event) => {
+        const dx = event.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+      });
+    }
+  </script>
+
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 </Base>

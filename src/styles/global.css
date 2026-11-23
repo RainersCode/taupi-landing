@@ -320,6 +320,14 @@ input:-webkit-autofill:active {
 .legal-prose p {
   margin: 0;
 }
+/* The reset above also beats `> * + *`, so a paragraph that follows another
+   paragraph or a list sat flush against it. Give those two cases their gap
+   back; a paragraph under a heading keeps the heading's own spacing. */
+.legal-prose > p + p,
+.legal-prose > ul + p,
+.legal-prose > ol + p {
+  margin-top: 1.2em;
+}
 
 .legal-prose strong {
   color: var(--ink);
@@ -705,5 +713,120 @@ body:has(.bc-range:active) .bc-anim {
   .group:hover .tool-card-photo {
     transform: none;
     transition: none;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Raksta bilžu galerija: sīktēli ([data-gallery] > a.gallery-thumb) un
+   palielinājums (<dialog class="zoom"> BlogPost.astro izkārtojumā).
+   ──────────────────────────────────────────────────────────────── */
+.gallery-thumb {
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gallery-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.gallery-thumb:hover,
+.gallery-thumb:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgb(var(--accent-rgb) / 0.28);
+}
+
+.zoom {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.zoom[open] {
+  display: grid;
+  place-items: center;
+}
+.zoom::backdrop {
+  background: rgb(18 10 38 / 0.88);
+}
+.zoom-img {
+  width: auto;
+  height: auto;
+  max-width: min(92vw, 720px);
+  max-height: 88dvh;
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+}
+.zoom-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.14);
+  color: #fff;
+  transition: background 0.2s;
+}
+.zoom-btn:hover,
+.zoom-btn:focus-visible {
+  background: rgb(255 255 255 / 0.28);
+}
+.zoom-btn svg {
+  width: 22px;
+  height: 22px;
+}
+.zoom-close {
+  top: 18px;
+  right: 18px;
+}
+.zoom-prev,
+.zoom-next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.zoom-prev {
+  left: 18px;
+}
+.zoom-next {
+  right: 18px;
+}
+.zoom-count {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: rgb(255 255 255 / 0.75);
+}
+/* Telefonā bilde aizņem visu platumu, tāpēc bultiņas iet apakšā blakus skaitītājam. */
+@media (max-width: 767px) {
+  .zoom-prev,
+  .zoom-next {
+    top: auto;
+    bottom: 10px;
+    transform: none;
+  }
+  .zoom-img {
+    max-height: 78dvh;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gallery-thumb {
+    transition: none;
+  }
+  .gallery-thumb:hover,
+  .gallery-thumb:focus-visible {
+    transform: none;
   }
 }
